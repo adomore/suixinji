@@ -6,7 +6,10 @@ enum DiaryTimeline {
     struct Section: Identifiable, Equatable {
         let key: String            // "2026年7月" (from diaryDate)
         let entries: [DiaryEntry]
-        var id: String { key }
+        /// Unique per contiguous run — a back-dated entry can produce two runs
+        /// with the same `key`, so the id also folds in the run's first entry to
+        /// keep ForEach IDs distinct.
+        var id: String { "\(key)#\(entries.first?.id.uuidString ?? "")" }
 
         static func == (lhs: Section, rhs: Section) -> Bool {
             lhs.key == rhs.key && lhs.entries.map(\.id) == rhs.entries.map(\.id)

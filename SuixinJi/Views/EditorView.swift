@@ -33,7 +33,7 @@ struct EditorView: View {
 
     // Baselines for change-detection (discard confirmation)
     @State private var initialText = ""
-    @State private var initialImageCount = 0
+    @State private var initialImageIDs: [String] = []
     @State private var initialHadAudio = false
     @State private var initialMood: String?
     @State private var initialWeather: String?
@@ -76,6 +76,13 @@ struct EditorView: View {
             if case .create = mode {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { editorFocused = true }
             }
+        }
+        .onDisappear {
+            // Any dismissal (incl. swipe-down, which bypasses 取消/保存) must tear
+            // down active capture — otherwise the recorder's timer + audio session
+            // and the speech engine's tap leak.
+            transcriber.stop()
+            if recorder.isRecording { recorder.cancel() }
         }
         .sheet(isPresented: $showDatePicker) { datePickerSheet }
         .confirmationDialog("添加图片", isPresented: $photoSourceDialog, titleVisibility: .visible) {
@@ -305,7 +312,7 @@ struct EditorView: View {
 
     private var hasChanges: Bool {
         text != initialText
-            || images.count != initialImageCount
+            || images.map(\.id) != initialImageIDs   // identity, not just count
             || (audio != nil) != initialHadAudio
             || mood != initialMood
             || weather != initialWeather
@@ -361,7 +368,7 @@ struct EditorView: View {
             audio = .existing(name, entry.audioDuration ?? 0)
         }
         initialText = entry.text
-        initialImageCount = images.count
+        initialImageIDs = images.map(\.id)
         initialHadAudio = audio != nil
         initialMood = mood
         initialWeather = weather

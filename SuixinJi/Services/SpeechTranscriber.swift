@@ -76,7 +76,17 @@ final class SpeechTranscriber: NSObject, ObservableObject {
             req?.append(buffer)
         }
         engine.prepare()
-        try engine.start()
+        do {
+            try engine.start()
+        } catch {
+            // Undo the tap so a retry doesn't double-install (which would raise an
+            // uncatchable AVAudioEngine exception and crash).
+            input.removeTap(onBus: 0)
+            req.endAudio()
+            request = nil
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+            throw error
+        }
 
         partialText = ""
         isTranscribing = true

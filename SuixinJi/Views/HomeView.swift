@@ -93,7 +93,7 @@ struct HomeView: View {
     private var timeline: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: []) {
-                ForEach(groupedSections, id: \.key) { section in
+                ForEach(groupedSections) { section in
                     Text(section.key)
                         .font(.groupHeader13)
                         .foregroundStyle(.secondary)
@@ -133,7 +133,8 @@ struct HomeView: View {
                         .foregroundStyle(.white)
                         .frame(width: Layout.fabDiameter, height: Layout.fabDiameter)
                         .background(Color.brand, in: Circle())
-                        .shadow(color: Color.brand.opacity(0.35), radius: 8, x: 0, y: 2)
+                        // Brief §4①: light shadow, y=2 blur=8 opacity ≤15%.
+                        .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 2)
                 }
                 .accessibilityLabel("新建日记")
                 .accessibilityIdentifier("fab.add")

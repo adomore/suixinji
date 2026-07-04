@@ -19,59 +19,72 @@ enum DiaryService {
         into context: ModelContext,
         fileStore: FileStoreImpl = FileStore.shared
     ) throws -> DiaryEntry {
-        let entry: DiaryEntry
-        if let existing {
-            entry = existing
-        } else {
-            entry = DiaryEntry(diaryDate: draft.diaryDate)
-            context.insert(entry)
-        }
+        let entry = existing ?? DiaryEntry(diaryDate: draft.diaryDate)
 
-        // Images: delete removed-existing, write new, keep order.
-        let keptExisting = Set(draft.images.compactMap { image -> String? in
-            if case .existing(let name) = image { return name } else { return nil }
-        })
-        for old in entry.imageFileNames where !keptExisting.contains(old) {
-            fileStore.deleteImage(old)
-        }
-        var finalNames: [String] = []
-        for image in draft.images {
-            switch image {
-            case .existing(let name): finalNames.append(name)
-            case .new(let uiImage, _): finalNames.append(try fileStore.saveImage(uiImage))
+        // Track what THIS call writes so a mid-way failure can be rolled back —
+        // no phantom entry, no orphan files (PRD §9: never silently drop data).
+        var writtenImages: [String] = []
+        var adoptedAudio: String?
+        var inserted = false
+
+        do {
+            // 1) Write all new files FIRST (nothing touches the DB yet).
+            var finalImageNames: [String] = []
+            for image in draft.images {
+                switch image {
+                case .existing(let name):
+                    finalImageNames.append(name)
+                case .new(let uiImage, _):
+                    let name = try fileStore.saveImage(uiImage)
+                    writtenImages.append(name)
+                    finalImageNames.append(name)
+                }
             }
-        }
-        entry.imageFileNames = finalNames
 
-        // Audio (max 1 per entry).
-        switch draft.audio {
-        case .none:
-            if let old = entry.audioFileName {
-                fileStore.deleteAudio(old)
-                entry.audioFileName = nil
-                entry.audioDuration = nil
+            var audioName = existing?.audioFileName
+            var audioDuration = existing?.audioDuration
+            switch draft.audio {
+            case .none:
+                audioName = nil; audioDuration = nil
+            case .existing(let name, let duration)?:
+                audioName = name; audioDuration = duration
+            case .new(let url, let duration)?:
+                let name = try fileStore.adoptAudio(tempURL: url)
+                adoptedAudio = name
+                audioName = name; audioDuration = duration
             }
-        case .existing(let name, let duration)?:
-            entry.audioFileName = name
-            entry.audioDuration = duration
-        case .new(let url, let duration)?:
-            if let old = entry.audioFileName { fileStore.deleteAudio(old) }
-            entry.audioFileName = try fileStore.adoptAudio(tempURL: url)
-            entry.audioDuration = duration
-        }
 
-        entry.text = draft.text
-        entry.diaryDate = draft.diaryDate
-        entry.mood = draft.mood
-        entry.weather = draft.weather
-        entry.weatherText = draft.weatherText
-        entry.tags = draft.tags
-        entry.locationName = draft.locationName
-        entry.latitude = draft.latitude
-        entry.longitude = draft.longitude
-        entry.updatedAt = Date()
-        try context.save()
-        return entry
+            // 2) All writes succeeded — mutate the model and commit.
+            let oldImages = existing?.imageFileNames ?? []
+            let oldAudio = existing?.audioFileName
+            if existing == nil { context.insert(entry); inserted = true }
+            entry.imageFileNames = finalImageNames
+            entry.audioFileName = audioName
+            entry.audioDuration = audioDuration
+            entry.text = draft.text
+            entry.diaryDate = draft.diaryDate
+            entry.mood = draft.mood
+            entry.weather = draft.weather
+            entry.weatherText = draft.weatherText
+            entry.tags = draft.tags
+            entry.locationName = draft.locationName
+            entry.latitude = draft.latitude
+            entry.longitude = draft.longitude
+            entry.updatedAt = Date()
+            try context.save()
+
+            // 3) Only after a successful commit, delete files no longer referenced.
+            let kept = Set(finalImageNames)
+            for old in oldImages where !kept.contains(old) { fileStore.deleteImage(old) }
+            if let oldAudio, oldAudio != audioName { fileStore.deleteAudio(oldAudio) }
+            return entry
+        } catch {
+            // Roll back everything this call created.
+            for name in writtenImages { fileStore.deleteImage(name) }
+            if let adoptedAudio { fileStore.deleteAudio(adoptedAudio) }
+            if inserted { context.delete(entry) }
+            throw error
+        }
     }
 
     /// Delete an entry and its files. Files first, then the record (§5.3), so no

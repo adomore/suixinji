@@ -1,6 +1,7 @@
 import Foundation
 import AVFoundation
 import Combine
+import UIKit
 
 /// Records a single voice memo to a temporary `.m4a` (AAC) file.
 ///
@@ -120,12 +121,22 @@ final class AudioRecorder: NSObject, ObservableObject {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    // MARK: Interruptions (call / background) → auto-save (PRD §3.2 F3, §9)
+    // MARK: Interruptions (call) + backgrounding → auto-save (PRD §3.2 F3, §9)
 
     private func observeInterruptions() {
-        NotificationCenter.default.addObserver(
+        let center = NotificationCenter.default
+        // A phone call / Siri / another app posts an audio-session interruption…
+        center.addObserver(
             self, selector: #selector(handleInterruption(_:)),
             name: AVAudioSession.interruptionNotification, object: nil)
+        // …but plain backgrounding does NOT (no background-audio mode), so also
+        // finalize on resign-active / entering background to avoid "白录" loss.
+        center.addObserver(
+            self, selector: #selector(handleBackgrounding),
+            name: UIApplication.willResignActiveNotification, object: nil)
+        center.addObserver(
+            self, selector: #selector(handleBackgrounding),
+            name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
     @objc private func handleInterruption(_ note: Notification) {
@@ -134,6 +145,10 @@ final class AudioRecorder: NSObject, ObservableObject {
             let raw = info[AVAudioSessionInterruptionTypeKey] as? UInt,
             AVAudioSession.InterruptionType(rawValue: raw) == .began
         else { return }
+        Task { @MainActor in if isRecording { finish() } }
+    }
+
+    @objc private func handleBackgrounding() {
         Task { @MainActor in if isRecording { finish() } }
     }
 }

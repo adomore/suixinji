@@ -186,6 +186,21 @@ final class DiaryServiceTests: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: store.audioURL(aud).path))
     }
 
+    // A file-write failure mid-save must roll back: no phantom entry, no orphan
+    // files (regression for the "empty entry autosaved on error" bug).
+    func testCreateRollsBackOnFileFailure() throws {
+        let missingAudio = FileManager.default.temporaryDirectory
+            .appendingPathComponent("does-not-exist-\(UUID().uuidString).m4a")
+        let draft = DiaryDraft(
+            text: "会失败", images: [.new(image(), UUID())],
+            audio: .new(missingAudio, 5) // adoptAudio will throw (no temp file)
+        )
+        XCTAssertThrowsError(try DiaryService.save(draft, existing: nil, into: context, fileStore: store))
+        XCTAssertEqual(try allEntries().count, 0, "no phantom entry may persist")
+        let leftover = (try? FileManager.default.contentsOfDirectory(atPath: store.imagesDir.path)) ?? []
+        XCTAssertTrue(leftover.isEmpty, "the image written before the failure must be rolled back")
+    }
+
     func testUpdatedAtAdvancesOnSave() throws {
         let created = try DiaryService.save(DiaryDraft(text: "a"), existing: nil, into: context, fileStore: store)
         let first = created.updatedAt

@@ -65,6 +65,9 @@ final class AudioPlaybackManager: NSObject, ObservableObject {
         isPlaying = false
         currentTime = 0
         timer?.invalidate(); timer = nil
+        // Release the (non-mixing .playback) session so any audio we interrupted
+        // in another app can resume.
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
     private func sync() {
