@@ -58,6 +58,8 @@ struct DetailView: View {
                     Image(systemName: "ellipsis.circle")
                         .font(.system(size: 18))
                 }
+                .accessibilityLabel("更多")
+                .accessibilityIdentifier("detail.menu")
             }
         }
         .onAppear(perform: prepareAudio)
@@ -136,9 +138,7 @@ struct DetailView: View {
 
     private func deleteEntry() {
         player.stop()                       // stop before deleting (PRD §9)
-        FileStore.shared.deleteFiles(for: entry)   // files first, then the record
-        context.delete(entry)
-        try? context.save()
+        try? DiaryService.delete(entry, from: context)  // files first, then record
         dismiss()
     }
 }

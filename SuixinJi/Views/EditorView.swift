@@ -132,11 +132,13 @@ struct EditorView: View {
                 Button("取消") { cancelTapped() }
                     .font(.body17)
                     .foregroundStyle(Color.brand)
+                    .accessibilityIdentifier("editor.cancel")
                 Spacer()
                 Button("保存") { save() }
                     .font(.navTitle17)
                     .foregroundStyle(canSave ? Color.brand : Color(uiColor: .tertiaryLabel))
                     .disabled(!canSave)
+                    .accessibilityIdentifier("editor.save")
             }
         }
         .frame(height: 44)
@@ -164,6 +166,7 @@ struct EditorView: View {
                         .scrollContentBackground(.hidden)
                         .focused($editorFocused)
                         .disabled(transcriber.isTranscribing) // live dictation drives the text
+                        .accessibilityIdentifier("editor.text")
                 }
                 .padding(.top, 4)
 
@@ -302,49 +305,10 @@ struct EditorView: View {
 
     private func save() {
         transcriber.stop()
+        let existing: DiaryEntry? = if case .edit(let e) = mode { e } else { nil }
+        let draft = DiaryDraft(text: text, diaryDate: diaryDate, images: images, audio: audio)
         do {
-            let entry: DiaryEntry
-            switch mode {
-            case .create:
-                entry = DiaryEntry(diaryDate: diaryDate)
-                context.insert(entry)
-            case .edit(let existing):
-                entry = existing
-            }
-
-            // Resolve images: write new ones, delete removed-existing ones.
-            let keptExisting = Set(images.compactMap { if case .existing(let n) = $0 { return n } else { return nil } })
-            if case .edit(let existing) = mode {
-                for old in existing.imageFileNames where !keptExisting.contains(old) {
-                    FileStore.shared.deleteImage(old)
-                }
-            }
-            var finalNames: [String] = []
-            for item in images {
-                switch item {
-                case .existing(let n): finalNames.append(n)
-                case .new(let img, _): finalNames.append(try FileStore.shared.saveImage(img))
-                }
-            }
-            entry.imageFileNames = finalNames
-
-            // Resolve audio.
-            switch audio {
-            case .none:
-                if let old = entry.audioFileName { FileStore.shared.deleteAudio(old); entry.audioFileName = nil; entry.audioDuration = nil }
-            case .existing(let n, let dur)?:
-                entry.audioFileName = n
-                entry.audioDuration = dur
-            case .new(let url, let dur)?:
-                if let old = entry.audioFileName { FileStore.shared.deleteAudio(old) }
-                entry.audioFileName = try FileStore.shared.adoptAudio(tempURL: url)
-                entry.audioDuration = dur
-            }
-
-            entry.text = text
-            entry.diaryDate = diaryDate
-            entry.updatedAt = Date()
-            try context.save()
+            try DiaryService.save(draft, existing: existing, into: context)
             dismiss()
         } catch {
             errorMessage = (error as? LocalizedError)?.errorDescription ?? "存储空间可能不足，请重试。"
@@ -436,44 +400,9 @@ struct EditorView: View {
     }
 }
 
-// MARK: - Draft value types
-
-/// A photo in the editor: either already saved on disk, or freshly picked.
-enum EditorImage: Identifiable {
-    case existing(String)          // file name
-    case new(UIImage, UUID)        // in-memory, id for diffing
-
-    var id: String {
-        switch self {
-        case .existing(let n): return n
-        case .new(_, let uuid): return uuid.uuidString
-        }
-    }
-
-    @ViewBuilder
-    func thumbnail(side: CGFloat) -> some View {
-        switch self {
-        case .existing(let name):
-            ThumbnailImage(name: name, side: side)
-        case .new(let img, _):
-            Image(uiImage: img).resizable().scaledToFill()
-                .frame(width: side, height: side)
-                .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailRadius, style: .continuous))
-        }
-    }
-}
-
-/// A recording draft.
-enum DraftAudio {
-    case existing(String, TimeInterval)  // saved file name + duration
-    case new(URL, TimeInterval)          // temp file + duration
-
-    var duration: TimeInterval {
-        switch self {
-        case .existing(_, let d), .new(_, let d): return d
-        }
-    }
-}
+// MARK: - Permission alert kind
+// (EditorImage / DraftAudio / DiaryDraft live in Models/DiaryDraft.swift so the
+//  persistence logic in DiaryService can be unit-tested without the views.)
 
 enum PermissionKind: Identifiable {
     case microphone, speech

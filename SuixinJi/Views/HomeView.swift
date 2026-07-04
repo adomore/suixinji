@@ -45,6 +45,8 @@ struct HomeView: View {
                             .font(.system(size: 18, weight: .regular))
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityLabel("设置")
+                    .accessibilityIdentifier("nav.settings")
                 }
             }
             .navigationDestination(for: DiaryEntry.self) { entry in
@@ -101,37 +103,18 @@ struct HomeView: View {
                         .background(Color.brand, in: Circle())
                         .shadow(color: Color.brand.opacity(0.35), radius: 8, x: 0, y: 2)
                 }
+                .accessibilityLabel("新建日记")
+                .accessibilityIdentifier("fab.add")
                 .padding(.trailing, Layout.fabTrailing)
                 .padding(.bottom, Layout.fabBottom)
             }
         }
     }
 
-    // MARK: Grouping
+    // MARK: Grouping (pure logic lives in DiaryTimeline for unit-testing)
 
-    private struct Section: Identifiable {
-        let key: String        // "2026年7月"
-        let entries: [DiaryEntry]
-        var id: String { key }
-    }
-
-    /// Preserve the query order and split into contiguous year-month runs.
-    private var groupedSections: [Section] {
-        var result: [Section] = []
-        var currentKey: String? = nil
-        var bucket: [DiaryEntry] = []
-        for entry in entries {
-            let key = DiaryDateFormat.yearMonth(entry.diaryDate)
-            if key != currentKey {
-                if let ck = currentKey { result.append(Section(key: ck, entries: bucket)) }
-                currentKey = key
-                bucket = [entry]
-            } else {
-                bucket.append(entry)
-            }
-        }
-        if let ck = currentKey { result.append(Section(key: ck, entries: bucket)) }
-        return result
+    private var groupedSections: [DiaryTimeline.Section] {
+        DiaryTimeline.sections(from: entries)
     }
 }
 

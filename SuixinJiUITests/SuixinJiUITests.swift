@@ -1,0 +1,97 @@
+import XCTest
+
+/// End-to-end P0 flows driven through the UI. The app is launched with `-uitest`
+/// so it uses a fresh in-memory store each run (see SuixinJiApp).
+final class SuixinJiUITests: XCTestCase {
+
+    private var app: XCUIApplication!
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        app.launchArguments = ["-uitest"]
+        app.launch()
+    }
+
+    // Empty state (Brief §5): guidance line + the ➕ button are present.
+    func testEmptyStateShown() {
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["fab.add"].exists)
+    }
+
+    // Save is disabled while the entry is empty (Brief §5 / F1).
+    func testSaveDisabledWhenEmpty() {
+        app.buttons["fab.add"].tap()
+        let save = app.buttons["editor.save"]
+        XCTAssertTrue(save.waitForExistence(timeout: 5))
+        XCTAssertFalse(save.isEnabled, "保存 must be greyed out when the entry is empty")
+    }
+
+    // F1 create: ➕ → type → 保存 → new card appears, empty state gone.
+    func testCreateTextEntryAppearsInTimeline() {
+        let marker = "UI自动化测试内容"
+        app.buttons["fab.add"].tap()
+
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap()
+        editor.typeText(marker)
+
+        let save = app.buttons["editor.save"]
+        XCTAssertTrue(save.isEnabled)
+        save.tap()
+
+        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["记录今天的第一条心情吧"].exists)
+    }
+
+    // Cancel with unsaved changes → discard confirmation → nothing saved.
+    func testCancelWithChangesAsksToDiscard() {
+        app.buttons["fab.add"].tap()
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap()
+        editor.typeText("临时内容")
+
+        app.buttons["editor.cancel"].tap()
+        // confirmationDialog with the discard prompt.
+        let discard = app.buttons["放弃修改"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        discard.tap()
+
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5),
+                      "discarded entry must not appear")
+    }
+
+    // F6 detail + delete with two-step confirmation (PRD §6).
+    func testOpenDetailAndDeleteEntry() {
+        let marker = "待删除的日记"
+        // create one
+        app.buttons["fab.add"].tap()
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap(); editor.typeText(marker)
+        app.buttons["editor.save"].tap()
+
+        // open detail
+        let card = app.staticTexts[marker]
+        XCTAssertTrue(card.waitForExistence(timeout: 5))
+        card.tap()
+
+        // ··· → 删除 → confirm
+        app.buttons["detail.menu"].tap()
+        app.buttons["删除"].tap()
+        let confirm = app.alerts.buttons["删除"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        confirm.tap()
+
+        // back to empty timeline
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5))
+    }
+
+    // ④ Settings: the mandatory data-storage footer must be present.
+    func testSettingsShowsDataFooter() {
+        app.buttons["nav.settings"].tap()
+        XCTAssertTrue(app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"].waitForExistence(timeout: 5))
+    }
+}

@@ -45,6 +45,19 @@ xcodebuild -project SuixinJi.xcodeproj -scheme SuixinJi \
 > only partial speech/mic support — the PRD calls this out (§8). Recording,
 > voice-to-text, and 拍照 are best verified on hardware.
 
+## Tests
+
+Unit + performance + UI tests ship with the project (targets `SuixinJiTests`
+and `SuixinJiUITests`). Run all with **⌘U**, or:
+
+```bash
+xcodebuild test -project SuixinJi.xcodeproj -scheme SuixinJi \
+  -destination 'platform=iOS Simulator,name=iPhone 16' -enableCodeCoverage YES
+```
+
+Code coverage is enabled in the shared scheme. See **`TESTING.md`** for the
+full test plan, the coverage philosophy, and how to read the coverage report.
+
 ## Permissions
 
 Usage strings are set as `INFOPLIST_KEY_*` build settings (so the generated

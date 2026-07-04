@@ -15,18 +15,19 @@ enum FileStore {
 
 final class FileStoreImpl {
     private let fm = FileManager.default
+    private let root: URL
 
-    private var documents: URL {
-        fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    var imagesDir: URL { documents.appendingPathComponent("images", isDirectory: true) }
-    var audiosDir: URL { documents.appendingPathComponent("audios", isDirectory: true) }
-
-    init() {
+    /// - Parameter root: base directory for `images/` and `audios/`. Defaults to
+    ///   the app-sandbox Documents dir; tests inject a temp dir for isolation.
+    init(root: URL? = nil) {
+        self.root = root ?? fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
         for dir in [imagesDir, audiosDir] {
             try? fm.createDirectory(at: dir, withIntermediateDirectories: true)
         }
     }
+
+    var imagesDir: URL { root.appendingPathComponent("images", isDirectory: true) }
+    var audiosDir: URL { root.appendingPathComponent("audios", isDirectory: true) }
 
     // MARK: URLs
 
@@ -35,15 +36,32 @@ final class FileStoreImpl {
 
     // MARK: Images
 
+    /// Longest edge allowed on stored images (PRD §3.2 F4).
+    static let maxImageEdge: CGFloat = 2048
+
     /// Compress to long edge ≤ 2048px and persist as JPEG. Returns the file name.
     func saveImage(_ image: UIImage) throws -> String {
-        let resized = image.downscaled(maxEdge: 2048)
+        let resized = Self.downscale(image, maxEdge: Self.maxImageEdge)
         guard let data = resized.jpegData(compressionQuality: 0.82) else {
             throw StoreError.encodingFailed
         }
         let name = "\(UUID().uuidString).jpg"
         try data.write(to: imageURL(name), options: .atomic)
         return name
+    }
+
+    /// Scale so the longer edge is at most `maxEdge`, preserving aspect ratio.
+    /// Images already within bounds are returned unchanged. Exposed for tests.
+    static func downscale(_ image: UIImage, maxEdge: CGFloat) -> UIImage {
+        let longest = max(image.size.width, image.size.height)
+        guard longest > maxEdge else { return image }
+        let scale = maxEdge / longest
+        let target = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let format = UIGraphicsImageRendererFormat.default()
+        format.scale = 1
+        return UIGraphicsImageRenderer(size: target, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: target))
+        }
     }
 
     func loadImage(_ name: String) -> UIImage? {
@@ -79,21 +97,6 @@ final class FileStoreImpl {
             switch self {
             case .encodingFailed: return "图片处理失败，请重试。"
             }
-        }
-    }
-}
-
-private extension UIImage {
-    /// Scale so the longer edge is at most `maxEdge`, preserving aspect ratio.
-    func downscaled(maxEdge: CGFloat) -> UIImage {
-        let longest = max(size.width, size.height)
-        guard longest > maxEdge else { return self }
-        let scale = maxEdge / longest
-        let target = CGSize(width: size.width * scale, height: size.height * scale)
-        let format = UIGraphicsImageRendererFormat.default()
-        format.scale = 1
-        return UIGraphicsImageRenderer(size: target, format: format).image { _ in
-            draw(in: CGRect(origin: .zero, size: target))
         }
     }
 }
