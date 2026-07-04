@@ -150,16 +150,15 @@ an entry removes its files first, then the record (`FileStore.deleteFiles` +
 
 ## Known deviations from the Brief (deliberate)
 
-A full-app audit flagged two spots that intentionally diverge from the original
-P0 Brief, both because later requirements superseded it:
+One spot intentionally diverges from the original P0 Brief because a later
+request superseded it:
 
 1. **Export/share on the detail page.** Brief §7 / PRD §3.3 keep social-share out
    of v1, but export (`导出 PDF` / `导出长图`) was an explicit later request, so the
    share sheet stays. It's the F13 (P2) feature, opt-in from the "···" menu.
-2. **Dictation inserts at the end, not at the caret** (PRD §3.2 F2 asks for "at
-   the cursor"). SwiftUI's `TextEditor` exposes no caret position; true
-   at-cursor insertion needs a `UITextView` bridge. Left as a known limitation
-   to avoid destabilizing the core editor — tracked for a follow-up.
+
+(The earlier "dictation inserts at the end" gap is now fixed — F2 inserts at the
+caret via the `DiaryTextEditor` UITextView bridge, `Views/Components`.)
 
 ## Design fidelity
 

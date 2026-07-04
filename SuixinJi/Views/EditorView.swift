@@ -53,9 +53,13 @@ struct EditorView: View {
     // Services
     @StateObject private var recorder = AudioRecorder()
     @StateObject private var transcriber = SpeechTranscriber()
-    @State private var transcribeBase = ""   // text captured when transcription started
 
-    @FocusState private var editorFocused: Bool
+    // Text editing: caret (UTF-16) + focus, plus the anchor where the current
+    // dictation session inserts (so recognized text lands at the cursor, F2).
+    @State private var editorFocused = false
+    @State private var selectedRange = NSRange(location: 0, length: 0)
+    @State private var dictationStart = 0
+    @State private var dictationLength = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -170,23 +174,14 @@ struct EditorView: View {
     private var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                ZStack(alignment: .topLeading) {
-                    if text.isEmpty {
-                        Text("今天想说点什么…")
-                            .font(.body17)
-                            .foregroundStyle(Color(uiColor: .tertiaryLabel))
-                            .padding(.top, 8)
-                            .padding(.leading, 5)
-                    }
-                    TextEditor(text: $text)
-                        .font(.body17)
-                        .lineSpacing(4)
-                        .frame(minHeight: 120)
-                        .scrollContentBackground(.hidden)
-                        .focused($editorFocused)
-                        .disabled(transcriber.isTranscribing) // live dictation drives the text
-                        .accessibilityIdentifier("editor.text")
-                }
+                DiaryTextEditor(
+                    text: $text,
+                    selectedRange: $selectedRange,
+                    isFocused: $editorFocused,
+                    placeholder: "今天想说点什么…",
+                    accessibilityID: "editor.text"
+                )
+                .frame(minHeight: 120)
                 .padding(.top, 4)
 
                 EditorMetadataView(
@@ -422,13 +417,16 @@ struct EditorView: View {
     private func toggleTranscription() {
         if transcriber.isTranscribing { transcriber.stop(); return }
         editorFocused = false
+        // Anchor this dictation session at the current caret so recognized text
+        // is inserted there (F2), replacing the growing chunk on each update.
+        dictationStart = min(selectedRange.location, (text as NSString).length)
+        dictationLength = 0
         Task {
             let ok = await transcriber.requestAuthorization()
             guard ok else { permissionAlert = .speech; return }
-            transcribeBase = text.isEmpty ? "" : text + " "
             do {
                 try transcriber.start(
-                    onUpdate: { recognized in text = transcribeBase + recognized },
+                    onUpdate: { recognized in insertDictation(recognized) },
                     onError: { message in errorMessage = message }
                 )
             } catch {
@@ -436,6 +434,18 @@ struct EditorView: View {
                 else { errorMessage = (error as? LocalizedError)?.errorDescription ?? "语音识别不可用。" }
             }
         }
+    }
+
+    /// Replace the current dictation chunk at the anchor with `recognized`, then
+    /// park the caret right after it. Called on every partial-result update.
+    private func insertDictation(_ recognized: String) {
+        let ns = text as NSString
+        let start = min(dictationStart, ns.length)
+        let length = min(dictationLength, ns.length - start)
+        let range = NSRange(location: start, length: length)
+        text = ns.replacingCharacters(in: range, with: recognized)
+        dictationLength = (recognized as NSString).length
+        selectedRange = NSRange(location: start + dictationLength, length: 0)
     }
 
     private func openSettings() {
