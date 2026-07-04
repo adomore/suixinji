@@ -47,6 +47,7 @@ struct DiaryDraft {
     var diaryDate: Date = Date()
     var mood: String?
     var weather: String?
+    var weatherText: String?
     var tags: [String] = []
     var locationName: String?
     var latitude: Double?

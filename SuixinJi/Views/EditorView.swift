@@ -25,6 +25,7 @@ struct EditorView: View {
     // Metadata (P1/P2): mood / weather / tags / location.
     @State private var mood: String?
     @State private var weather: String?
+    @State private var weatherText: String?
     @State private var tags: [String] = []
     @State private var locationName: String?
     @State private var latitude: Double?
@@ -182,7 +183,7 @@ struct EditorView: View {
                 .padding(.top, 4)
 
                 EditorMetadataView(
-                    mood: $mood, weather: $weather, tags: $tags,
+                    mood: $mood, weather: $weather, weatherText: $weatherText, tags: $tags,
                     locationName: $locationName, latitude: $latitude, longitude: $longitude
                 )
                 .padding(.top, 12)
@@ -329,7 +330,7 @@ struct EditorView: View {
         let existing: DiaryEntry? = if case .edit(let e) = mode { e } else { nil }
         let draft = DiaryDraft(
             text: text, diaryDate: diaryDate,
-            mood: mood, weather: weather, tags: tags,
+            mood: mood, weather: weather, weatherText: weatherText, tags: tags,
             locationName: locationName, latitude: latitude, longitude: longitude,
             images: images, audio: audio
         )
@@ -350,6 +351,7 @@ struct EditorView: View {
         diaryDate = entry.diaryDate
         mood = entry.mood
         weather = entry.weather
+        weatherText = entry.weatherText
         tags = entry.tags
         locationName = entry.locationName
         latitude = entry.latitude

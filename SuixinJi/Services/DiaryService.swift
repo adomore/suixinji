@@ -64,6 +64,7 @@ enum DiaryService {
         entry.diaryDate = draft.diaryDate
         entry.mood = draft.mood
         entry.weather = draft.weather
+        entry.weatherText = draft.weatherText
         entry.tags = draft.tags
         entry.locationName = draft.locationName
         entry.latitude = draft.latitude

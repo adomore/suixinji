@@ -100,13 +100,14 @@ final class MetadataPersistenceTests: XCTestCase {
 
     func testMetadataIsPersisted() throws {
         let draft = DiaryDraft(
-            text: "配元数据", mood: "😊", weather: "☀️",
+            text: "配元数据", mood: "😊", weather: "☀️", weatherText: "晴 26°",
             tags: ["旅行", "朝霞"], locationName: "杭州市西湖区",
             latitude: 30.2, longitude: 120.1
         )
         let saved = try DiaryService.save(draft, existing: nil, into: context, fileStore: store)
         XCTAssertEqual(saved.mood, "😊")
         XCTAssertEqual(saved.weather, "☀️")
+        XCTAssertEqual(saved.weatherText, "晴 26°")
         XCTAssertEqual(saved.tags, ["旅行", "朝霞"])
         XCTAssertEqual(saved.locationName, "杭州市西湖区")
         XCTAssertEqual(saved.latitude ?? 0, 30.2, accuracy: 0.0001)

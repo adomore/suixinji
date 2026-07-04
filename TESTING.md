@@ -27,6 +27,8 @@ SuixinJiTests/        单元测试 + 性能测试（unit-test bundle）
   FileStoreTests            沙盒读写：压缩≤2048、.jpg/.m4a、adopt、级联删除
   DiaryTimelineTests        年-月分组：单月/跨月/跨年/补记不连续
   DiaryServiceTests         增删改闭环 + 文件级联（in-memory SwiftData + 临时 FileStore）
+  MetadataTests             搜索(F8) / 提醒解析(F10) / 心情天气目录 / 元数据持久化(F7/F14)
+  ExportWeatherTests        WeatherKit 天气映射(F14) / PDF+长图导出产物(F13)
   PerformanceTests          分组 1000 条 / 批量插入 500 条 / 8000×6000 图压缩
 
 SuixinJiUITests/      端到端 UI 测试（ui-testing bundle）

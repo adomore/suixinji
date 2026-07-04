@@ -6,14 +6,17 @@ import SwiftUI
 struct EditorMetadataView: View {
     @Binding var mood: String?
     @Binding var weather: String?
+    @Binding var weatherText: String?
     @Binding var tags: [String]
     @Binding var locationName: String?
     @Binding var latitude: Double?
     @Binding var longitude: Double?
 
     @StateObject private var location = LocationProvider()
+    @StateObject private var weatherProvider = WeatherProvider()
     @State private var showMood = false
     @State private var showWeather = false
+    @State private var showWeatherOptions = false
     @State private var showTagInput = false
     @State private var newTag = ""
 
@@ -22,7 +25,7 @@ struct EditorMetadataView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     chip(system: "face.smiling", value: mood, placeholder: "心情") { showMood = true }
-                    chip(system: "cloud.sun", value: weather, placeholder: "天气") { showWeather = true }
+                    weatherChip
                     locationChip
                     tagChip
                 }
@@ -35,10 +38,63 @@ struct EditorMetadataView: View {
         .sheet(isPresented: $showWeather) {
             EmojiGridSheet(title: "选择天气", options: DiaryCatalog.weathers, selection: $weather)
         }
+        .confirmationDialog("天气", isPresented: $showWeatherOptions, titleVisibility: .visible) {
+            Button("自动获取（WeatherKit）") { fetchWeather() }
+            Button("手动选择") { weatherText = nil; showWeather = true }
+            if weather != nil {
+                Button("清除", role: .destructive) { weather = nil; weatherText = nil }
+            }
+            Button("取消", role: .cancel) {}
+        }
         .alert("添加标签", isPresented: $showTagInput) {
             TextField("标签", text: $newTag)
             Button("添加") { addTag() }
             Button("取消", role: .cancel) { newTag = "" }
+        }
+        .alert("天气", isPresented: .init(
+            get: { weatherProvider.errorMessage != nil },
+            set: { if !$0 { weatherProvider.errorMessage = nil } }
+        )) {
+            Button("好", role: .cancel) {}
+        } message: { Text(weatherProvider.errorMessage ?? "") }
+    }
+
+    // Weather chip: shows emoji + "晴 26°" text, or a spinner while fetching.
+    private var weatherChip: some View {
+        Button { showWeatherOptions = true } label: {
+            HStack(spacing: 5) {
+                if weatherProvider.isLoading {
+                    ProgressView().controlSize(.mini)
+                } else if let weather {
+                    Text(weather).font(.system(size: 15))
+                } else {
+                    Image(systemName: "cloud.sun").font(.system(size: 14))
+                }
+                Text(weatherText ?? (weather == nil ? "天气" : "")).font(.aux13).lineLimit(1)
+            }
+            .padding(.horizontal, 11).padding(.vertical, 7)
+            .background(Color.cardBackground, in: Capsule())
+            .foregroundStyle(weather == nil ? Color.secondary : Color.primary)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func fetchWeather() {
+        Task {
+            var lat = latitude, lon = longitude
+            // Need coordinates — grab the current location if we don't have any.
+            if lat == nil || lon == nil {
+                if let place = await location.currentPlace() {
+                    lat = place.latitude; lon = place.longitude
+                    latitude = place.latitude; longitude = place.longitude
+                    if locationName == nil { locationName = place.name }
+                }
+            }
+            guard let lat, let lon else { return }
+            if let reading = await weatherProvider.fetch(latitude: lat, longitude: lon) {
+                weather = reading.emoji
+                weatherText = reading.text
+            }
         }
     }
 

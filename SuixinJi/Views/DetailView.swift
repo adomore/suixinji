@@ -52,8 +52,11 @@ struct DetailView: View {
                     Button { showEditor = true } label: {
                         Label("编辑", systemImage: "pencil")
                     }
-                    Button { exportPDF() } label: {
-                        Label("导出 PDF", systemImage: "square.and.arrow.up")
+                    Button { export(.pdf) } label: {
+                        Label("导出 PDF", systemImage: "doc.richtext")
+                    }
+                    Button { export(.longImage) } label: {
+                        Label("导出长图", systemImage: "photo.on.rectangle")
                     }
                     Button(role: .destructive) { showDeleteConfirm = true } label: {
                         Label("删除", systemImage: "trash")
@@ -145,7 +148,14 @@ struct DetailView: View {
     private var metaHeader: some View {
         HStack(spacing: 10) {
             if let mood = entry.mood { Text(mood).font(.system(size: 30)) }
-            if let weather = entry.weather { Text(weather).font(.system(size: 26)) }
+            if let weather = entry.weather {
+                HStack(spacing: 4) {
+                    Text(weather).font(.system(size: 26))
+                    if let wt = entry.weatherText {
+                        Text(wt).font(.aux13).foregroundStyle(.secondary)
+                    }
+                }
+            }
             if let loc = entry.locationName {
                 HStack(spacing: 3) {
                     Image(systemName: "location.fill").font(.system(size: 11))
@@ -178,10 +188,14 @@ struct DetailView: View {
         player.load(url: FileStore.shared.audioURL(name))
     }
 
-    private func exportPDF() {
-        if let url = DiaryExporter.exportPDF(entry) {
-            exportItem = ExportItem(url: url)
+    private enum ExportKind { case pdf, longImage }
+
+    private func export(_ kind: ExportKind) {
+        let url = switch kind {
+        case .pdf: DiaryExporter.exportPDF(entry)
+        case .longImage: DiaryExporter.exportLongImage(entry)
         }
+        if let url { exportItem = ExportItem(url: url) }
     }
 
     private func deleteEntry() {

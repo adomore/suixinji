@@ -25,11 +25,25 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | F10 | 每日提醒 (real local notification) | `ReminderManager`, wired in `SettingsView` |
 | F11 | iCloud 同步 | SwiftData+CloudKit, **gated** — see below |
 | F12 | Face ID / 密码锁 | `AppLockManager`, lock overlay in `SuixinJiApp` |
-| F13 | 导出 PDF | `DiaryExporter` (ImageRenderer→PDF) + share sheet |
-| F14 | 标签 / 天气 / 位置 | `EditorMetadata`, `LocationProvider` (CoreLocation) |
+| F13 | 导出 PDF / 长图 | `DiaryExporter`: paginated A4 PDF **and** tall PNG, via share sheet |
+| F14 | 标签 / 天气 / 位置 | `EditorMetadata`, `LocationProvider` (CoreLocation), `WeatherProvider` (WeatherKit) |
 
-Pragmatic choices: **weather** is a manual emoji pick (no paid WeatherKit
-dependency); **location** uses CoreLocation + reverse geocoding to a place name.
+**Weather** uses real **WeatherKit** when available (tap 天气 → 自动获取), and
+always keeps a **manual emoji picker** as fallback. **Location** uses CoreLocation
++ reverse geocoding to a place name. **Export** produces a multi-page A4 PDF (the
+tall render is sliced into pages) or a single long PNG for sharing to chat.
+
+### Enabling real weather (F14 · WeatherKit)
+
+`import WeatherKit` compiles with no flag; the fetch just **fails gracefully to
+the manual picker** until the capability is provisioned. To get live weather:
+
+1. Target → *Signing & Capabilities* → **+ Capability → WeatherKit**.
+2. Enable **WeatherKit** for the App ID on the Apple Developer portal
+   (requires a **paid** account); allow ~30 min for it to propagate.
+
+No `Info.plist` key is needed for WeatherKit itself; it reuses the location
+permission already declared for F14.
 
 ### Enabling iCloud sync (F11) — opt-in
 

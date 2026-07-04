@@ -6,8 +6,9 @@ enum DiaryCatalog {
     /// Daylio-style mood set — one tap records the day's feeling.
     static let moods = ["😊", "🙂", "😐", "😔", "😢", "😡", "😴", "🥳"]
 
-    /// Manual weather set (no paid WeatherKit dependency).
-    static let weathers = ["☀️", "🌤️", "☁️", "🌧️", "⛈️", "❄️", "🌫️", "🌈"]
+    /// Weather set — the manual picker, and also the exact emojis WeatherKit
+    /// results map onto (`WeatherProvider.describe`), so display stays consistent.
+    static let weathers = ["☀️", "🌤️", "☁️", "🌧️", "⛈️", "❄️", "🌫️", "🌬️"]
 }
 
 /// Local keyword search (F8): matches text, tags, mood, weather and location.

@@ -18,6 +18,8 @@ final class DiaryEntry {
     var mood: String?
     /// Weather emoji (P2 · F14), e.g. "☀️". nil = not set.
     var weather: String?
+    /// Human-readable weather, e.g. "晴 26°" — set when fetched via WeatherKit.
+    var weatherText: String?
     /// Free-form tags (P2 · F14). Empty = none.
     var tags: [String] = []
     /// Reverse-geocoded place name (P2 · F14), e.g. "杭州市西湖区". nil = none.
@@ -36,6 +38,7 @@ final class DiaryEntry {
         text: String = "",
         mood: String? = nil,
         weather: String? = nil,
+        weatherText: String? = nil,
         tags: [String] = [],
         locationName: String? = nil,
         latitude: Double? = nil,
@@ -52,6 +55,7 @@ final class DiaryEntry {
         self.text = text
         self.mood = mood
         self.weather = weather
+        self.weatherText = weatherText
         self.tags = tags
         self.locationName = locationName
         self.latitude = latitude
