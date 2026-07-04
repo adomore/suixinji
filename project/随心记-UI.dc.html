@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    html, body { margin: 0; padding: 0; background: #EDEBE7; -webkit-font-smoothing: antialiased; }
+  </style>
+</helmet>
+
+<section style="padding:40px 48px 40px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;">定稿 · 图标 Liquid Glass 分层</span>
+    <span style="font-size:14px;color:#6B675F;">方向 <a href="#3a" style="color:#3D62B3;">3a</a> 声波＋心跳 · 1024pt 三层 SVG 已备好，导入 Icon Composer 即可</span>
+  </div>
+
+  <div style="display:flex;gap:28px;align-items:stretch;flex-wrap:wrap;">
+
+    <div id="5a" style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:420px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#5a" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">5a</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">分层拆解（自上而下 = 图层顺序）</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="position:relative;width:230px;height:400px;flex-shrink:0;">
+          <div style="position:absolute;left:30px;top:8px;width:160px;height:160px;border-radius:36px;background:rgba(236,230,223,0.92);border:1.5px dashed #C9BFB4;transform:rotateX(58deg) rotateZ(-45deg);display:flex;align-items:center;justify-content:center;">
+            <svg width="160" height="160" viewBox="0 0 160 160" fill="none"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div style="position:absolute;left:30px;top:118px;width:160px;height:160px;border-radius:36px;background:rgba(236,230,223,0.92);border:1.5px dashed #C9BFB4;transform:rotateX(58deg) rotateZ(-45deg);display:flex;align-items:center;justify-content:center;gap:9px;">
+            <span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span>
+          </div>
+          <div style="position:absolute;left:30px;top:228px;width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFA075,#FF7A47);transform:rotateX(58deg) rotateZ(-45deg);box-shadow:0 14px 26px rgba(224,106,58,0.28);"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:34px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">
+          <span><b>L3 心跳线</b><br>Layer-3-Heartbeat.svg<br>Liquid Glass 开 · Elevation 最高</span>
+          <span><b>L2 声波五条</b><br>Layer-2-Waveform.svg<br>Liquid Glass 开 · Specular 开</span>
+          <span><b>L1 背景</b><br>Layer-1-Background.svg<br>底层不透明 · #FFA075→#FF7A47</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="5b" style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:380px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#5b" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">5b</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">四种系统外观（Icon Composer 预览基准）</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+          <div style="width:120px;height:120px;overflow:hidden;border-radius:27px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFA075,#FF7A47);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.75);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+          <span style="font-size:11px;color:#6B675F;">默认 Default</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+          <div style="width:120px;height:120px;overflow:hidden;border-radius:27px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#3C2E24,#221A15);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.75);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FF9A6E;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FF9A6E;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FF9A6E;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FF9A6E;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FF9A6E;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FF9A6E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+          <span style="font-size:11px;color:#6B675F;">深色 Dark</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+          <div style="width:120px;height:120px;overflow:hidden;border-radius:27px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,rgba(246,246,248,0.95),rgba(228,228,234,0.95));position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.75);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;box-shadow:0 2px 5px rgba(0,0,0,0.14);"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;box-shadow:0 2px 5px rgba(0,0,0,0.14);"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;box-shadow:0 2px 5px rgba(0,0,0,0.14);"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;box-shadow:0 2px 5px rgba(0,0,0,0.14);"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;box-shadow:0 2px 5px rgba(0,0,0,0.14);"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+          <span style="font-size:11px;color:#6B675F;">透明 Clear</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+          <div style="width:120px;height:120px;overflow:hidden;border-radius:27px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#3A3A3C,#2C2C2E);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.75);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FF8A5C;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FF8A5C;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FF8A5C;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FF8A5C;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FF8A5C;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FF8A5C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+          <span style="font-size:11px;color:#6B675F;">着色 Tinted</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="5c" style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:360px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#5c" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">5c</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">Icon Composer 操作步骤</span>
+      </div>
+      <div style="font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:11px;line-height:1.9;color:#55514A;">
+        1. 新建 iOS 图标项目（1024pt）<br>
+        2. 依次拖入 L1 → L2 → L3 三个 SVG<br>
+        3. L2 / L3 开启 Liquid Glass：Specular 开、Refraction 中，L3 Elevation 略高<br>
+        4. 预览 Default / Dark / Clear / Tinted 四种外观（对照 <a href="#5b" style="color:#3D62B3;">5b</a>）<br>
+        5. 导出 .icon → Xcode AppIcon<br>
+      </div>
+      <div style="font-size:12px;line-height:1.6;color:#8A857C;">iOS 27 图标高光为静态（不随陀螺仪移动）、边缘更收敛；系统自动套圆角遮罩，图层勿自行裁切。文件在 icon-composer/ 目录，见 README。</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:40px 48px 40px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="background:#1C1C1E;color:#FFFFFF;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;">第 4 轮 · App 图标方向探索（可选）</span>
+    <span style="font-size:14px;color:#6B675F;">3 个方向 · 全部由简单几何构成 · 定稿后在 Icon Composer 做 Liquid Glass 分层（iOS 27）</span>
+  </div>
+
+  <div style="display:flex;gap:28px;align-items:stretch;flex-wrap:wrap;">
+
+    <div id="3a" style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:340px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#3a" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">3a</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">声波＋心跳 · 语音优先</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:20px;">
+        <div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFA075,#FF7A47);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 8px 20px rgba(224,106,58,0.25);flex-shrink:0;">
+          <span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+          <div style="width:64px;height:64px;overflow:hidden;border-radius:14px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFA075,#FF7A47);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.4);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+          <div style="width:40px;height:40px;overflow:hidden;border-radius:9px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFA075,#FF7A47);position:relative;display:flex;align-items:center;justify-content:center;gap:9px;transform:scale(0.25);transform-origin:0 0;"><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:104px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:72px;border-radius:7px;background:#FFFFFF;"></span><span style="width:13px;height:40px;border-radius:7px;background:#FFFFFF;"></span><svg width="160" height="160" viewBox="0 0 160 160" fill="none" style="position:absolute;left:0;top:0;"><path d="M10 80h50l8 14 12-56 12 60 8-18h50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#55514A;">五条声波不变，一条心跳线横穿而过——声音里有情绪。小尺寸下识别度最高。</div>
+      <div style="font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;color:#3D62B3;line-height:1.55;">bg #FFA075→#FF7A47（同色相微渐变）<br>波形 白 5条 · 心跳线 6pt 横穿中部</div>
+    </div>
+
+    <div id="3b" style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:340px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#3b" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">3b</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">一页日记 · 有一行是声音</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:20px;">
+        <div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFFDFA,#F5EDE4);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:15px;padding-left:38px;box-sizing:border-box;box-shadow:0 8px 20px rgba(140,120,100,0.18);border:1px solid rgba(0,0,0,0.04);flex-shrink:0;">
+          <span style="width:84px;height:9px;border-radius:5px;background:#D9CFC4;"></span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:34px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span></span>
+          <span style="width:56px;height:9px;border-radius:5px;background:#D9CFC4;"></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+          <div style="width:64px;height:64px;overflow:hidden;border-radius:14px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFFDFA,#F5EDE4);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:15px;padding-left:38px;box-sizing:border-box;border:1px solid rgba(0,0,0,0.04);transform:scale(0.4);transform-origin:0 0;"><span style="width:84px;height:9px;border-radius:5px;background:#D9CFC4;"></span><span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:34px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span></span><span style="width:56px;height:9px;border-radius:5px;background:#D9CFC4;"></span></div></div>
+          <div style="width:40px;height:40px;overflow:hidden;border-radius:9px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFFDFA,#F5EDE4);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:15px;padding-left:38px;box-sizing:border-box;border:1px solid rgba(0,0,0,0.04);transform:scale(0.25);transform-origin:0 0;"><span style="width:84px;height:9px;border-radius:5px;background:#D9CFC4;"></span><span style="display:flex;align-items:center;gap:5px;"><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:34px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:24px;border-radius:3px;background:#FF8A5C;"></span><span style="width:6px;height:14px;border-radius:3px;background:#FF8A5C;"></span></span><span style="width:56px;height:9px;border-radius:5px;background:#D9CFC4;"></span></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#55514A;">纸面上两行文字、一行波形——「打字、说话都可以记」的产品叙事。最贴「干净本子」的气质，浅底在深色桌面上很跳。</div>
+      <div style="font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;color:#3D62B3;line-height:1.55;">bg #FFFDFA→#F5EDE4（纸感）<br>文字行 #D9CFC4 · 波形行 #FF8A5C</div>
+    </div>
+
+    <div id="3c" style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:14px;padding:24px;width:340px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#3c" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">3c</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">朝霞 · 每天一次</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:20px;">
+        <div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFE9DB 0%,#FFD9C2 62%,#FFF6EE 62%,#FFF6EE 100%);position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(224,150,110,0.22);flex-shrink:0;">
+          <span style="position:absolute;left:50%;top:35px;transform:translateX(-50%);width:64px;height:64px;border-radius:999px;background:#FF8A5C;"></span>
+          <span style="position:absolute;left:50%;top:110px;transform:translateX(-50%);width:44px;height:6px;border-radius:3px;background:rgba(255,138,92,0.45);"></span>
+          <span style="position:absolute;left:50%;top:124px;transform:translateX(-50%);width:28px;height:6px;border-radius:3px;background:rgba(255,138,92,0.3);"></span>
+          <span style="position:absolute;left:50%;top:138px;transform:translateX(-50%);width:16px;height:6px;border-radius:3px;background:rgba(255,138,92,0.2);"></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+          <div style="width:64px;height:64px;overflow:hidden;border-radius:14px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFE9DB 0%,#FFD9C2 62%,#FFF6EE 62%,#FFF6EE 100%);position:relative;overflow:hidden;transform:scale(0.4);transform-origin:0 0;"><span style="position:absolute;left:50%;top:35px;transform:translateX(-50%);width:64px;height:64px;border-radius:999px;background:#FF8A5C;"></span><span style="position:absolute;left:50%;top:110px;transform:translateX(-50%);width:44px;height:6px;border-radius:3px;background:rgba(255,138,92,0.45);"></span><span style="position:absolute;left:50%;top:124px;transform:translateX(-50%);width:28px;height:6px;border-radius:3px;background:rgba(255,138,92,0.3);"></span><span style="position:absolute;left:50%;top:138px;transform:translateX(-50%);width:16px;height:6px;border-radius:3px;background:rgba(255,138,92,0.2);"></span></div></div>
+          <div style="width:40px;height:40px;overflow:hidden;border-radius:9px;"><div style="width:160px;height:160px;border-radius:36px;background:linear-gradient(180deg,#FFE9DB 0%,#FFD9C2 62%,#FFF6EE 62%,#FFF6EE 100%);position:relative;overflow:hidden;transform:scale(0.25);transform-origin:0 0;"><span style="position:absolute;left:50%;top:35px;transform:translateX(-50%);width:64px;height:64px;border-radius:999px;background:#FF8A5C;"></span><span style="position:absolute;left:50%;top:110px;transform:translateX(-50%);width:44px;height:6px;border-radius:3px;background:rgba(255,138,92,0.45);"></span><span style="position:absolute;left:50%;top:124px;transform:translateX(-50%);width:28px;height:6px;border-radius:3px;background:rgba(255,138,92,0.3);"></span><span style="position:absolute;left:50%;top:138px;transform:translateX(-50%);width:16px;height:6px;border-radius:3px;background:rgba(255,138,92,0.2);"></span></div></div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.6;color:#55514A;">太阳落在江面上，倒影渐远——正是 PRD 里「等四十分钟看朝霞」的场景；倒影的短条同时暗合波形语言。情绪最足的方向。</div>
+      <div style="font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;color:#3D62B3;line-height:1.55;">天空 #FFE9DB→#FFD9C2 · 江面 #FFF6EE（62%分界）<br>太阳 #FF8A5C · 倒影 45/30/20% 透明度</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:40px 48px 80px;display:flex;flex-direction:column;gap:26px;align-items:flex-start;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="background:#1C1C1E;color:#FFFFFF;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;">第 2+3 轮 · P0 补齐</span>
+    <span style="font-size:14px;color:#6B675F;">详情页 · 录音中 · 空状态 · 设置页 · 权限弹窗 · 删除确认 · 深色模式两屏 · 风格延续 <a href="#1a" style="color:#3D62B3;">1a</a>/<a href="#1b" style="color:#3D62B3;">1b</a></span>
+  </div>
+
+  <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;">
+
+    <!-- ═══════════ 2a 详情页 ═══════════ -->
+    <div id="2a" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2a" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2a</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">详情页（push 进入）</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="详情页" style="height:100%;background:#FFFFFF;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="11" height="19" viewBox="0 0 12 20" fill="none"><path d="M10 2L2 10l8 8" stroke="#404040" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <span style="position:absolute;left:50%;bottom:11px;transform:translateX(-50%);font-size:17px;font-weight:600;color:#000000;">7月4日 星期六</span>
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="20" height="6" viewBox="0 0 22 6"><circle cx="3" cy="3" r="2.4" fill="#404040"></circle><circle cx="11" cy="3" r="2.4" fill="#404040"></circle><circle cx="19" cy="3" r="2.4" fill="#404040"></circle></svg>
+              </span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;height:56px;border-radius:16px;background:#F2F2F7;margin:16px 16px 0;padding:0 12px;">
+              <span style="width:32px;height:32px;border-radius:999px;background:#FF8A5C;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M4 1.8v10.4L12.5 7z" fill="#FFFFFF"></path></svg></span>
+              <span style="flex:1;display:flex;align-items:center;gap:2.5px;">
+                <span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:15px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:11px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:18px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:12px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:20px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:14px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:10px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:18px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:12px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:16px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:9px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:13px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:8px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:11px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:15px;border-radius:2px;background:rgba(60,60,67,0.28);"></span><span style="width:2.5px;height:10px;border-radius:2px;background:rgba(60,60,67,0.28);"></span>
+              </span>
+              <span style="font-size:13px;color:rgba(60,60,67,0.6);font-variant-numeric:tabular-nums;">0:12 / 0:35</span>
+            </div>
+
+            <div style="padding:16px 16px 0;font-size:17px;line-height:1.55;color:#000000;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。回来的路上买了豆浆，顺便把这周的计划想了想。<br>风把云吹得很快，最后十分钟颜色一下子全上来了，橙的、粉的压在江面上。旁边的大爷说他等了三天，今天才算逮着。<br>决定以后每个月来一次。</div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:16px 16px 0;">
+              <span style="aspect-ratio:1;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9A8D80;">朝霞照片</span>
+              <span style="aspect-ratio:1;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9A8D80;">朝霞照片</span>
+              <span style="aspect-ratio:1;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9A8D80;">朝霞照片</span>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:66px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">标题 17pt Semibold · 返回/菜单 44pt 玻璃钮<br>ellipsis.circle 菜单：编辑 / <b style="color:#C0392B;">删除(destructive)</b></span></div>
+            <div style="position:absolute;top:136px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>播放条</b> · 高56 · 圆角16 · bg #F2F2F7<br>▶/⏸ 32pt #FF8A5C · 波形即进度（已播#FF8A5C）<br>已播/总长 13pt tabular secondaryLabel</span></div>
+            <div style="position:absolute;top:212px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">完整正文 17pt Regular · 行高1.55 · label</span></div>
+            <div style="position:absolute;top:396px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">图片网格 3列 · 间距8pt · 圆角8pt<br>点击进入横滑大图（系统 pager）</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2b 录音中状态 ═══════════ -->
+    <div id="2b" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2b" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2b</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">写日记页 · 录音中状态</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="录音中" style="height:100%;display:flex;flex-direction:column;background:#B9B9BD;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="height:70px;flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#FFFFFF;border-radius:12px 12px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,0.12);overflow:hidden;">
+              <div style="display:flex;justify-content:center;padding-top:6px;"><span style="width:36px;height:5px;border-radius:999px;background:rgba(60,60,67,0.3);"></span></div>
+              <div style="position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;margin-top:4px;">
+                <span style="font-size:17px;color:#FF8A5C;">取消</span>
+                <span style="position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;background:#F2F2F7;border-radius:999px;padding:7px 13px;">
+                  <span style="font-size:15px;font-weight:600;color:#000000;">7月4日</span>
+                  <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="rgba(60,60,67,0.6)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span style="font-size:17px;font-weight:600;color:#FF8A5C;">保存</span>
+              </div>
+              <div style="padding:12px 16px 0;font-size:17px;line-height:1.55;color:#000000;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。</div>
+              <div style="flex:1;"></div>
+              <div style="margin:0 16px 46px;border-radius:999px;display:flex;align-items:center;gap:12px;padding:9px 16px;backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);background:rgba(248,248,250,0.72);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 6px 16px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.05);">
+                <span style="width:9px;height:9px;border-radius:999px;background:#FF3B30;flex-shrink:0;"></span>
+                <span style="font-size:15px;font-weight:600;color:#FF3B30;font-variant-numeric:tabular-nums;flex-shrink:0;">00:12</span>
+                <span style="flex:1;display:flex;align-items:center;justify-content:center;gap:2.5px;">
+                  <span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:14px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:10px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:19px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:12px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:22px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:15px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:24px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:11px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:18px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:14px;border-radius:2px;background:#FF8A5C;"></span>
+                </span>
+                <span style="width:30px;height:30px;border-radius:999px;background:#FF3B30;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <span style="width:10px;height:10px;border-radius:2.5px;background:#FFFFFF;"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:74px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">页面同 <a href="#1b" style="color:#3D62B3;">1b</a> · 点🎙️后底部工具栏切换为录音条</span></div>
+            <div style="position:absolute;top:678px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">最长10分钟自动停止保存<br>来电/切后台：自动保存已录部分</span></div>
+            <div style="position:absolute;top:742px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>录音条</b>（玻璃胶囊）· 红点9pt systemRed 呼吸1.2s<br>计时 15pt Semibold systemRed tabular 递增<br>波形 #FF8A5C 随音量律动 · 停止钮 30pt systemRed</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2c 首页空状态 ═══════════ -->
+    <div id="2c" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2c" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2c</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">首页 · 空状态</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="首页空状态" style="height:100%;background:#FFFFFF;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="font-size:34px;font-weight:700;line-height:41px;letter-spacing:0.4px;color:#000000;">随心记</span>
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="#3C3C43"></path></svg>
+              </span>
+            </div>
+            <div style="padding:4px 16px 0;font-size:15px;color:rgba(60,60,67,0.6);">7月4日 星期六</div>
+
+            <div style="position:absolute;left:0;right:0;top:44%;display:flex;flex-direction:column;align-items:center;gap:12px;transform:translateY(-50%);">
+              <span style="display:flex;align-items:flex-end;gap:3px;">
+                <span style="width:3px;height:10px;border-radius:2px;background:rgba(255,138,92,0.55);"></span><span style="width:3px;height:18px;border-radius:2px;background:rgba(255,138,92,0.75);"></span><span style="width:3px;height:13px;border-radius:2px;background:#FF8A5C;"></span><span style="width:3px;height:22px;border-radius:2px;background:rgba(255,138,92,0.75);"></span><span style="width:3px;height:9px;border-radius:2px;background:rgba(255,138,92,0.55);"></span>
+              </span>
+              <span style="font-size:17px;color:rgba(60,60,67,0.6);">记录今天的第一条心情吧</span>
+            </div>
+
+            <svg width="120" height="180" viewBox="0 0 120 180" fill="none" style="position:absolute;right:52px;bottom:116px;">
+              <path d="M18 14 C 66 44, 96 88, 100 156" stroke="rgba(60,60,67,0.35)" stroke-width="1.5" stroke-dasharray="5 6" stroke-linecap="round"></path>
+              <path d="M91 143l9 15 11-11" stroke="rgba(60,60,67,0.35)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+
+            <div style="position:absolute;right:16px;bottom:44px;width:56px;height:56px;border-radius:999px;background:rgba(255,138,92,0.92);backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,106,58,0.32),inset 0 1.5px 1px rgba(255,255,255,0.55),inset 0 -1.5px 1px rgba(255,255,255,0.18);border:0.5px solid rgba(0,0,0,0.05);">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:356px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">波形标记 3pt条 #FF8A5C（签名元素）<br>引导文案 17pt Regular · secondaryLabel</span></div>
+            <div style="position:absolute;top:620px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">虚线曲线 1.5pt · rgba(60,60,67,.35)<br>视线引向 ➕ · 不用大幅插画</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2d 设置页 ═══════════ -->
+    <div id="2d" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2d" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2d</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">设置页</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="设置页" style="height:100%;background:#F2F2F7;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="11" height="19" viewBox="0 0 12 20" fill="none"><path d="M10 2L2 10l8 8" stroke="#404040" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <span style="position:absolute;left:50%;bottom:11px;transform:translateX(-50%);font-size:17px;font-weight:600;color:#000000;">设置</span>
+              <span style="width:44px;"></span>
+            </div>
+
+            <div style="margin:24px 16px 0;background:#FFFFFF;border-radius:16px;overflow:hidden;">
+              <div style="display:flex;align-items:center;min-height:52px;padding:0 16px;position:relative;">
+                <span style="flex:1;font-size:17px;color:#000000;">每日提醒</span>
+                <span style="width:51px;height:31px;border-radius:999px;background:rgba(120,120,128,0.16);position:relative;flex-shrink:0;"><span style="position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:999px;background:#FFFFFF;box-shadow:0 3px 8px rgba(0,0,0,0.15),0 1px 1px rgba(0,0,0,0.16);"></span></span>
+                <span style="position:absolute;bottom:0;left:16px;right:0;height:0.5px;background:rgba(60,60,67,0.12);"></span>
+              </div>
+              <div style="display:flex;align-items:center;min-height:52px;padding:0 16px;">
+                <span style="flex:1;font-size:17px;color:rgba(60,60,67,0.3);">提醒时间</span>
+                <span style="font-size:17px;color:rgba(60,60,67,0.3);">21:00</span>
+              </div>
+            </div>
+
+            <div style="margin:24px 16px 0;background:#FFFFFF;border-radius:16px;overflow:hidden;">
+              <div style="display:flex;align-items:center;min-height:52px;padding:0 16px;">
+                <span style="flex:1;font-size:17px;color:#000000;">关于</span>
+                <span style="font-size:17px;color:rgba(60,60,67,0.6);margin-right:6px;">版本 1.0.0</span>
+                <svg width="8" height="14" viewBox="0 0 8 14"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,0.3)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>
+            </div>
+
+            <div style="padding:12px 32px 0;font-size:13px;line-height:1.5;color:rgba(60,60,67,0.6);">日记仅保存在本机，删除 App 将丢失全部数据。</div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:66px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">grouped list 风格 · 页面bg #F2F2F7 · 白卡圆角16</span></div>
+            <div style="position:absolute;top:136px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">行高52 · 17pt label · 分隔线0.5px 左缩进16<br>每日提醒 P1 占位：开关默认关 · 时间行 tertiaryLabel</span></div>
+            <div style="position:absolute;top:322px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>footer 必须出现</b> · 13pt secondaryLabel<br>「日记仅保存在本机，删除 App 将丢失全部数据。」</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2e 麦克风权限弹窗 ═══════════ -->
+    <div id="2e" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2e" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2e</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">麦克风权限引导（含保存禁用态）</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="权限引导弹窗" style="height:100%;display:flex;flex-direction:column;background:#B9B9BD;position:relative;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="height:70px;flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#FFFFFF;border-radius:12px 12px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,0.12);overflow:hidden;">
+              <div style="display:flex;justify-content:center;padding-top:6px;"><span style="width:36px;height:5px;border-radius:999px;background:rgba(60,60,67,0.3);"></span></div>
+              <div style="position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;margin-top:4px;">
+                <span style="font-size:17px;color:#FF8A5C;">取消</span>
+                <span style="position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;background:#F2F2F7;border-radius:999px;padding:7px 13px;">
+                  <span style="font-size:15px;font-weight:600;color:#000000;">7月4日</span>
+                  <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="rgba(60,60,67,0.6)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span style="font-size:17px;font-weight:600;color:rgba(60,60,67,0.3);">保存</span>
+              </div>
+              <div style="padding:12px 16px 0;font-size:17px;line-height:1.55;color:rgba(60,60,67,0.3);">今天想说点什么…</div>
+              <div style="flex:1;"></div>
+              <div style="margin:0 16px 46px;border-radius:999px;display:flex;padding:9px 6px;backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);background:rgba(248,248,250,0.72);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 6px 16px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.05);">
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11.5" rx="3" stroke="#3C3C43" stroke-width="1.7"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"></path><path d="M12 18.5V21" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"></path></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">转文字</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><g stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"><path d="M3 10v4"></path><path d="M7 7v10"></path><path d="M11 4v16"></path><path d="M15 8v8"></path><path d="M19 10.5v3"></path></g></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">录音</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3" stroke="#3C3C43" stroke-width="1.7"></rect><circle cx="8.6" cy="9.4" r="1.6" fill="#3C3C43"></circle><path d="M4.5 17l4.8-5 3.4 3.6 2.6-2.8 4.2 4.2" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">图片</span>
+                </span>
+              </div>
+            </div>
+
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.25);"></div>
+            <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);width:270px;border-radius:26px;overflow:hidden;backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);background:rgba(249,249,249,0.88);box-shadow:0 12px 40px rgba(0,0,0,0.25);">
+              <div style="padding:19px 16px 4px;font-size:17px;font-weight:600;color:#000000;text-align:center;">需要麦克风权限</div>
+              <div style="padding:0 16px 18px;font-size:13px;line-height:1.45;color:#000000;text-align:center;">请在设置中允许随心记使用麦克风，用于录制语音日记和语音转文字。</div>
+              <div style="height:0.5px;background:rgba(60,60,67,0.29);"></div>
+              <div style="display:flex;">
+                <span style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#FF8A5C;">取消</span>
+                <span style="width:0.5px;background:rgba(60,60,67,0.29);"></span>
+                <span style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FF8A5C;">去设置</span>
+              </div>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:280px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:112px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>保存禁用态</b>：全空时 tertiaryLabel rgba(60,60,67,.3)<br>占位文案同色</span></div>
+            <div style="position:absolute;top:352px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">系统 alert · 270pt · 圆角26 · 磨砂玻璃<br>标题 17pt Semibold · 正文 13pt · 按钮 17pt<br>拒绝过权限后再点 🎤/🎙️ 触发 · 去设置跳系统设置</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2f 删除二次确认 ═══════════ -->
+    <div id="2f" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2f" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2f</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">删除二次确认</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="删除确认" style="height:100%;background:#FFFFFF;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="11" height="19" viewBox="0 0 12 20" fill="none"><path d="M10 2L2 10l8 8" stroke="#404040" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <span style="position:absolute;left:50%;bottom:11px;transform:translateX(-50%);font-size:17px;font-weight:600;color:#000000;">7月4日 星期六</span>
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="20" height="6" viewBox="0 0 22 6"><circle cx="3" cy="3" r="2.4" fill="#404040"></circle><circle cx="11" cy="3" r="2.4" fill="#404040"></circle><circle cx="19" cy="3" r="2.4" fill="#404040"></circle></svg>
+              </span>
+            </div>
+            <div style="padding:16px 16px 0;font-size:17px;line-height:1.55;color:#000000;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。回来的路上买了豆浆，顺便把这周的计划想了想。</div>
+
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.25);"></div>
+            <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);width:270px;border-radius:26px;overflow:hidden;backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);background:rgba(249,249,249,0.88);box-shadow:0 12px 40px rgba(0,0,0,0.25);">
+              <div style="padding:19px 16px 4px;font-size:17px;font-weight:600;color:#000000;text-align:center;">删除这篇日记？</div>
+              <div style="padding:0 16px 18px;font-size:13px;line-height:1.45;color:#000000;text-align:center;">删除后不可恢复，关联的图片和录音也会一并删除。</div>
+              <div style="height:0.5px;background:rgba(60,60,67,0.29);"></div>
+              <div style="display:flex;">
+                <span style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FF8A5C;">取消</span>
+                <span style="width:0.5px;background:rgba(60,60,67,0.29);"></span>
+                <span style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#FF3B30;">删除</span>
+              </div>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:280px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:352px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">删除 17pt <b style="color:#C0392B;">systemRed #FF3B30</b>（destructive）<br>取消 17pt Semibold（默认焦点）<br>确认后先删图片/音频文件，再删数据库记录</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2g 深色 · 首页 ═══════════ -->
+    <div id="2g" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2g" style="background:#1C1C1E;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2g</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">深色模式 · 首页</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneDark }}" hint-size="393px,852px">
+          <div data-screen-label="深色首页" style="height:100%;background:#000000;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="font-size:34px;font-weight:700;line-height:41px;letter-spacing:0.4px;color:#FFFFFF;">随心记</span>
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(120,120,128,0.28);box-shadow:0 2px 6px rgba(0,0,0,0.35),inset 1.5px 1.5px 1px rgba(255,255,255,0.15),inset -1px -1px 1px rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="#D1D1D6"></path></svg>
+              </span>
+            </div>
+            <div style="padding:4px 16px 0;font-size:15px;color:rgba(235,235,245,0.6);">7月4日 星期六</div>
+
+            <div style="padding:26px 16px 0;font-size:13px;font-weight:500;color:rgba(235,235,245,0.6);">2026年7月</div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;padding:10px 16px 0;">
+              <div style="background:#1C1C1E;border-radius:16px;padding:16px;">
+                <div style="display:flex;align-items:center;">
+                  <span style="font-size:22px;font-weight:600;color:#FFFFFF;line-height:28px;">4日</span>
+                  <span style="font-size:13px;color:rgba(235,235,245,0.6);margin-left:6px;">周六</span>
+                  <span style="flex:1;"></span>
+                  <span style="display:flex;align-items:center;gap:4px;">
+                    <svg width="13" height="12" viewBox="0 0 13 12"><g stroke="rgba(235,235,245,0.6)" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 5v2"></path><path d="M4 3.5v5"></path><path d="M6.5 2v8"></path><path d="M9 4v4"></path><path d="M11.5 5v2"></path></g></svg>
+                    <span style="font-size:13px;color:rgba(235,235,245,0.6);font-variant-numeric:tabular-nums;">0:35</span>
+                  </span>
+                </div>
+                <div style="margin-top:6px;font-size:15px;line-height:1.45;color:rgba(235,235,245,0.6);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。回来的路上买了豆浆。</div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#2C2A27 0px,#2C2A27 5px,#3A362F 5px,#3A362F 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#8F8578;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#2C2A27 0px,#2C2A27 5px,#3A362F 5px,#3A362F 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#8F8578;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#2C2A27 0px,#2C2A27 5px,#3A362F 5px,#3A362F 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#8F8578;">照片</span>
+                </div>
+              </div>
+
+              <div style="background:#1C1C1E;border-radius:16px;padding:16px;">
+                <div style="display:flex;align-items:center;">
+                  <span style="font-size:22px;font-weight:600;color:#FFFFFF;line-height:28px;">2日</span>
+                  <span style="font-size:13px;color:rgba(235,235,245,0.6);margin-left:6px;">周四</span>
+                </div>
+                <div style="margin-top:6px;font-size:15px;line-height:1.45;color:rgba(235,235,245,0.6);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">加班到很晚，但是把拖了两周的方案终于收尾了，回家路上买了关东煮，热气一上来人就活过来了。</div>
+              </div>
+            </div>
+
+            <div style="position:absolute;right:16px;bottom:44px;width:56px;height:56px;border-radius:999px;background:rgba(255,138,92,0.92);backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,0.45),inset 0 1.5px 1px rgba(255,255,255,0.5),inset 0 -1.5px 1px rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.12);">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:280px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:66px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">语义色自动切换：bg #000 · label #FFF<br>玻璃钮切深色材质 rgba(120,120,128,.28)</span></div>
+            <div style="position:absolute;top:200px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">卡片 #1C1C1E (secondarySystemBackground)<br>secondaryLabel rgba(235,235,245,.6)</span></div>
+            <div style="position:absolute;top:744px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">Accent #FF8A5C 深浅色不变 · 对比度达标</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 2h 深色 · 写日记页 ═══════════ -->
+    <div id="2h" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#2h" style="background:#1C1C1E;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">2h</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">深色模式 · 写日记页</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneDark }}" hint-size="393px,852px">
+          <div data-screen-label="深色写日记页" style="height:100%;display:flex;flex-direction:column;background:#0E0E10;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="height:70px;flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#1C1C1E;border-radius:12px 12px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,0.5);overflow:hidden;">
+              <div style="display:flex;justify-content:center;padding-top:6px;"><span style="width:36px;height:5px;border-radius:999px;background:rgba(235,235,245,0.3);"></span></div>
+              <div style="position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;margin-top:4px;">
+                <span style="font-size:17px;color:#FF8A5C;">取消</span>
+                <span style="position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;background:#2C2C2E;border-radius:999px;padding:7px 13px;">
+                  <span style="font-size:15px;font-weight:600;color:#FFFFFF;">7月4日</span>
+                  <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="rgba(235,235,245,0.6)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span style="font-size:17px;font-weight:600;color:#FF8A5C;">保存</span>
+              </div>
+              <div style="padding:12px 16px 0;font-size:17px;line-height:1.55;color:#FFFFFF;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。<br>回来的路上买了豆浆，顺便把这周的计划想了想。</div>
+              <div style="display:flex;gap:8px;padding:16px 16px 0;">
+                <span style="position:relative;width:80px;height:80px;border-radius:8px;background:repeating-linear-gradient(45deg,#2C2A27 0px,#2C2A27 5px,#3A362F 5px,#3A362F 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8F8578;">朝霞照片
+                  <span style="position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:999px;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+                </span>
+                <span style="width:80px;height:80px;border-radius:8px;border:1.5px dashed rgba(235,235,245,0.3);display:flex;align-items:center;justify-content:center;box-sizing:border-box;">
+                  <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="rgba(235,235,245,0.45)" stroke-width="2" stroke-linecap="round"></path></svg>
+                </span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;height:44px;border-radius:999px;background:#2C2C2E;margin:14px 16px 0;padding:0 12px;">
+                <span style="width:28px;height:28px;border-radius:999px;background:#FF8A5C;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M4 1.8v10.4L12.5 7z" fill="#FFFFFF"></path></svg></span>
+                <span style="flex:1;display:flex;align-items:center;gap:2.5px;">
+                  <span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:13px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:17px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:11px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:19px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:14px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:10px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:18px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:12px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:16px;border-radius:2px;background:#FF8A5C;"></span>
+                </span>
+                <span style="font-size:13px;color:rgba(235,235,245,0.6);font-variant-numeric:tabular-nums;">00:35</span>
+                <span style="width:22px;height:22px;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="rgba(235,235,245,0.6)" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+              </div>
+              <div style="flex:1;"></div>
+              <div style="margin:0 16px 46px;border-radius:999px;display:flex;padding:9px 6px;backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);background:rgba(64,64,68,0.68);box-shadow:0 2px 6px rgba(0,0,0,0.35),inset 1.5px 1.5px 1px rgba(255,255,255,0.12);border:0.5px solid rgba(255,255,255,0.12);">
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11.5" rx="3" stroke="#D1D1D6" stroke-width="1.7"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0" stroke="#D1D1D6" stroke-width="1.7" stroke-linecap="round"></path><path d="M12 18.5V21" stroke="#D1D1D6" stroke-width="1.7" stroke-linecap="round"></path></svg>
+                  <span style="font-size:11px;color:rgba(235,235,245,0.6);">转文字</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><g stroke="#D1D1D6" stroke-width="1.7" stroke-linecap="round"><path d="M3 10v4"></path><path d="M7 7v10"></path><path d="M11 4v16"></path><path d="M15 8v8"></path><path d="M19 10.5v3"></path></g></svg>
+                  <span style="font-size:11px;color:rgba(235,235,245,0.6);">录音</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3" stroke="#D1D1D6" stroke-width="1.7"></rect><circle cx="8.6" cy="9.4" r="1.6" fill="#D1D1D6"></circle><path d="M4.5 17l4.8-5 3.4 3.6 2.6-2.8 4.2 4.2" stroke="#D1D1D6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                  <span style="font-size:11px;color:rgba(235,235,245,0.6);">图片</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </x-import>
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:280px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:120px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">sheet #1C1C1E · 胶囊/录音条 #2C2C2E<br>(tertiarySystemBackground)</span></div>
+            <div style="position:absolute;top:744px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">玻璃工具栏深色材质 rgba(64,64,68,.68)<br>图标 #D1D1D6 · 标签 rgba(235,235,245,.6)</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:40px 48px 80px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="background:#1C1C1E;color:#FFFFFF;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;">第 1 轮 · 风格确认</span>
+      <span style="font-size:14px;color:#6B675F;">iOS 27 Liquid Glass · 浅色模式 · 393×852pt · 玻璃仅用于控件层，内容层纯色 · 确认后补齐其余页面与状态</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;background:#FFFFFF;border:1px solid #E2DED7;border-radius:10px;padding:10px 16px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:11px;color:#55514A;flex-wrap:wrap;">
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#FF8A5C;"></span>Accent #FF8A5C（仅点缀）</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF;border:1px solid #DDD;"></span>systemBackground</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#F2F2F7;border:1px solid #DDD;"></span>secondarySystemBackground #F2F2F7</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#000000;"></span>label</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:rgba(60,60,67,0.6);"></span>secondaryLabel rgba(60,60,67,.6)</span>
+      <span>字阶 34 / 22 / 17 / 15 / 13 / 11 · SF Pro + 苹方 · 圆角16 · 页边距16 · 卡距12 · SF Symbols · Liquid Glass 控件（.glassEffect）</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;">
+
+    <!-- ═══════════ 1a 首页 · 时间轴 ═══════════ -->
+    <div id="1a" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#1a" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">1a</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">首页 · 时间轴（有数据态）</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="首页·时间轴" style="height:100%;background:#FFFFFF;position:relative;overflow:hidden;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:62px 16px 0;">
+              <span style="font-size:34px;font-weight:700;line-height:41px;letter-spacing:0.4px;color:#000000;">随心记</span>
+              <span style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);background:rgba(255,255,255,0.55);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.07);">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="#3C3C43"></path></svg>
+              </span>
+            </div>
+            <div style="padding:4px 16px 0;font-size:15px;color:rgba(60,60,67,0.6);">7月4日 星期六</div>
+
+            <div style="padding:26px 16px 0;font-size:13px;font-weight:500;color:rgba(60,60,67,0.6);">2026年7月</div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;padding:10px 16px 0;">
+
+              <div style="background:#F2F2F7;border-radius:16px;padding:16px;">
+                <div style="display:flex;align-items:center;">
+                  <span style="font-size:22px;font-weight:600;color:#000000;line-height:28px;">4日</span>
+                  <span style="font-size:13px;color:rgba(60,60,67,0.6);margin-left:6px;">周六</span>
+                  <span style="flex:1;"></span>
+                  <span style="display:flex;align-items:center;gap:4px;">
+                    <svg width="13" height="12" viewBox="0 0 13 12"><g stroke="rgba(60,60,67,0.6)" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 5v2"></path><path d="M4 3.5v5"></path><path d="M6.5 2v8"></path><path d="M9 4v4"></path><path d="M11.5 5v2"></path></g></svg>
+                    <span style="font-size:13px;color:rgba(60,60,67,0.6);font-variant-numeric:tabular-nums;">0:35</span>
+                  </span>
+                </div>
+                <div style="margin-top:6px;font-size:15px;line-height:1.45;color:rgba(60,60,67,0.6);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。回来的路上买了豆浆。</div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9A8D80;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9A8D80;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9A8D80;">照片</span>
+                </div>
+              </div>
+
+              <div style="background:#F2F2F7;border-radius:16px;padding:16px;">
+                <div style="display:flex;align-items:center;">
+                  <span style="font-size:22px;font-weight:600;color:#000000;line-height:28px;">2日</span>
+                  <span style="font-size:13px;color:rgba(60,60,67,0.6);margin-left:6px;">周四</span>
+                </div>
+                <div style="margin-top:6px;font-size:15px;line-height:1.45;color:rgba(60,60,67,0.6);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">加班到很晚，但是把拖了两周的方案终于收尾了，回家路上买了关东煮，热气一上来人就活过来了。</div>
+              </div>
+            </div>
+
+            <div style="padding:24px 16px 0;font-size:13px;font-weight:500;color:rgba(60,60,67,0.6);">2026年6月</div>
+
+            <div style="padding:10px 16px 0;">
+              <div style="background:#F2F2F7;border-radius:16px;padding:16px;">
+                <div style="display:flex;align-items:center;">
+                  <span style="font-size:22px;font-weight:600;color:#000000;line-height:28px;">28日</span>
+                  <span style="font-size:13px;color:rgba(60,60,67,0.6);margin-left:6px;">周日</span>
+                </div>
+                <div style="margin-top:6px;font-size:15px;line-height:1.45;color:rgba(60,60,67,0.6);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">和阿May去江边骑车，风很大，拍了好多照片。</div>
+                <div style="display:flex;gap:6px;margin-top:10px;">
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9A8D80;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9A8D80;">照片</span>
+                  <span style="width:60px;height:60px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                    <span style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#FFFFFF;">+2</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style="position:absolute;right:16px;bottom:44px;width:56px;height:56px;border-radius:999px;background:rgba(255,138,92,0.92);backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(224,106,58,0.32),inset 0 1.5px 1px rgba(255,255,255,0.55),inset 0 -1.5px 1px rgba(255,255,255,0.18);border:0.5px solid rgba(0,0,0,0.05);">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></path></svg>
+            </div>
+          </div>
+        </x-import>
+
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:64px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>大标题「随心记」</b><br>34pt Bold · label · Large Title<br>右上 gearshape · 44pt Liquid Glass 圆钮<br>.glassEffect() · iOS 27 暗描边+亮高光</span></div>
+            <div style="position:absolute;top:136px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">今日日期 · 15pt Regular · secondaryLabel</span></div>
+            <div style="position:absolute;top:176px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">月份分组 · 13pt Medium · secondaryLabel · 上距26pt</span></div>
+            <div style="position:absolute;top:216px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>录音角标</b>（仅有录音时）<br>waveform 13pt + 时长 13pt · secondaryLabel</span></div>
+            <div style="position:absolute;top:284px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">日期数字 22pt Semibold + 星期 13pt secondaryLabel<br>摘要 15pt Regular · secondaryLabel · 行高1.45 · 最多2行</span></div>
+            <div style="position:absolute;top:368px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">缩略图 60pt · 圆角8pt · 间距6pt<br>最多3张，超出末位盖 +N</span></div>
+            <div style="position:absolute;top:428px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>卡片</b> · secondarySystemBackground #F2F2F7<br>圆角16pt · 内边距16pt · 卡片间距12pt · 页边距16pt</span></div>
+            <div style="position:absolute;top:744px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>悬浮 ＋</b> · 56pt · 着色玻璃 #FF8A5C<br>.buttonStyle(.glassProminent) · plus 24pt 白<br>距右16 / 距底24 · 阴影 y2 blur8</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ═══════════ 1b 写日记页 ═══════════ -->
+    <div id="1b" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="#1b" style="background:#FF8A5C;color:#FFFFFF;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;text-decoration:none;">1b</a>
+        <span style="font-size:15px;font-weight:600;color:#2B2823;">写日记页（sheet · 含图片 + 录音条）</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;">
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dc-props="{{ phoneSize }}" hint-size="393px,852px">
+          <div data-screen-label="写日记页" style="height:100%;display:flex;flex-direction:column;background:#B9B9BD;font-family:-apple-system,'SF Pro','PingFang SC',system-ui,sans-serif;">
+            <div style="height:70px;flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;background:#FFFFFF;border-radius:12px 12px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,0.12);overflow:hidden;">
+
+              <div style="display:flex;justify-content:center;padding-top:6px;">
+                <span style="width:36px;height:5px;border-radius:999px;background:rgba(60,60,67,0.3);"></span>
+              </div>
+
+              <div style="position:relative;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;margin-top:4px;">
+                <span style="font-size:17px;color:#FF8A5C;">取消</span>
+                <span style="position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;background:#F2F2F7;border-radius:999px;padding:7px 13px;">
+                  <span style="font-size:15px;font-weight:600;color:#000000;">7月4日</span>
+                  <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="rgba(60,60,67,0.6)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span style="font-size:17px;font-weight:600;color:#FF8A5C;">保存</span>
+              </div>
+
+              <div style="padding:12px 16px 0;font-size:17px;line-height:1.55;color:#000000;">今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。<br>回来的路上买了豆浆，顺便把这周的计划想了想。</div>
+
+              <div style="display:flex;gap:8px;padding:16px 16px 0;">
+                <span style="position:relative;width:80px;height:80px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9A8D80;">朝霞照片
+                  <span style="position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:999px;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+                </span>
+                <span style="position:relative;width:80px;height:80px;border-radius:8px;background:repeating-linear-gradient(45deg,#EFE7E0 0px,#EFE7E0 5px,#E6DBD1 5px,#E6DBD1 10px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9A8D80;">朝霞照片
+                  <span style="position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:999px;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;"><svg width="9" height="9" viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+                </span>
+                <span style="width:80px;height:80px;border-radius:8px;border:1.5px dashed rgba(60,60,67,0.3);display:flex;align-items:center;justify-content:center;box-sizing:border-box;">
+                  <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="rgba(60,60,67,0.45)" stroke-width="2" stroke-linecap="round"></path></svg>
+                </span>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;height:44px;border-radius:999px;background:#F2F2F7;margin:14px 16px 0;padding:0 12px;">
+                <span style="width:28px;height:28px;border-radius:999px;background:#FF8A5C;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M4 1.8v10.4L12.5 7z" fill="#FFFFFF"></path></svg></span>
+                <span style="flex:1;display:flex;align-items:center;gap:2.5px;">
+                  <span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:13px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:17px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:11px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:19px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:14px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:10px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:18px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:12px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:16px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:9px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:13px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:8px;border-radius:2px;background:#FF8A5C;"></span><span style="width:2.5px;height:11px;border-radius:2px;background:#FF8A5C;"></span>
+                </span>
+                <span style="font-size:13px;color:rgba(60,60,67,0.6);font-variant-numeric:tabular-nums;">00:35</span>
+                <span style="width:22px;height:22px;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="rgba(60,60,67,0.6)" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+              </div>
+
+              <div style="flex:1;"></div>
+
+              <div style="margin:0 16px 46px;border-radius:999px;display:flex;padding:9px 6px;backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);background:rgba(248,248,250,0.72);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 6px 16px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8),inset -1px -1px 1px rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.05);">
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11.5" rx="3" stroke="#3C3C43" stroke-width="1.7"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"></path><path d="M12 18.5V21" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"></path></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">转文字</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><g stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round"><path d="M3 10v4"></path><path d="M7 7v10"></path><path d="M11 4v16"></path><path d="M15 8v8"></path><path d="M19 10.5v3"></path></g></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">录音</span>
+                </span>
+                <span style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3" stroke="#3C3C43" stroke-width="1.7"></rect><circle cx="8.6" cy="9.4" r="1.6" fill="#3C3C43"></circle><path d="M4.5 17l4.8-5 3.4 3.6 2.6-2.8 4.2 4.2" stroke="#3C3C43" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                  <span style="font-size:11px;color:rgba(60,60,67,0.6);">图片</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </x-import>
+
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:296px;height:852px;flex-shrink:0;">
+            <div style="position:absolute;top:70px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>sheet 弹出</b> · 顶部圆角12pt · grabber 36×5<br>rgba(60,60,67,.3)</span></div>
+            <div style="position:absolute;top:126px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">取消 17pt / <b>保存 17pt Semibold #FF8A5C</b><br>（全空时 tertiaryLabel 置灰禁用）<br>日期胶囊 15pt Semibold · bg #F2F2F7 · 可点改日期</span></div>
+            <div style="position:absolute;top:216px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">正文 17pt Regular · 行高1.5 · label<br>占位「今天想说点什么…」tertiaryLabel</span></div>
+            <div style="position:absolute;top:298px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;">九宫格 80pt · 圆角8pt · 间距8pt · 最多9张<br>虚线＋追加格 · ✕删除钮 20pt 黑50%</span></div>
+            <div style="position:absolute;top:372px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>录音条</b>（每篇最多1条）· 胶囊 高44 · bg #F2F2F7<br>▶ 28pt #FF8A5C · 波形2.5pt条（唯一签名元素）<br>时长 13pt tabular · ✕ secondaryLabel</span></div>
+            <div style="position:absolute;top:742px;left:0;display:flex;align-items:flex-start;"><span style="width:26px;border-top:1px dashed #4A76D0;margin-top:11px;flex-shrink:0;"></span><span style="border:1px solid rgba(74,118,208,0.4);background:#FFFFFF;border-radius:6px;padding:6px 9px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;line-height:1.55;color:#3D62B3;"><b>浮动玻璃工具栏</b>（iOS 27）· 胶囊 · .glassEffect()<br>图标24pt(label) + 标签11pt(secondaryLabel) · 距底16<br>SF Symbols: mic / waveform / photo · 内容从下方滚过</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showAnnotations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;标注&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showAnnotations: this.props.showAnnotations ?? true,
+      phoneSize: { width: 393, height: 852 },
+    };
+  }
+}
+</script>
+</body>
+</html>
