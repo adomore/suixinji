@@ -94,4 +94,35 @@ final class SuixinJiUITests: XCTestCase {
         app.buttons["nav.settings"].tap()
         XCTAssertTrue(app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"].waitForExistence(timeout: 5))
     }
+
+    // Helper: create a text entry with the given marker.
+    private func createEntry(_ marker: String) {
+        app.buttons["fab.add"].tap()
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap(); editor.typeText(marker)
+        app.buttons["editor.save"].tap()
+        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
+    }
+
+    // F9 calendar opens from the timeline.
+    func testCalendarOpens() {
+        app.buttons["nav.calendar"].tap()
+        XCTAssertTrue(app.navigationBars["日历"].waitForExistence(timeout: 5))
+        app.buttons["完成"].tap()
+    }
+
+    // F8 keyword search filters the timeline.
+    func testSearchFiltersTimeline() {
+        createEntry("海边散步很惬意")
+        createEntry("加班到很晚")
+
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("海边")
+
+        XCTAssertTrue(app.staticTexts["海边散步很惬意"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["加班到很晚"].exists)
+    }
 }

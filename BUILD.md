@@ -15,8 +15,37 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | F5 | Timeline home, grouped by year-month, empty state | `HomeView`, `DiaryCardView` |
 | F6 | Detail / edit / delete with confirmation | `DetailView` |
 
-P1 fields (`mood`, daily reminder) are stubbed in the schema/UI but not wired,
-exactly as the PRD/Brief ask.
+### P1 / P2 features (added on top of the MVP)
+
+| PRD | Feature | Where |
+|-----|---------|-------|
+| F7  | 心情打卡 (mood emoji) | `EditorMetadata`, shown on card/detail |
+| F8  | 关键词搜索 | `DiarySearch`, `.searchable` in `HomeView` |
+| F9  | 日历视图 | `CalendarView` (month grid + day entries) |
+| F10 | 每日提醒 (real local notification) | `ReminderManager`, wired in `SettingsView` |
+| F11 | iCloud 同步 | SwiftData+CloudKit, **gated** — see below |
+| F12 | Face ID / 密码锁 | `AppLockManager`, lock overlay in `SuixinJiApp` |
+| F13 | 导出 PDF | `DiaryExporter` (ImageRenderer→PDF) + share sheet |
+| F14 | 标签 / 天气 / 位置 | `EditorMetadata`, `LocationProvider` (CoreLocation) |
+
+Pragmatic choices: **weather** is a manual emoji pick (no paid WeatherKit
+dependency); **location** uses CoreLocation + reverse geocoding to a place name.
+
+### Enabling iCloud sync (F11) — opt-in
+
+Off by default so a **free** Apple ID build keeps working. To turn it on (needs a
+**paid** developer account):
+
+1. Target → *Signing & Capabilities* → **+ Capability → iCloud** → check
+   **CloudKit**; container `iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)`. (A ready
+   entitlements file is at `SuixinJi/SuixinJi.entitlements` — point
+   `CODE_SIGN_ENTITLEMENTS` at it or let Xcode generate one.)
+2. *Build Settings → Active Compilation Conditions* → add **`CLOUDKIT_ENABLED`**
+   (Debug + Release). `SuixinJiApp` then builds the container with
+   `ModelConfiguration(cloudKitDatabase: .automatic)`.
+
+The `DiaryEntry` schema is already CloudKit-compatible (all properties optional
+or defaulted, no unique constraints, no required relationships).
 
 ## Requirements
 
@@ -66,6 +95,10 @@ Usage strings are set as `INFOPLIST_KEY_*` build settings (so the generated
 - `NSMicrophoneUsageDescription` — recording + voice-to-text
 - `NSSpeechRecognitionUsageDescription` — voice-to-text
 - `NSCameraUsageDescription` — 拍照
+- `NSLocationWhenInUseUsageDescription` — 位置 (F14)
+- `NSFaceIDUsageDescription` — 应用锁 (F12)
+
+Daily reminders (F10) request notification permission at runtime (no plist key).
 
 Album selection uses `PhotosPicker`, which needs **no** permission prompt.
 If the user has denied mic/speech, tapping 录音 / 转文字 shows the

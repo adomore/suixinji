@@ -13,6 +13,13 @@ struct HomeView: View {
     private var entries: [DiaryEntry]
 
     @State private var showingEditor = false
+    @State private var showingCalendar = false
+    @State private var searchText = ""
+
+    /// Entries after applying keyword search (F8).
+    private var filteredEntries: [DiaryEntry] {
+        DiarySearch.filter(entries, query: searchText)
+    }
 
     var body: some View {
         NavigationStack {
@@ -29,6 +36,8 @@ struct HomeView: View {
 
                     if entries.isEmpty {
                         EmptyStateView()
+                    } else if filteredEntries.isEmpty {
+                        noSearchResults
                     } else {
                         timeline
                     }
@@ -38,7 +47,17 @@ struct HomeView: View {
             }
             .navigationTitle("随心记")
             .navigationBarTitleDisplayMode(.large)
+            .searchable(text: $searchText, prompt: "搜索日记")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingCalendar = true } label: {
+                        Image(systemName: "calendar")
+                            .font(.system(size: 17, weight: .regular))
+                            .foregroundStyle(.secondary)
+                    }
+                    .accessibilityLabel("日历")
+                    .accessibilityIdentifier("nav.calendar")
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink { SettingsView() } label: {
                         Image(systemName: "gearshape")
@@ -56,6 +75,19 @@ struct HomeView: View {
         .sheet(isPresented: $showingEditor) {
             EditorView(mode: .create)
         }
+        .sheet(isPresented: $showingCalendar) {
+            CalendarView()
+        }
+    }
+
+    private var noSearchResults: some View {
+        VStack(spacing: 8) {
+            Spacer()
+            Image(systemName: "magnifyingglass").font(.system(size: 28)).foregroundStyle(.tertiary)
+            Text("没有找到相关日记").font(.summary15).foregroundStyle(.secondary)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var timeline: some View {
@@ -114,7 +146,7 @@ struct HomeView: View {
     // MARK: Grouping (pure logic lives in DiaryTimeline for unit-testing)
 
     private var groupedSections: [DiaryTimeline.Section] {
-        DiaryTimeline.sections(from: entries)
+        DiaryTimeline.sections(from: filteredEntries)
     }
 }
 

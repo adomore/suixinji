@@ -15,13 +15,12 @@ struct DetailView: View {
     @State private var showEditor = false
     @State private var showDeleteConfirm = false
     @State private var viewerIndex: Int?
+    @State private var exportItem: ExportItem?
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if let mood = entry.mood, !mood.isEmpty {
-                    Text(mood).font(.system(size: 34))
-                }
+                if hasMeta { metaHeader }
 
                 if entry.hasAudio {
                     playbackBar
@@ -33,6 +32,8 @@ struct DetailView: View {
                         .lineSpacing(4)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+
+                if !entry.tags.isEmpty { tagRow }
 
                 if !entry.imageFileNames.isEmpty {
                     photoGrid
@@ -50,6 +51,9 @@ struct DetailView: View {
                 Menu {
                     Button { showEditor = true } label: {
                         Label("编辑", systemImage: "pencil")
+                    }
+                    Button { exportPDF() } label: {
+                        Label("导出 PDF", systemImage: "square.and.arrow.up")
                     }
                     Button(role: .destructive) { showDeleteConfirm = true } label: {
                         Label("删除", systemImage: "trash")
@@ -72,6 +76,9 @@ struct DetailView: View {
             set: { viewerIndex = $0?.value }
         )) { idx in
             PhotoPagerView(fileNames: entry.imageFileNames, startIndex: idx.value)
+        }
+        .sheet(item: $exportItem) { item in
+            ShareSheet(items: [item.url])
         }
         .alert("删除这篇日记？", isPresented: $showDeleteConfirm) {
             Button("取消", role: .cancel) {}
@@ -129,11 +136,52 @@ struct DetailView: View {
         }
     }
 
+    // MARK: Metadata header + tags
+
+    private var hasMeta: Bool {
+        entry.mood != nil || entry.weather != nil || entry.locationName != nil
+    }
+
+    private var metaHeader: some View {
+        HStack(spacing: 10) {
+            if let mood = entry.mood { Text(mood).font(.system(size: 30)) }
+            if let weather = entry.weather { Text(weather).font(.system(size: 26)) }
+            if let loc = entry.locationName {
+                HStack(spacing: 3) {
+                    Image(systemName: "location.fill").font(.system(size: 11))
+                    Text(loc).font(.aux13)
+                }
+                .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+    }
+
+    private var tagRow: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                ForEach(entry.tags, id: \.self) { tag in
+                    Text("#\(tag)")
+                        .font(.aux13)
+                        .padding(.horizontal, 9).padding(.vertical, 5)
+                        .background(Color.brand.opacity(0.12), in: Capsule())
+                        .foregroundStyle(Color.brand)
+                }
+            }
+        }
+    }
+
     // MARK: Actions
 
     private func prepareAudio() {
         guard let name = entry.audioFileName else { return }
         player.load(url: FileStore.shared.audioURL(name))
+    }
+
+    private func exportPDF() {
+        if let url = DiaryExporter.exportPDF(entry) {
+            exportItem = ExportItem(url: url)
+        }
     }
 
     private func deleteEntry() {
@@ -147,6 +195,21 @@ struct DetailView: View {
 private struct PagerIndex: Identifiable {
     let value: Int
     var id: Int { value }
+}
+
+/// Identifiable wrapper for the exported PDF URL (drives the share sheet).
+private struct ExportItem: Identifiable {
+    let url: URL
+    var id: String { url.absoluteString }
+}
+
+/// UIActivityViewController bridge for sharing the exported file.
+private struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
 
 #Preview {

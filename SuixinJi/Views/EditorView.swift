@@ -22,11 +22,22 @@ struct EditorView: View {
     @State private var diaryDate = Date()
     @State private var images: [EditorImage] = []
     @State private var audio: DraftAudio?
+    // Metadata (P1/P2): mood / weather / tags / location.
+    @State private var mood: String?
+    @State private var weather: String?
+    @State private var tags: [String] = []
+    @State private var locationName: String?
+    @State private var latitude: Double?
+    @State private var longitude: Double?
 
     // Baselines for change-detection (discard confirmation)
     @State private var initialText = ""
     @State private var initialImageCount = 0
     @State private var initialHadAudio = false
+    @State private var initialMood: String?
+    @State private var initialWeather: String?
+    @State private var initialTags: [String] = []
+    @State private var initialLocation: String?
 
     // UI state
     @State private var showDatePicker = false
@@ -170,6 +181,12 @@ struct EditorView: View {
                 }
                 .padding(.top, 4)
 
+                EditorMetadataView(
+                    mood: $mood, weather: $weather, tags: $tags,
+                    locationName: $locationName, latitude: $latitude, longitude: $longitude
+                )
+                .padding(.top, 12)
+
                 if !images.isEmpty || images.count < Layout.maxImages {
                     photoGrid.padding(.top, 12)
                 }
@@ -289,6 +306,10 @@ struct EditorView: View {
         text != initialText
             || images.count != initialImageCount
             || (audio != nil) != initialHadAudio
+            || mood != initialMood
+            || weather != initialWeather
+            || tags != initialTags
+            || locationName != initialLocation
     }
 
     private func cancelTapped() {
@@ -306,7 +327,12 @@ struct EditorView: View {
     private func save() {
         transcriber.stop()
         let existing: DiaryEntry? = if case .edit(let e) = mode { e } else { nil }
-        let draft = DiaryDraft(text: text, diaryDate: diaryDate, images: images, audio: audio)
+        let draft = DiaryDraft(
+            text: text, diaryDate: diaryDate,
+            mood: mood, weather: weather, tags: tags,
+            locationName: locationName, latitude: latitude, longitude: longitude,
+            images: images, audio: audio
+        )
         do {
             try DiaryService.save(draft, existing: existing, into: context)
             dismiss()
@@ -322,6 +348,12 @@ struct EditorView: View {
         }
         text = entry.text
         diaryDate = entry.diaryDate
+        mood = entry.mood
+        weather = entry.weather
+        tags = entry.tags
+        locationName = entry.locationName
+        latitude = entry.latitude
+        longitude = entry.longitude
         images = entry.imageFileNames.map { .existing($0) }
         if let name = entry.audioFileName {
             audio = .existing(name, entry.audioDuration ?? 0)
@@ -329,6 +361,10 @@ struct EditorView: View {
         initialText = entry.text
         initialImageCount = images.count
         initialHadAudio = audio != nil
+        initialMood = mood
+        initialWeather = weather
+        initialTags = tags
+        initialLocation = locationName
     }
 
     // MARK: Photos

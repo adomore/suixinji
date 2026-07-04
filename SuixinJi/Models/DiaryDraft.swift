@@ -45,10 +45,17 @@ enum DraftAudio: Equatable {
 struct DiaryDraft {
     var text: String = ""
     var diaryDate: Date = Date()
+    var mood: String?
+    var weather: String?
+    var tags: [String] = []
+    var locationName: String?
+    var latitude: Double?
+    var longitude: Double?
     var images: [EditorImage] = []
     var audio: DraftAudio?
 
     /// Save is allowed only when there is text, a photo, or a recording (F1).
+    /// Metadata (mood / tags / weather / location) alone doesn't count as content.
     var hasContent: Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             || !images.isEmpty

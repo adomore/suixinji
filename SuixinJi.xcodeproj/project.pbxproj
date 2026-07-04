@@ -322,6 +322,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "随心记";
 				INFOPLIST_KEY_NSCameraUsageDescription = "随心记需要使用相机为日记拍摄照片。";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "随心记使用 Face ID 保护你的日记不被他人查看。";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "随心记需要你的位置，用于在日记中记录地点。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "随心记需要使用麦克风来录制语音日记和语音转文字。";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "随心记需要语音识别权限，把你说的话转换成日记文字。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -354,6 +356,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "随心记";
 				INFOPLIST_KEY_NSCameraUsageDescription = "随心记需要使用相机为日记拍摄照片。";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "随心记使用 Face ID 保护你的日记不被他人查看。";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "随心记需要你的位置，用于在日记中记录地点。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "随心记需要使用麦克风来录制语音日记和语音转文字。";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "随心记需要语音识别权限，把你说的话转换成日记文字。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

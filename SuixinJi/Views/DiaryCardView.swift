@@ -16,6 +16,8 @@ struct DiaryCardView: View {
                     .font(.aux13)
                     .foregroundStyle(.secondary)
                 Spacer(minLength: 8)
+                if let mood = entry.mood { Text(mood).font(.system(size: 15)) }
+                if let weather = entry.weather { Text(weather).font(.system(size: 15)) }
                 if entry.hasAudio, let dur = entry.audioDuration {
                     HStack(spacing: 4) {
                         WaveformBadgeMark()

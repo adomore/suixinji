@@ -62,6 +62,12 @@ enum DiaryService {
 
         entry.text = draft.text
         entry.diaryDate = draft.diaryDate
+        entry.mood = draft.mood
+        entry.weather = draft.weather
+        entry.tags = draft.tags
+        entry.locationName = draft.locationName
+        entry.latitude = draft.latitude
+        entry.longitude = draft.longitude
         entry.updatedAt = Date()
         try context.save()
         return entry
