@@ -6,10 +6,10 @@ import SwiftData
 /// the gear opens Settings; tapping a card pushes the detail page.
 struct HomeView: View {
     @Environment(\.modelContext) private var context
-    // Sorted for the timeline: newest diary-date first (createdAt is kept on the
-    // model for robust ordering per PRD §9, used as the tie-breaker).
-    @Query(sort: [SortDescriptor(\DiaryEntry.diaryDate, order: .reverse),
-                  SortDescriptor(\DiaryEntry.createdAt, order: .reverse)])
+    // Ordered newest-first by `createdAt` (PRD §9: sort by createdAt so a changed
+    // system clock can't reshuffle the timeline; the *displayed* date is diaryDate).
+    // Section headers still group by diaryDate's year-month.
+    @Query(sort: [SortDescriptor(\DiaryEntry.createdAt, order: .reverse)])
     private var entries: [DiaryEntry]
 
     @State private var showingEditor = false
@@ -73,12 +73,16 @@ struct HomeView: View {
                                 DiaryCardView(entry: entry)
                             }
                             .buttonStyle(.plain)
+                            .transition(.move(edge: .top).combined(with: .opacity))
                         }
                     }
                     .padding(.horizontal, Layout.pageMargin)
                 }
             }
             .padding(.bottom, 120) // clear the floating button
+            // Brief §6.1: a newly-saved card drops into the top with a light
+            // insert animation (~0.3s) for the "记下来了" confirmation feel.
+            .animation(.smooth(duration: 0.3), value: entries.map(\.id))
         }
     }
 

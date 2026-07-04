@@ -57,7 +57,14 @@ struct EditorView: View {
         .background(Color.pageBackground.ignoresSafeArea())
         .presentationDragIndicator(.visible)
         .interactiveDismissDisabled(hasChanges)
-        .onAppear(perform: loadIfEditing)
+        .onAppear {
+            loadIfEditing()
+            // PRD §1.4: get to typing fast — focus the body so the keyboard is
+            // up immediately on a new entry (skip for edit so回填内容 stays visible).
+            if case .create = mode {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { editorFocused = true }
+            }
+        }
         .sheet(isPresented: $showDatePicker) { datePickerSheet }
         .confirmationDialog("添加图片", isPresented: $photoSourceDialog, titleVisibility: .visible) {
             Button("从相册选择") { showPhotoLibrary = true }
@@ -90,7 +97,7 @@ struct EditorView: View {
         } message: { kind in
             Text(kind.message)
         }
-        .alert("保存失败", isPresented: .init(
+        .alert("提示", isPresented: .init(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
@@ -411,9 +418,10 @@ struct EditorView: View {
             guard ok else { permissionAlert = .speech; return }
             transcribeBase = text.isEmpty ? "" : text + " "
             do {
-                try transcriber.start { recognized in
-                    text = transcribeBase + recognized
-                }
+                try transcriber.start(
+                    onUpdate: { recognized in text = transcribeBase + recognized },
+                    onError: { message in errorMessage = message }
+                )
             } catch {
                 if transcriber.authorizationDenied { permissionAlert = .speech }
                 else { errorMessage = (error as? LocalizedError)?.errorDescription ?? "语音识别不可用。" }

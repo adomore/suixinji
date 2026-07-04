@@ -49,8 +49,12 @@ final class SpeechTranscriber: NSObject, ObservableObject {
     // MARK: Session
 
     /// Starts recognizing. `onUpdate` receives the best transcript so far so the
-    /// caller can insert it at the cursor.
-    func start(onUpdate: @escaping (String) -> Void) throws {
+    /// caller can append it. `onError` reports a user-facing failure message
+    /// (e.g. the offline-unsupported case from PRD §9).
+    func start(
+        onUpdate: @escaping (String) -> Void,
+        onError: @escaping (String) -> Void = { _ in }
+    ) throws {
         guard let recognizer, recognizer.isAvailable else { throw TranscribeError.unavailable }
 
         task?.cancel(); task = nil
@@ -77,6 +81,7 @@ final class SpeechTranscriber: NSObject, ObservableObject {
         partialText = ""
         isTranscribing = true
 
+        let onDevice = recognizer.supportsOnDeviceRecognition
         task = recognizer.recognitionTask(with: req) { [weak self] result, error in
             guard let self else { return }
             Task { @MainActor in
@@ -86,7 +91,14 @@ final class SpeechTranscriber: NSObject, ObservableObject {
                     onUpdate(text)
                     if result.isFinal { self.stop() }
                 }
-                if error != nil { self.stop() }
+                if error != nil {
+                    // A failure with no partial result and no on-device support is
+                    // almost always "offline, can't reach the server" (PRD §9).
+                    if !onDevice && self.partialText.isEmpty {
+                        onError(TranscribeError.offlineUnsupported.errorDescription ?? "语音识别失败。")
+                    }
+                    self.stop()
+                }
             }
         }
     }
