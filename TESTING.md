@@ -67,7 +67,7 @@ Test 导航器里可单独跑某个用例；scheme 已开启 **Code Coverage**�
 xcodebuild test \
   -project SuixinJi.xcodeproj \
   -scheme SuixinJi \
-  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
   -enableCodeCoverage YES \
   -resultBundlePath TestResults.xcresult
 ```
