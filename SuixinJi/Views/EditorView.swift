@@ -251,10 +251,11 @@ struct EditorView: View {
                     title: "转文字",
                     system: transcriber.isTranscribing ? "mic.fill" : "mic",
                     active: transcriber.isTranscribing,
+                    identifier: "editor.transcribe",
                     action: toggleTranscription
                 )
-                toolbarButton(title: "录音", system: "waveform", action: startRecording)
-                toolbarButton(title: "图片", system: "photo", action: { photoSourceDialog = true })
+                toolbarButton(title: "录音", system: "waveform", identifier: "editor.record", action: startRecording)
+                toolbarButton(title: "图片", system: "photo", identifier: "editor.photo", action: { photoSourceDialog = true })
             }
             .padding(.vertical, 9)
             .padding(.horizontal, 6)
@@ -263,7 +264,8 @@ struct EditorView: View {
         }
     }
 
-    private func toolbarButton(title: String, system: String, active: Bool = false, action: @escaping () -> Void) -> some View {
+    private func toolbarButton(title: String, system: String, active: Bool = false,
+                               identifier: String? = nil, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             VStack(spacing: 3) {
                 Image(systemName: system)
@@ -276,6 +278,7 @@ struct EditorView: View {
             .frame(maxWidth: .infinity)
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier(identifier ?? "toolbar.\(title)")
     }
 
     private var datePickerSheet: some View {
@@ -421,6 +424,14 @@ struct EditorView: View {
         // is inserted there (F2), replacing the growing chunk on each update.
         dictationStart = min(selectedRange.location, (text as NSString).length)
         dictationLength = 0
+        #if DEBUG
+        // UI-test seam: real speech can't run in XCUITest, so inject a canned
+        // phrase through the exact caret-anchor + insert path (no recognizer).
+        if ProcessInfo.processInfo.arguments.contains("-uitest-dictate") {
+            insertDictation("语音")
+            return
+        }
+        #endif
         Task {
             let ok = await transcriber.requestAuthorization()
             guard ok else { permissionAlert = .speech; return }
@@ -439,13 +450,13 @@ struct EditorView: View {
     /// Replace the current dictation chunk at the anchor with `recognized`, then
     /// park the caret right after it. Called on every partial-result update.
     private func insertDictation(_ recognized: String) {
-        let ns = text as NSString
-        let start = min(dictationStart, ns.length)
-        let length = min(dictationLength, ns.length - start)
-        let range = NSRange(location: start, length: length)
-        text = ns.replacingCharacters(in: range, with: recognized)
-        dictationLength = (recognized as NSString).length
-        selectedRange = NSRange(location: start + dictationLength, length: 0)
+        let r = Dictation.insert(
+            into: text, anchor: dictationStart,
+            previousChunkLength: dictationLength, recognized: recognized
+        )
+        text = r.text
+        dictationLength = r.chunkLength
+        selectedRange = NSRange(location: r.caret, length: 0)
     }
 
     private func openSettings() {

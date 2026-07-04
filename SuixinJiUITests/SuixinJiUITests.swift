@@ -9,7 +9,9 @@ final class SuixinJiUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-uitest"]
+        // -uitest → fresh in-memory store; -uitest-dictate → the 转文字 button
+        // injects a canned phrase through the real caret/insert path (no recognizer).
+        app.launchArguments = ["-uitest", "-uitest-dictate"]
         app.launch()
     }
 
@@ -110,6 +112,26 @@ final class SuixinJiUITests: XCTestCase {
         app.buttons["nav.calendar"].tap()
         XCTAssertTrue(app.navigationBars["日历"].waitForExistence(timeout: 5))
         app.buttons["完成"].tap()
+    }
+
+    // F2: placing the caret in the middle and dictating inserts THERE, not at the
+    // end. The caret is moved with arrow keys (deterministic), then the 转文字
+    // button injects "语音" at that caret via the real anchor/insert path.
+    func testDictationInsertsAtCaret() {
+        app.buttons["fab.add"].tap()
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        editor.tap()
+        editor.typeText("前面后面")
+
+        // Move the caret left past "后面" → it now sits between "前面" and "后面".
+        editor.typeText(XCUIKeyboardKey.leftArrow.rawValue)
+        editor.typeText(XCUIKeyboardKey.leftArrow.rawValue)
+
+        app.buttons["editor.transcribe"].tap()
+
+        XCTAssertEqual(editor.value as? String, "前面语音后面",
+                       "dictated text must land at the caret, not appended at the end")
     }
 
     // F8 keyword search filters the timeline.
