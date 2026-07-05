@@ -97,6 +97,13 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"].waitForExistence(timeout: 5))
     }
 
+    // Backup: Settings surfaces the export/import entries (evolution).
+    func testSettingsShowsBackupRows() {
+        app.buttons["nav.settings"].tap()
+        XCTAssertTrue(app.buttons["settings.export"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["settings.import"].exists)
+    }
+
     // Helper: create a text entry with the given marker.
     private func createEntry(_ marker: String) {
         app.buttons["fab.add"].tap()

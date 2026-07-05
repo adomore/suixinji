@@ -1,15 +1,24 @@
 import SwiftUI
+import SwiftData
+import UniformTypeIdentifiers
 
-/// Settings (UI Brief §4 ④, extended for P1/P2). System grouped-list style.
-/// 每日提醒 (F10 · real) · 应用锁 (F12) · iCloud 同步 (F11) · 关于 · data footer.
+/// Settings (UI Brief §4 ④, extended for P1/P2 + backup). System grouped-list.
+/// 每日提醒 (F10) · 应用锁 (F12) · 数据备份 (evolution) · iCloud (F11) · 关于 · footer.
 struct SettingsView: View {
     @EnvironmentObject private var lock: AppLockManager
+    @Environment(\.modelContext) private var context
+    @Query private var allEntries: [DiaryEntry]
 
     @AppStorage("dailyReminderEnabled") private var reminderEnabled = false
     @AppStorage("dailyReminderTime") private var reminderTime = "21:00"
 
     @State private var reminderDate = Date()
     @State private var notifyDenied = false
+
+    // Backup / restore
+    @State private var shareItem: ShareItem?
+    @State private var showImporter = false
+    @State private var resultMessage: String?
 
     private var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
@@ -43,6 +52,20 @@ struct SettingsView: View {
                 Text(lock.isAvailable
                      ? "开启后，每次打开随心记需通过 Face ID、Touch ID 或设备密码。"
                      : "此设备未设置密码或生物识别，无法开启应用锁。")
+            }
+
+            // MARK: 数据备份 (evolution)
+            Section {
+                Button { exportBackup() } label: {
+                    Label("导出备份", systemImage: "square.and.arrow.up")
+                }
+                .accessibilityIdentifier("settings.export")
+                Button { showImporter = true } label: {
+                    Label("导入备份", systemImage: "square.and.arrow.down")
+                }
+                .accessibilityIdentifier("settings.import")
+            } footer: {
+                Text("导出为一个 .json 文件（含图片与录音），换机或重装后可导入恢复。导入按 id 合并，不会覆盖已有日记。")
             }
 
             // MARK: iCloud 同步 (F11)
@@ -81,6 +104,42 @@ struct SettingsView: View {
             }
         } message: {
             Text("请在设置中允许随心记发送通知，用于每日提醒。")
+        }
+        .sheet(item: $shareItem) { ShareSheet(items: [$0.url]) }
+        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in
+            handleImport(result)
+        }
+        .alert("提示", isPresented: Binding(
+            get: { resultMessage != nil }, set: { if !$0 { resultMessage = nil } }
+        )) {
+            Button("好", role: .cancel) {}
+        } message: { Text(resultMessage ?? "") }
+    }
+
+    // MARK: Backup actions
+
+    private func exportBackup() {
+        do {
+            shareItem = ShareItem(url: try BackupService.writeBackupFile(from: allEntries))
+        } catch {
+            resultMessage = "导出失败：\(error.localizedDescription)"
+        }
+    }
+
+    private func handleImport(_ result: Result<URL, Error>) {
+        switch result {
+        case .success(let url):
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let data = try Data(contentsOf: url)
+                let r = try BackupService.importData(data, into: context)
+                resultMessage = "导入完成：新增 \(r.imported) 篇，跳过 \(r.skipped) 篇。"
+            } catch {
+                resultMessage = "导入失败：文件可能不是有效的随心记备份。"
+            }
+        case .failure(let error):
+            resultMessage = "导入失败：\(error.localizedDescription)"
         }
     }
 
@@ -128,6 +187,7 @@ struct SettingsView: View {
 
 #Preview {
     NavigationStack { SettingsView() }
+        .modelContainer(for: DiaryEntry.self, inMemory: true)
         .environmentObject(AppLockManager())
         .tint(.brand)
 }

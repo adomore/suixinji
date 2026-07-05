@@ -68,6 +68,12 @@ final class FileStoreImpl {
         UIImage(contentsOfFile: imageURL(name).path)
     }
 
+    /// Restore a media file verbatim (used by backup import). Routes by extension.
+    func writeMedia(name: String, data: Data) throws {
+        let url = name.lowercased().hasSuffix(".m4a") ? audioURL(name) : imageURL(name)
+        try data.write(to: url, options: .atomic)
+    }
+
     // MARK: Audio
 
     /// Move a freshly-recorded temp file into `audios/` under a UUID name.

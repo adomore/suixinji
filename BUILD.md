@@ -21,6 +21,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 |---------|-------|
 | 数据洞察 · 统计 (streaks, monthly activity, mood distribution, media counts) | `DiaryStatistics` (pure engine) + `StatisticsView`, opened from the home 统计 button |
 | 回顾 · 记忆 (这一天 / 去年今天, streak milestones, monthly recap → shareable long image) | `Memories` + `MonthlyRecap` engines; home "这一天" banner → `MemoriesListView`; milestone + recap sections in `StatisticsView`; `RecapCard` + `DiaryExporter.exportRecap` |
+| 全量备份 · 导出/导入 (single self-contained `.json` incl. media as base64; merge-by-id restore) | `DiaryBackup` format + `BackupService`; Settings 数据备份 section (share sheet export + `.fileImporter` import) |
 
 ### P1 / P2 features (added on top of the MVP)
 
