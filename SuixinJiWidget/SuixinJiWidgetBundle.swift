@@ -6,6 +6,7 @@ struct SuixinJiWidgetBundle: WidgetBundle {
     var body: some Widget {
         TodayWidget()
         MoodCheckInWidget()
+        DailyQuoteWidget()
         WritingLiveActivity()
     }
 }

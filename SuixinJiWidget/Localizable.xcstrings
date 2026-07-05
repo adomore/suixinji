@@ -170,6 +170,36 @@
           }
         }
       }
+    },
+    "今日一句": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today’s prompt"
+          }
+        }
+      }
+    },
+    "写下此刻": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write this moment"
+          }
+        }
+      }
+    },
+    "每天一句温柔的写作灵感。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A gentle writing prompt each day."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

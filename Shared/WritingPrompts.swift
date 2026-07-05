@@ -1,8 +1,9 @@
 import Foundation
 
 /// 每日灵感 (evolution). A curated rotation of gentle writing prompts, plus a
-/// deterministic "prompt of the day" so the home banner is stable across a day
-/// and only changes at midnight. Pure & testable.
+/// deterministic "prompt of the day" so the home banner — and the 今日一句 widget —
+/// stay stable across a day and only change at midnight. Pure & testable.
+/// Lives in Shared/ so the app and the widget compute the identical daily line.
 enum WritingPrompts {
     /// Calm, everyday prompts (Brief tone — no pressure, no gamification-speak).
     static let all: [String] = [
@@ -28,26 +29,5 @@ enum WritingPrompts {
         let day = calendar.ordinality(of: .day, in: .era, for: date) ?? 0
         let index = ((day % all.count) + all.count) % all.count // safe modulo
         return all[index]
-    }
-}
-
-/// 写作习惯 (evolution). Which of the last N days have at least one entry — drives
-/// a small week strip. Pure & testable; streak itself lives in `DiaryStatistics`.
-enum WritingHabit {
-    struct Day: Equatable {
-        let date: Date
-        let written: Bool
-    }
-
-    /// The last `count` days ending on `today` (oldest first), each flagged with
-    /// whether any entry's `diaryDate` falls on it.
-    static func recentDays(_ entries: [DiaryEntry], today: Date = Date(),
-                           count: Int = 7, calendar: Calendar = .current) -> [Day] {
-        let writtenDays = Set(entries.map { calendar.startOfDay(for: $0.diaryDate) })
-        let start = calendar.startOfDay(for: today)
-        return (0..<count).reversed().map { offset in
-            let day = calendar.date(byAdding: .day, value: -offset, to: start) ?? start
-            return Day(date: day, written: writtenDays.contains(day))
-        }
     }
 }
