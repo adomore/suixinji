@@ -12,6 +12,9 @@ import SwiftData
 /// The media files themselves live in the sandbox and are not synced by this
 /// step — see BUILD.md.
 enum Persistence {
+    /// Both synced models: the diary records and the media blobs (F11 media step).
+    static let models: [any PersistentModel.Type] = [DiaryEntry.self, MediaBlob.self]
+
     static func container(inMemory: Bool = false, cloudKit: Bool = true) -> ModelContainer {
         if inMemory {
             return makeLocal(inMemory: true)
@@ -19,7 +22,7 @@ enum Persistence {
         if cloudKit {
             do {
                 return try ModelContainer(
-                    for: DiaryEntry.self,
+                    for: Schema(models),
                     configurations: ModelConfiguration(cloudKitDatabase: .automatic)
                 )
             } catch {
@@ -33,7 +36,7 @@ enum Persistence {
     private static func makeLocal(inMemory: Bool) -> ModelContainer {
         do {
             return try ModelContainer(
-                for: DiaryEntry.self,
+                for: Schema(models),
                 configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory)
             )
         } catch {

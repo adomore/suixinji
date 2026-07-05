@@ -75,8 +75,15 @@ enum DiaryService {
 
             // 3) Only after a successful commit, delete files no longer referenced.
             let kept = Set(finalImageNames)
-            for old in oldImages where !kept.contains(old) { fileStore.deleteImage(old) }
-            if let oldAudio, oldAudio != audioName { fileStore.deleteAudio(oldAudio) }
+            var droppedNames: [String] = oldImages.filter { !kept.contains($0) }
+            for old in droppedNames { fileStore.deleteImage(old) }
+            if let oldAudio, oldAudio != audioName { fileStore.deleteAudio(oldAudio); droppedNames.append(oldAudio) }
+
+            // 4) Sync (F11 media): push this entry's current media, drop blobs for
+            //    media it no longer references. Best-effort — never fails the save.
+            MediaSyncService.syncUp(entry, context: context, fileStore: fileStore)
+            MediaSyncService.removeBlobs(named: droppedNames, context: context)
+            try? context.save()
             return entry
         } catch {
             // Roll back everything this call created.
@@ -94,7 +101,9 @@ enum DiaryService {
         from context: ModelContext,
         fileStore: FileStoreImpl = FileStore.shared
     ) throws {
+        let mediaNames = MediaSyncService.referencedNames(of: entry)
         fileStore.deleteFiles(for: entry)
+        MediaSyncService.removeBlobs(named: mediaNames, context: context) // F11: drop synced copies too
         context.delete(entry)
         try context.save()
     }

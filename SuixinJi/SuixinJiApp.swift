@@ -30,10 +30,13 @@ struct SuixinJiApp: App {
             HomeView()
                 .overlay { if lock.isLocked { LockScreen() } }
                 .task { await lock.authenticate() } // prompt on cold launch
+                .task { reconcileMedia() }          // F11: materialize/upload media
                 .onChange(of: scenePhase) { _, phase in
                     switch phase {
                     case .background: lock.lockIfEnabled()
-                    case .active: if lock.isLocked { Task { await lock.authenticate() } }
+                    case .active:
+                        if lock.isLocked { Task { await lock.authenticate() } }
+                        reconcileMedia() // pick up media that synced while away
                     default: break
                     }
                 }
@@ -43,6 +46,14 @@ struct SuixinJiApp: App {
                 .themedRoot()
         }
         .modelContainer(container)
+    }
+
+    /// Reconcile synced media blobs ⇄ local files (F11). Runs on the main context;
+    /// a personal diary's media set is small, and it skips quickly when there's
+    /// nothing new to move.
+    @MainActor
+    private func reconcileMedia() {
+        MediaSyncService.reconcile(context: container.mainContext)
     }
 }
 

@@ -108,7 +108,7 @@ struct SettingsView: View {
                     Text(iCloudStatus).foregroundStyle(.secondary)
                 }
             } footer: {
-                Text("登录 iCloud 后，日记文字与信息会在你的设备间自动同步。图片与录音暂不随 iCloud 同步（可用「导出备份」迁移）。")
+                Text("登录 iCloud 后，日记文字、图片与录音都会在你的设备间自动同步。")
             }
 
             // MARK: 关于 + data footer

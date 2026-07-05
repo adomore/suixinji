@@ -93,11 +93,21 @@ To actually sync across devices (needs a **paid** developer account):
 The `DiaryEntry` schema is CloudKit-compatible (all attributes optional or
 defaulted, no unique constraints, no required relationships).
 
-**Scope of this step:** CloudKit syncs the diary *records* (text + all metadata +
-file names). **Image/audio files are not synced yet** — on a second device
-entries appear with text/metadata but their media is missing until the file blobs
-are also synced (a natural follow-up, e.g. via CloudKit assets or the iCloud
-container). Use *导出备份* to move media in the meantime.
+**Scope:** CloudKit syncs the diary *records* (text + all metadata + file names)
+**and the media** (photos + voice memos). Media rides a sidecar `MediaBlob`
+`@Model` whose bytes are `@Attribute(.externalStorage)` — under CloudKit that
+syncs as a **CKAsset**. `MediaSyncService` reconciles blobs ⇄ local files both
+ways (materialize arrived blobs into the sandbox; upload local files that aren't
+synced yet), run on launch, on app-active, and right after each save/delete. The
+app's UI is unchanged — it still reads media by file name from `FileStore`
+(PRD §5.3); the blobs are just the transport.
+
+Media file names are per-entry UUIDs (never shared across entries), so a blob
+backs exactly one entry — that makes blob cleanup on delete race-free, and lets a
+device skip uploading a file it doesn't have yet (its blob arrives first). Local
+storage carries both the sandbox file and the blob copy (~2× for media) — an
+acceptable trade for a personal-diary media set; a future step could make the
+blob the single source and materialize on demand.
 
 ## Requirements
 
