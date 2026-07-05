@@ -86,6 +86,18 @@ struct SettingsView: View {
                      : "此设备未设置密码或生物识别，无法开启应用锁。")
             }
 
+            // MARK: 内容管理 (evolution)
+            Section {
+                NavigationLink {
+                    TagManagementView()
+                } label: {
+                    Label("标签管理", systemImage: "tag")
+                }
+                .accessibilityIdentifier("settings.tags")
+            } footer: {
+                Text("重命名、合并或删除标签，改动会应用到所有日记。")
+            }
+
             // MARK: 数据备份 (evolution)
             Section {
                 Button { exportBackup() } label: {

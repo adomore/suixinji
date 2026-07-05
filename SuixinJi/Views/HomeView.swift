@@ -20,11 +20,13 @@ struct HomeView: View {
     @State private var showingStats = false
     @State private var showingMemories = false
     @State private var showingMap = false
+    @State private var showingFilter = false
+    @State private var filter = DiaryFilter()
     @State private var searchText = ""
 
-    /// Entries after applying keyword search (F8).
+    /// Entries after applying the combined filter (evolution) then keyword search (F8).
     private var filteredEntries: [DiaryEntry] {
-        DiarySearch.filter(entries, query: searchText)
+        DiarySearch.filter(filter.apply(to: entries), query: searchText)
     }
 
     /// Earlier-year entries sharing today's date (回顾 · 这一天).
@@ -57,6 +59,10 @@ struct HomeView: View {
 
                     if !writtenToday && searchText.isEmpty {
                         promptBanner
+                    }
+
+                    if filter.isActive {
+                        activeFilterBar
                     }
 
                     if entries.isEmpty {
@@ -93,6 +99,16 @@ struct HomeView: View {
                     .accessibilityIdentifier("nav.map")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
+                    Button { showingFilter = true } label: {
+                        Image(systemName: filter.isActive ? "line.3.horizontal.decrease.circle.fill"
+                                                           : "line.3.horizontal.decrease.circle")
+                            .scaledFont(17, weight: .regular)
+                            .foregroundStyle(filter.isActive ? Color.accentColor : .secondary)
+                    }
+                    .accessibilityLabel("筛选")
+                    .accessibilityIdentifier("nav.filter")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Button { showingStats = true } label: {
                         Image(systemName: "chart.bar.xaxis")
                             .scaledFont(17, weight: .regular)
@@ -126,6 +142,10 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showingMap) {
             MapView().themedRoot()
+        }
+        .sheet(isPresented: $showingFilter) {
+            FilterSheet(filter: $filter, availableTags: TagManager.tagCounts(entries).map(\.tag))
+                .themedRoot()
         }
         .sheet(isPresented: $showingMemories) {
             MemoriesListView(entries: onThisDay, today: Date()).themedRoot()
@@ -224,10 +244,26 @@ struct HomeView: View {
         VStack(spacing: 8) {
             Spacer()
             Image(systemName: "magnifyingglass").scaledFont(28).foregroundStyle(.tertiary)
-            Text("没有找到相关日记").scaledFont(15).foregroundStyle(.secondary)
+            Text(filter.isActive ? "没有符合条件的日记" : "没有找到相关日记")
+                .scaledFont(15).foregroundStyle(.secondary)
             Spacer()
         }
         .frame(maxWidth: .infinity)
+    }
+
+    /// A slim bar shown while a combined filter is active, with a one-tap clear.
+    private var activeFilterBar: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                .scaledFont(13).foregroundStyle(Color.accentColor)
+            Text("筛选中 · \(filter.activeCount) 项").scaledFont(13).foregroundStyle(.secondary)
+            Spacer()
+            Button("清除") { filter = DiaryFilter() }
+                .scaledFont(13).foregroundStyle(Color.accentColor)
+                .accessibilityIdentifier("home.clearFilter")
+        }
+        .padding(.horizontal, Layout.pageMargin)
+        .padding(.top, 10)
     }
 
     private var timeline: some View {
