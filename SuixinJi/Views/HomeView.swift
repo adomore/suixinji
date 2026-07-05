@@ -16,6 +16,7 @@ struct HomeView: View {
     @State private var showingCalendar = false
     @State private var showingStats = false
     @State private var showingMemories = false
+    @State private var showingMap = false
     @State private var searchText = ""
 
     /// Entries after applying keyword search (F8).
@@ -69,6 +70,15 @@ struct HomeView: View {
                     .accessibilityLabel("日历")
                     .accessibilityIdentifier("nav.calendar")
                 }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingMap = true } label: {
+                        Image(systemName: "map")
+                            .scaledFont(17, weight: .regular)
+                            .foregroundStyle(.secondary)
+                    }
+                    .accessibilityLabel("足迹地图")
+                    .accessibilityIdentifier("nav.map")
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showingStats = true } label: {
                         Image(systemName: "chart.bar.xaxis")
@@ -100,6 +110,9 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showingStats) {
             StatisticsView().themedRoot()
+        }
+        .sheet(isPresented: $showingMap) {
+            MapView().themedRoot()
         }
         .sheet(isPresented: $showingMemories) {
             MemoriesListView(entries: onThisDay, today: Date()).themedRoot()
