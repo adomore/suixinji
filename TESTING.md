@@ -29,7 +29,25 @@ SuixinJiTests/        单元测试 + 性能测试（unit-test bundle）
   DiaryServiceTests         增删改闭环 + 文件级联（in-memory SwiftData + 临时 FileStore）
   MetadataTests             搜索(F8) / 提醒解析(F10) / 心情天气目录 / 元数据持久化(F7/F14)
   ExportWeatherTests        WeatherKit 天气映射(F14) / PDF+长图导出产物(F13)
+  DictationTests            听写在光标处插入(F2)
+  MemoriesTests             这一天/去年今天 + 里程碑(回顾)
+  DiaryStatisticsTests      连续天数/累计/月度活跃/心情分布/媒体计数(统计)
+  BackupServiceTests        全量导出→导入往返（含媒体 base64）
+  MediaSyncServiceTests     媒体 iCloud 同步：上传/下载/孤儿清理/不复活(F11 媒体)
+  PersistenceTests          容器工厂内存路径(F11)
+  ThemeManagerTests         强调色/字号持久化（主题皮肤）
+  WidgetSnapshotTests       小组件快照编解码 + App Group 键
+  ── 演进引擎（本轮）──
+  MapFootprintsTests        地图足迹：网格聚合/质心/地名/窗口
+  SpotlightIndexerTests     Spotlight 条目构建（标题/关键词/占位）
+  WritingPromptsTests       每日灵感确定性轮换 + 本周写作
+  MoodTrendsTests           情绪趋势：valence 映射 + 按月平均/窗口
+  YearReviewTests           年度报告：年度聚合 + 年内最长连记
+  TagFilterTests            组合筛选(DiaryFilter) + 标签管理(TagManager 合并/删除)
+  MarkdownParserTests       Markdown 行式块解析 + 去标记预览
   PerformanceTests          分组 1000 条 / 批量插入 500 条 / 8000×6000 图压缩
+  EvolutionPerformanceTests 3000 条数据集上：统计/情绪趋势/年度报告/组合筛选/
+                            标签计数/搜索/地图聚合/Markdown 预览/Spotlight 构建/这一天
 
 SuixinJiUITests/      端到端 UI 测试（ui-testing bundle）
   SuixinJiUITests           空状态 / 保存禁用 / 新建-入列 / 取消放弃 / 详情-删除 / 设置 footer
@@ -51,6 +69,15 @@ SuixinJiUITests/      端到端 UI 测试（ui-testing bundle）
 | 换录音删旧文件 / 删录音清字段 | F3 | DiaryServiceTests.testReplacingAudioDeletesOldFile 等 |
 | 编辑不新增行 | F1/F6 | DiaryServiceTests.testEditUpdatesTextWithoutDuplicating |
 | 年-月分组（含补记不连续） | F5 | DiaryTimelineTests.* |
+| 媒体 iCloud 同步不复活删除/清孤儿 | F11 媒体 | MediaSyncServiceTests.testReconcileDoesNotResurrectDeletedBlob 等 |
+| 地图足迹按网格聚合 + 质心 | 演进 | MapFootprintsTests.* |
+| Spotlight 条目标题/关键词构建 | 演进 | SpotlightIndexerTests.* |
+| 每日灵感当天稳定/跨天轮换 | 演进 | WritingPromptsTests.* |
+| 情绪趋势按月平均 + 窗口边界 | 演进 | MoodTrendsTests.* |
+| 年度报告聚合 + 年内最长连记 | 演进 | YearReviewTests.* |
+| 组合筛选 AND/OR 语义 | 演进 | TagFilterTests.testFilter* |
+| 标签重命名即合并去重 / 删除 | 演进 | TagFilterTests.testRename*/testDelete* |
+| Markdown 块解析 + 去标记预览不丢字 | 演进 | MarkdownParserTests.* |
 
 > 说明：录音/语音转文字/相机依赖真机硬件与系统权限，无法在纯逻辑单元测试里断言，
 > 已通过 `AudioRecorder`/`SpeechTranscriber`/`AudioPlaybackManager` 的接口隔离；
