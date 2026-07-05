@@ -10,6 +10,7 @@ struct DetailView: View {
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var privacy: PrivacyManager
 
     @StateObject private var player = AudioPlaybackManager()
     @State private var showEditor = false
@@ -18,6 +19,32 @@ struct DetailView: View {
     @State private var exportItem: ShareItem?
 
     var body: some View {
+        // 私密日记: if this entry is locked, show a gate instead of content. This also
+        // covers the case where the app was backgrounded (re-hiding) while the detail
+        // page was already on screen.
+        if privacy.isHidden(entry) {
+            lockedDetail
+        } else {
+            unlockedBody
+        }
+    }
+
+    private var lockedDetail: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "lock.fill").scaledFont(44).foregroundStyle(Color.accentColor)
+            Text("私密日记").scaledFont(17, weight: .semibold)
+            Text("验证身份后查看这篇日记。").scaledFont(14).foregroundStyle(.secondary)
+            Button("解锁") { Task { await privacy.reveal() } }
+                .scaledFont(17).foregroundStyle(Color.accentColor)
+                .accessibilityIdentifier("detail.unlock")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.pageBackground.ignoresSafeArea())
+        .navigationTitle(DiaryDateFormat.longChinese(entry.diaryDate))
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var unlockedBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if hasMeta { metaHeader }
@@ -214,5 +241,6 @@ private struct PagerIndex: Identifiable {
         DetailView(entry: DiaryEntry(text: "今天去看了朝霞，云层烧得特别透，等了四十分钟总算没白等。"))
     }
     .modelContainer(for: DiaryEntry.self, inMemory: true)
+    .environmentObject(PrivacyManager())
     .tint(.brand)
 }

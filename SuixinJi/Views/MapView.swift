@@ -9,11 +9,16 @@ struct MapView: View {
     @Query(sort: [SortDescriptor(\DiaryEntry.createdAt, order: .reverse)])
     private var entries: [DiaryEntry]
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var privacy: PrivacyManager
 
     @State private var camera: MapCameraPosition = .automatic
     @State private var selected: MapFootprints.Place?
 
-    private var places: [MapFootprints.Place] { MapFootprints.places(from: entries) }
+    // 私密日记: while locked, exclude hidden entries entirely — no pin advertises a
+    // private location and no card row leaks its text. They reappear once revealed.
+    private var places: [MapFootprints.Place] {
+        MapFootprints.places(from: entries.filter { !privacy.isHidden($0) })
+    }
 
     var body: some View {
         NavigationStack {
@@ -164,5 +169,6 @@ struct MapView: View {
     MapView()
         .modelContainer(for: DiaryEntry.self, inMemory: true)
         .environmentObject(ThemeManager())
+        .environmentObject(PrivacyManager())
         .tint(.brand)
 }

@@ -31,6 +31,9 @@ struct DiaryBackup: Codable {
         var imageFileNames: [String]
         var audioFileName: String?
         var audioDuration: Double?
+        /// 私密日记 (evolution). Optional so older backups (without this key) still
+        /// decode; treated as `false` when absent.
+        var isPrivate: Bool?
 
         init(from e: DiaryEntry) {
             id = e.id
@@ -48,6 +51,7 @@ struct DiaryBackup: Codable {
             imageFileNames = e.imageFileNames
             audioFileName = e.audioFileName
             audioDuration = e.audioDuration
+            isPrivate = e.isPrivate
         }
 
         /// Reconstruct a model object, preserving the original id/timestamps so
@@ -58,7 +62,7 @@ struct DiaryBackup: Codable {
                 weatherText: weatherText, tags: tags, locationName: locationName,
                 latitude: latitude, longitude: longitude,
                 imageFileNames: imageFileNames, audioFileName: audioFileName,
-                audioDuration: audioDuration
+                audioDuration: audioDuration, isPrivate: isPrivate ?? false
             )
             e.id = id
             e.createdAt = createdAt

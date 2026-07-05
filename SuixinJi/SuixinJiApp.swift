@@ -37,6 +37,7 @@ struct SuixinJiApp: App {
     @StateObject private var lock = AppLockManager()
     @StateObject private var theme = ThemeManager()
     @StateObject private var router = AppRouter()
+    @StateObject private var privacy = PrivacyManager()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
@@ -47,7 +48,9 @@ struct SuixinJiApp: App {
                 .task { reconcileMedia() }          // F11: materialize/upload media
                 .onChange(of: scenePhase) { _, phase in
                     switch phase {
-                    case .background: lock.lockIfEnabled()
+                    case .background:
+                        lock.lockIfEnabled()
+                        privacy.conceal() // re-hide 私密日记 when leaving the foreground
                     case .active:
                         if lock.isLocked { Task { await lock.authenticate() } }
                         reconcileMedia() // pick up media that synced while away
@@ -68,6 +71,7 @@ struct SuixinJiApp: App {
                 .environmentObject(lock)
                 .environmentObject(theme)
                 .environmentObject(router)
+                .environmentObject(privacy)
         }
         .modelContainer(container)
     }

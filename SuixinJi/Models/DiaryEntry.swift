@@ -32,6 +32,10 @@ final class DiaryEntry {
     var audioFileName: String?
     /// Recording length in seconds — drives the badge / playback bar.
     var audioDuration: Double?
+    /// 私密日记 (evolution): when true, the entry is redacted in the timeline and
+    /// kept out of Spotlight until the user unlocks with Face ID / passcode.
+    /// Defaults to false; a SwiftData lightweight migration backfills existing rows.
+    var isPrivate: Bool = false
 
     init(
         diaryDate: Date = Date(),
@@ -45,7 +49,8 @@ final class DiaryEntry {
         longitude: Double? = nil,
         imageFileNames: [String] = [],
         audioFileName: String? = nil,
-        audioDuration: Double? = nil
+        audioDuration: Double? = nil,
+        isPrivate: Bool = false
     ) {
         let now = Date()
         self.id = UUID()
@@ -63,6 +68,7 @@ final class DiaryEntry {
         self.imageFileNames = imageFileNames
         self.audioFileName = audioFileName
         self.audioDuration = audioDuration
+        self.isPrivate = isPrivate
     }
 
     var hasAudio: Bool { audioFileName != nil }

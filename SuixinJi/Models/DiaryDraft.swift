@@ -54,6 +54,8 @@ struct DiaryDraft {
     var longitude: Double?
     var images: [EditorImage] = []
     var audio: DraftAudio?
+    /// 私密日记 (evolution): mark this entry as private.
+    var isPrivate: Bool = false
 
     /// Save is allowed only when there is text, a photo, or a recording (F1).
     /// Metadata (mood / tags / weather / location) alone doesn't count as content.

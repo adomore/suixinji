@@ -53,12 +53,19 @@ enum SpotlightIndexer {
         CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [id.uuidString])
     }
 
+    /// Entries eligible for the system index: 私密日记 are excluded so their text
+    /// never surfaces in Spotlight. Pure & testable.
+    static func indexable(_ entries: [DiaryEntry]) -> [DiaryEntry] {
+        entries.filter { !$0.isPrivate }
+    }
+
     /// Rebuild the whole index from the current entries (called on launch). Clears
-    /// this app's domain first so deleted-while-away entries don't linger.
+    /// this app's domain first so deleted-while-away entries don't linger. Private
+    /// entries are omitted (see `indexable`).
     static func reindexAll(_ entries: [DiaryEntry]) {
         let index = CSSearchableIndex.default()
         index.deleteSearchableItems(withDomainIdentifiers: [domain]) { _ in
-            index.indexSearchableItems(entries.map(makeItem(for:)))
+            index.indexSearchableItems(indexable(entries).map(makeItem(for:)))
         }
     }
 }

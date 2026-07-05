@@ -11,6 +11,7 @@ struct EditorMetadataView: View {
     @Binding var locationName: String?
     @Binding var latitude: Double?
     @Binding var longitude: Double?
+    @Binding var isPrivate: Bool
 
     @StateObject private var location = LocationProvider()
     @StateObject private var weatherProvider = WeatherProvider()
@@ -28,6 +29,7 @@ struct EditorMetadataView: View {
                     weatherChip
                     locationChip
                     tagChip
+                    privateChip
                 }
             }
             if !tags.isEmpty { tagRow }
@@ -96,6 +98,21 @@ struct EditorMetadataView: View {
                 weatherText = reading.text
             }
         }
+    }
+
+    // 私密日记 (evolution): a toggle chip. When on, the entry is locked behind Face ID.
+    private var privateChip: some View {
+        Button { isPrivate.toggle() } label: {
+            HStack(spacing: 5) {
+                Image(systemName: isPrivate ? "lock.fill" : "lock").scaledFont(14)
+                Text("私密").scaledFont(13)
+            }
+            .padding(.horizontal, 11).padding(.vertical, 7)
+            .background(isPrivate ? Color.accentColor.opacity(0.15) : Color.cardBackground, in: Capsule())
+            .foregroundStyle(isPrivate ? Color.accentColor : Color.secondary)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("editor.private")
     }
 
     // Generic emoji chip (mood / weather): shows the emoji once chosen.

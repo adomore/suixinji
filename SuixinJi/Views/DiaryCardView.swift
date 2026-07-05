@@ -4,6 +4,9 @@ import SwiftUI
 /// big day number + weekday → 2-line summary → up to 3 photo thumbs (+N) → 🎙️ badge.
 struct DiaryCardView: View {
     let entry: DiaryEntry
+    /// 私密日记 (evolution): when true, content is hidden behind a lock row and the
+    /// mood/weather/audio badges (which would leak information) are suppressed.
+    var redacted: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -16,36 +19,58 @@ struct DiaryCardView: View {
                     .scaledFont(13)
                     .foregroundStyle(.secondary)
                 Spacer(minLength: 8)
-                if let mood = entry.mood { Text(mood).scaledFont(15) }
-                if let weather = entry.weather { Text(weather).scaledFont(15) }
-                if entry.hasAudio, let dur = entry.audioDuration {
-                    HStack(spacing: 4) {
-                        WaveformBadgeMark()
-                        Text(DiaryDateFormat.duration(dur))
-                            .scaledFont(13)
-                            .monospacedDigit()
-                            .foregroundStyle(.secondary)
+                if redacted {
+                    Image(systemName: "lock.fill").scaledFont(14).foregroundStyle(.secondary)
+                } else {
+                    if let mood = entry.mood { Text(mood).scaledFont(15) }
+                    if let weather = entry.weather { Text(weather).scaledFont(15) }
+                    if entry.hasAudio, let dur = entry.audioDuration {
+                        HStack(spacing: 4) {
+                            WaveformBadgeMark()
+                            Text(DiaryDateFormat.duration(dur))
+                                .scaledFont(13)
+                                .monospacedDigit()
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
 
-            if !summaryText.isEmpty {
-                Text(summaryText)
-                    .scaledFont(15)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .lineSpacing(2)
-                    .padding(.top, 6)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            if redacted {
+                lockedRow.padding(.top, 8)
+            } else {
+                if !summaryText.isEmpty {
+                    Text(summaryText)
+                        .scaledFont(15)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .lineSpacing(2)
+                        .padding(.top, 6)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
 
-            if !entry.imageFileNames.isEmpty {
-                thumbnailRow.padding(.top, 10)
+                if !entry.imageFileNames.isEmpty {
+                    thumbnailRow.padding(.top, 10)
+                }
             }
         }
         .padding(Layout.cardPadding)
         .background(Color.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous))
+    }
+
+    /// The redacted stand-in shown for a locked private entry.
+    private var lockedRow: some View {
+        HStack(spacing: 8) {
+            Text("私密日记")
+                .scaledFont(15)
+                .foregroundStyle(.secondary)
+            Spacer(minLength: 6)
+            Text("轻点解锁")
+                .scaledFont(13)
+                .foregroundStyle(Color.accentColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var summaryText: String {

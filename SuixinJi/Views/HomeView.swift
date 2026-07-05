@@ -13,6 +13,7 @@ struct HomeView: View {
     private var entries: [DiaryEntry]
 
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var privacy: PrivacyManager
     @State private var path: [DiaryEntry] = []
 
     @State private var showingEditor = false
@@ -26,7 +27,15 @@ struct HomeView: View {
 
     /// Entries after applying the combined filter (evolution) then keyword search (F8).
     private var filteredEntries: [DiaryEntry] {
-        DiarySearch.filter(filter.apply(to: entries), query: searchText)
+        let base = DiarySearch.filter(filter.apply(to: entries), query: searchText)
+        // 私密日记: while locked, search/filter must not act as an oracle — a redacted
+        // card surfacing only because a query matched its hidden text/mood would confirm
+        // that content. Drop hidden entries whenever a filter or search is active; they
+        // still appear (redacted) in the plain, unfiltered timeline.
+        if filter.isActive || !searchText.isEmpty {
+            return base.filter { !privacy.isHidden($0) }
+        }
+        return base
     }
 
     /// Earlier-year entries sharing today's date (回顾 · 这一天).
@@ -281,11 +290,21 @@ struct HomeView: View {
 
                     VStack(spacing: Layout.cardGap) {
                         ForEach(section.entries) { entry in
-                            NavigationLink(value: entry) {
-                                DiaryCardView(entry: entry)
+                            if privacy.isHidden(entry) {
+                                // 私密日记: tap authenticates (Face ID) instead of navigating.
+                                Button { Task { await privacy.reveal() } } label: {
+                                    DiaryCardView(entry: entry, redacted: true)
+                                }
+                                .buttonStyle(.plain)
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                                .accessibilityIdentifier("card.locked")
+                            } else {
+                                NavigationLink(value: entry) {
+                                    DiaryCardView(entry: entry)
+                                }
+                                .buttonStyle(.plain)
+                                .transition(.move(edge: .top).combined(with: .opacity))
                             }
-                            .buttonStyle(.plain)
-                            .transition(.move(edge: .top).combined(with: .opacity))
                         }
                     }
                     .padding(.horizontal, Layout.pageMargin)
@@ -380,5 +399,6 @@ private struct GuidingArrow: Shape {
     HomeView()
         .modelContainer(for: DiaryEntry.self, inMemory: true)
         .environmentObject(AppRouter())
+        .environmentObject(PrivacyManager())
         .tint(.brand)
 }

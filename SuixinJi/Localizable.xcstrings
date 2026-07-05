@@ -1960,6 +1960,46 @@
           }
         }
       }
+    },
+    "私密": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private"
+          }
+        }
+      }
+    },
+    "私密日记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private entry"
+          }
+        }
+      }
+    },
+    "轻点解锁": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to unlock"
+          }
+        }
+      }
+    },
+    "验证身份后查看这篇日记。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authenticate to view this entry."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

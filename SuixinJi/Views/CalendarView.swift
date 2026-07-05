@@ -8,6 +8,7 @@ struct CalendarView: View {
     private var entries: [DiaryEntry]
 
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var privacy: PrivacyManager
 
     @State private var visibleMonth: Date = Date()
     @State private var selectedDay: Date = Date()
@@ -117,8 +118,15 @@ struct CalendarView: View {
             } else {
                 VStack(spacing: Layout.cardGap) {
                     ForEach(items) { entry in
-                        NavigationLink(value: entry) { DiaryCardView(entry: entry) }
+                        if privacy.isHidden(entry) {
+                            Button { Task { await privacy.reveal() } } label: {
+                                DiaryCardView(entry: entry, redacted: true)
+                            }
                             .buttonStyle(.plain)
+                        } else {
+                            NavigationLink(value: entry) { DiaryCardView(entry: entry) }
+                                .buttonStyle(.plain)
+                        }
                     }
                 }
                 .padding(.horizontal, Layout.pageMargin)

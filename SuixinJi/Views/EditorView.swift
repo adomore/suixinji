@@ -36,6 +36,7 @@ struct EditorView: View {
     @State private var locationName: String?
     @State private var latitude: Double?
     @State private var longitude: Double?
+    @State private var isPrivate = false
 
     // Baselines for change-detection (discard confirmation)
     @State private var initialText = ""
@@ -45,6 +46,7 @@ struct EditorView: View {
     @State private var initialWeather: String?
     @State private var initialTags: [String] = []
     @State private var initialLocation: String?
+    @State private var initialPrivate = false
 
     // UI state
     @State private var showDatePicker = false
@@ -203,7 +205,8 @@ struct EditorView: View {
 
                 EditorMetadataView(
                     mood: $mood, weather: $weather, weatherText: $weatherText, tags: $tags,
-                    locationName: $locationName, latitude: $latitude, longitude: $longitude
+                    locationName: $locationName, latitude: $latitude, longitude: $longitude,
+                    isPrivate: $isPrivate
                 )
                 .padding(.top, 12)
 
@@ -341,6 +344,7 @@ struct EditorView: View {
             || weather != initialWeather
             || tags != initialTags
             || locationName != initialLocation
+            || isPrivate != initialPrivate
     }
 
     private func cancelTapped() {
@@ -362,7 +366,7 @@ struct EditorView: View {
             text: text, diaryDate: diaryDate,
             mood: mood, weather: weather, weatherText: weatherText, tags: tags,
             locationName: locationName, latitude: latitude, longitude: longitude,
-            images: images, audio: audio
+            images: images, audio: audio, isPrivate: isPrivate
         )
         do {
             try DiaryService.save(draft, existing: existing, into: context)
@@ -390,6 +394,7 @@ struct EditorView: View {
         locationName = entry.locationName
         latitude = entry.latitude
         longitude = entry.longitude
+        isPrivate = entry.isPrivate
         images = entry.imageFileNames.map { .existing($0) }
         if let name = entry.audioFileName {
             audio = .existing(name, entry.audioDuration ?? 0)
@@ -401,6 +406,7 @@ struct EditorView: View {
         initialWeather = weather
         initialTags = tags
         initialLocation = locationName
+        initialPrivate = isPrivate
     }
 
     // MARK: Photos

@@ -7,6 +7,7 @@ struct MemoriesListView: View {
     let today: Date
 
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var privacy: PrivacyManager
     private let calendar = Calendar(identifier: .gregorian)
 
     var body: some View {
@@ -18,8 +19,15 @@ struct MemoriesListView: View {
                             Text("\(Memories.yearsAgo(entry.diaryDate, from: today, calendar: calendar)) 年前 · \(DiaryDateFormat.yearMonth(entry.diaryDate))")
                                 .scaledFont(13, weight: .medium)
                                 .foregroundStyle(.secondary)
-                            NavigationLink(value: entry) { DiaryCardView(entry: entry) }
+                            if privacy.isHidden(entry) {
+                                Button { Task { await privacy.reveal() } } label: {
+                                    DiaryCardView(entry: entry, redacted: true)
+                                }
                                 .buttonStyle(.plain)
+                            } else {
+                                NavigationLink(value: entry) { DiaryCardView(entry: entry) }
+                                    .buttonStyle(.plain)
+                            }
                         }
                     }
                 }

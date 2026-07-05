@@ -70,6 +70,7 @@ enum DiaryService {
             entry.locationName = draft.locationName
             entry.latitude = draft.latitude
             entry.longitude = draft.longitude
+            entry.isPrivate = draft.isPrivate
             entry.updatedAt = Date()
             try context.save()
 
@@ -85,8 +86,10 @@ enum DiaryService {
             MediaSyncService.removeBlobs(named: droppedNames, context: context)
             try? context.save()
 
-            // 5) Keep Spotlight in sync (evolution). Best-effort.
-            SpotlightIndexer.index(entry)
+            // 5) Keep Spotlight in sync (evolution). Best-effort. A private entry is
+            //    kept out of system search — remove any stale item if it just became private.
+            if entry.isPrivate { SpotlightIndexer.remove(id: entry.id) }
+            else { SpotlightIndexer.index(entry) }
             return entry
         } catch {
             // Roll back everything this call created.
