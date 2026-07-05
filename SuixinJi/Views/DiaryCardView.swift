@@ -10,19 +10,19 @@ struct DiaryCardView: View {
             // Header row: day number + weekday, and the recording badge (if any).
             HStack(alignment: .center, spacing: 6) {
                 Text(DiaryDateFormat.dayNumber(entry.diaryDate))
-                    .font(.cardDate22)
+                    .scaledFont(22, weight: .semibold)
                     .foregroundStyle(.primary)
                 Text(DiaryDateFormat.weekdayShort(entry.diaryDate))
-                    .font(.aux13)
+                    .scaledFont(13)
                     .foregroundStyle(.secondary)
                 Spacer(minLength: 8)
-                if let mood = entry.mood { Text(mood).font(.system(size: 15)) }
-                if let weather = entry.weather { Text(weather).font(.system(size: 15)) }
+                if let mood = entry.mood { Text(mood).scaledFont(15) }
+                if let weather = entry.weather { Text(weather).scaledFont(15) }
                 if entry.hasAudio, let dur = entry.audioDuration {
                     HStack(spacing: 4) {
                         WaveformBadgeMark()
                         Text(DiaryDateFormat.duration(dur))
-                            .font(.aux13)
+                            .scaledFont(13)
                             .monospacedDigit()
                             .foregroundStyle(.secondary)
                     }
@@ -31,7 +31,7 @@ struct DiaryCardView: View {
 
             if !summaryText.isEmpty {
                 Text(summaryText)
-                    .font(.summary15)
+                    .scaledFont(15)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                     .lineSpacing(2)
@@ -66,7 +66,7 @@ struct DiaryCardView: View {
                             ZStack {
                                 Color.black.opacity(0.35)
                                 Text("+\(overflow)")
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .scaledFont(15, weight: .semibold)
                                     .foregroundStyle(.white)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailRadius, style: .continuous))

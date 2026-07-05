@@ -32,8 +32,8 @@ struct StatisticsView: View {
 
     private var emptyState: some View {
         VStack(spacing: 8) {
-            Image(systemName: "chart.bar.xaxis").font(.system(size: 30)).foregroundStyle(.tertiary)
-            Text("还没有可统计的数据").font(.summary15).foregroundStyle(.secondary)
+            Image(systemName: "chart.bar.xaxis").scaledFont(30).foregroundStyle(.tertiary)
+            Text("还没有可统计的数据").scaledFont(15).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -79,31 +79,31 @@ struct StatisticsView: View {
                     let progress = min(1, Double(stats.currentStreak) / Double(next))
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text("距下一个里程碑").font(.aux13).foregroundStyle(.secondary)
+                            Text("距下一个里程碑").scaledFont(13).foregroundStyle(.secondary)
                             Spacer()
-                            Text("\(stats.currentStreak)/\(next) 天").font(.aux13)
+                            Text("\(stats.currentStreak)/\(next) 天").scaledFont(13)
                                 .monospacedDigit().foregroundStyle(.secondary)
                         }
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
                                 Capsule().fill(Color(uiColor: .tertiarySystemFill))
-                                Capsule().fill(Color.brand)
+                                Capsule().fill(Color.accentColor)
                                     .frame(width: max(6, geo.size.width * progress))
                             }
                         }
                         .frame(height: 10)
                     }
                 } else {
-                    Text("已达成全部里程碑 🎉").font(.summary15).foregroundStyle(.secondary)
+                    Text("已达成全部里程碑 🎉").scaledFont(15).foregroundStyle(.secondary)
                 }
                 HStack(spacing: 8) {
                     ForEach(Memories.milestones, id: \.self) { m in
                         let got = achieved.contains(m)
                         Text("\(m)天")
-                            .font(.system(size: 12, weight: .semibold))
+                            .scaledFont(12, weight: .semibold)
                             .padding(.horizontal, 10).padding(.vertical, 6)
-                            .background(got ? Color.brand.opacity(0.15) : Color(uiColor: .tertiarySystemFill), in: Capsule())
-                            .foregroundStyle(got ? Color.brand : Color.secondary)
+                            .background(got ? Color.accentColor.opacity(0.15) : Color(uiColor: .tertiarySystemFill), in: Capsule())
+                            .foregroundStyle(got ? Color.accentColor : Color.secondary)
                     }
                 }
             }
@@ -123,10 +123,10 @@ struct StatisticsView: View {
                 Button {
                     if let url = DiaryExporter.exportRecap(recap) { exportItem = ShareItem(url: url) }
                 } label: {
-                    Label("导出长图", systemImage: "square.and.arrow.up").font(.aux13)
+                    Label("导出长图", systemImage: "square.and.arrow.up").scaledFont(13)
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(Color.brand)
+                .foregroundStyle(Color.accentColor)
                 .accessibilityIdentifier("stats.exportRecap")
             }
         }
@@ -141,16 +141,16 @@ struct StatisticsView: View {
             VStack(spacing: 10) {
                 ForEach(stats.moods) { mood in
                     HStack(spacing: 10) {
-                        Text(mood.emoji).font(.system(size: 20)).frame(width: 26)
+                        Text(mood.emoji).scaledFont(20).frame(width: 26)
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
                                 Capsule().fill(Color(uiColor: .tertiarySystemFill))
-                                Capsule().fill(Color.brand)
+                                Capsule().fill(Color.accentColor)
                                     .frame(width: max(6, geo.size.width * CGFloat(mood.count) / CGFloat(maxCount)))
                             }
                         }
                         .frame(height: 10)
-                        Text("\(mood.count)").font(.aux13).monospacedDigit()
+                        Text("\(mood.count)").scaledFont(13).monospacedDigit()
                             .foregroundStyle(.secondary).frame(width: 28, alignment: .trailing)
                     }
                 }
@@ -168,12 +168,12 @@ struct StatisticsView: View {
             HStack(alignment: .bottom, spacing: 10) {
                 ForEach(stats.months) { month in
                     VStack(spacing: 6) {
-                        Text("\(month.count)").font(.aux13).monospacedDigit().foregroundStyle(.secondary)
+                        Text("\(month.count)").scaledFont(13).monospacedDigit().foregroundStyle(.secondary)
                         RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .fill(Color.brand.opacity(0.85))
+                            .fill(Color.accentColor.opacity(0.85))
                             .frame(height: max(6, 90 * CGFloat(month.count) / CGFloat(maxCount)))
                         Text(month.key.replacingOccurrences(of: "年", with: "/").replacingOccurrences(of: "月", with: ""))
-                            .font(.system(size: 10)).foregroundStyle(.tertiary)
+                            .scaledFont(10).foregroundStyle(.tertiary)
                             .lineLimit(1).minimumScaleFactor(0.7)
                     }
                     .frame(maxWidth: .infinity)
@@ -198,16 +198,16 @@ struct StatisticsView: View {
 
     private func mediaPill(system: String, count: Int, label: String) -> some View {
         HStack(spacing: 8) {
-            Image(systemName: system).font(.system(size: 15)).foregroundStyle(Color.brand)
-            Text("\(count)").font(.system(size: 17, weight: .semibold)).monospacedDigit()
-            Text(label).font(.aux13).foregroundStyle(.secondary)
+            Image(systemName: system).scaledFont(15).foregroundStyle(Color.accentColor)
+            Text("\(count)").scaledFont(17, weight: .semibold).monospacedDigit()
+            Text(label).scaledFont(13).foregroundStyle(.secondary)
             Spacer()
         }
         .cardBackgroundStyle()
     }
 
     private func sectionHeader(_ text: String) -> some View {
-        Text(text).font(.groupHeader13).foregroundStyle(.secondary)
+        Text(text).scaledFont(13, weight: .medium).foregroundStyle(.secondary)
     }
 }
 
@@ -223,16 +223,16 @@ private struct StatTile: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 3) {
                 Text(value)
-                    .font(.system(size: 30, weight: .bold))
-                    .foregroundStyle(accent ? Color.brand : .primary)
+                    .scaledFont(30, weight: .bold)
+                    .foregroundStyle(accent ? Color.accentColor : .primary)
                     .monospacedDigit()
                 if !unit.isEmpty {
-                    Text(unit).font(.aux13).foregroundStyle(.secondary)
+                    Text(unit).scaledFont(13).foregroundStyle(.secondary)
                 }
             }
-            Text(title).font(.aux13).foregroundStyle(.secondary)
+            Text(title).scaledFont(13).foregroundStyle(.secondary)
             if let footnote {
-                Text(footnote).font(.system(size: 11)).foregroundStyle(.tertiary)
+                Text(footnote).scaledFont(11).foregroundStyle(.tertiary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

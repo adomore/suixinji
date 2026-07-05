@@ -38,12 +38,12 @@ struct SuixinJiApp: App {
     }()
 
     @StateObject private var lock = AppLockManager()
+    @StateObject private var theme = ThemeManager()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .tint(.brand)
                 .overlay { if lock.isLocked { LockScreen() } }
                 .task { await lock.authenticate() } // prompt on cold launch
                 .onChange(of: scenePhase) { _, phase in
@@ -53,8 +53,10 @@ struct SuixinJiApp: App {
                     default: break
                     }
                 }
-                // Outermost so both HomeView and the lock overlay see the manager.
+                // Objects propagate into sheets; themedRoot applies tint + scale.
                 .environmentObject(lock)
+                .environmentObject(theme)
+                .themedRoot()
         }
         .modelContainer(container)
     }
@@ -70,12 +72,12 @@ private struct LockScreen: View {
             Color(uiColor: .systemBackground).ignoresSafeArea()
             VStack(spacing: 20) {
                 Image(systemName: "lock.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(Color.brand)
-                Text("随心记已锁定").font(.system(size: 17, weight: .semibold))
+                    .scaledFont(44)
+                    .foregroundStyle(Color.accentColor)
+                Text("随心记已锁定").scaledFont(17, weight: .semibold)
                 Button("解锁") { Task { await lock.authenticate() } }
-                    .font(.body17)
-                    .foregroundStyle(Color.brand)
+                    .scaledFont(17)
+                    .foregroundStyle(Color.accentColor)
             }
         }
     }

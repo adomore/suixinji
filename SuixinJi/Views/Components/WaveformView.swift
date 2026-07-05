@@ -13,7 +13,7 @@ struct WaveformView: View {
     var spacing: CGFloat = 2.5
     var minHeight: CGFloat = 6
     var maxHeight: CGFloat = 24
-    var activeColor: Color = .brand
+    var activeColor: Color = .accentColor
     var inactiveColor: Color = Color(uiColor: .tertiaryLabel)
 
     private var bars: [CGFloat] {

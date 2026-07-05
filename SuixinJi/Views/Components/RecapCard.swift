@@ -12,14 +12,14 @@ struct RecapCard: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("随心记 · 月度回顾")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(13, weight: .semibold)
                     .foregroundStyle(.secondary)
                 Spacer()
-                if let mood = recap.topMood { Text(mood).font(.system(size: 22)) }
+                if let mood = recap.topMood { Text(mood).scaledFont(22) }
             }
 
             Text(recap.monthKey)
-                .font(.system(size: 26, weight: .bold))
+                .scaledFont(26, weight: .bold)
                 .foregroundStyle(.primary)
 
             HStack(spacing: 22) {
@@ -48,24 +48,24 @@ struct RecapCard: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous)
-                .strokeBorder(Color.brand.opacity(0.25), lineWidth: forExport ? 2 : 0)
+                .strokeBorder(Color.accentColor.opacity(0.25), lineWidth: forExport ? 2 : 0)
         )
     }
 
     private func metric(_ value: String, _ title: String, big: Bool = true) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value)
-                .font(.system(size: big ? 28 : 22, weight: .bold))
-                .foregroundStyle(big ? Color.brand : .primary)
+                .scaledFont(big ? 28 : 22, weight: .bold)
+                .foregroundStyle(big ? Color.accentColor : .primary)
                 .monospacedDigit()
-            Text(title).font(.system(size: 12)).foregroundStyle(.secondary)
+            Text(title).scaledFont(12).foregroundStyle(.secondary)
         }
     }
 
     private func label(system: String, text: String) -> some View {
         HStack(spacing: 5) {
-            Image(systemName: system).font(.system(size: 13)).foregroundStyle(Color.brand)
-            Text(text).font(.system(size: 13)).foregroundStyle(.secondary)
+            Image(systemName: system).scaledFont(13).foregroundStyle(Color.accentColor)
+            Text(text).scaledFont(13).foregroundStyle(.secondary)
         }
     }
 }

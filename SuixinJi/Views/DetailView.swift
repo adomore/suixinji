@@ -28,7 +28,7 @@ struct DetailView: View {
 
                 if !entry.text.isEmpty {
                     Text(entry.text)
-                        .font(.body17)
+                        .scaledFont(17)
                         .lineSpacing(4)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -63,7 +63,7 @@ struct DetailView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
-                        .font(.system(size: 18))
+                        .scaledFont(18)
                 }
                 .accessibilityLabel("更多")
                 .accessibilityIdentifier("detail.menu")
@@ -72,7 +72,7 @@ struct DetailView: View {
         .onAppear(perform: prepareAudio)
         .onDisappear { player.stop() }
         .sheet(isPresented: $showEditor, onDismiss: prepareAudio) {
-            EditorView(mode: .edit(entry))
+            EditorView(mode: .edit(entry)).themedRoot()
         }
         .fullScreenCover(item: Binding(
             get: { viewerIndex.map { PagerIndex(value: $0) } },
@@ -97,8 +97,8 @@ struct DetailView: View {
         HStack(spacing: 12) {
             Button { player.toggle() } label: {
                 Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(Color.brand)
+                    .scaledFont(20)
+                    .foregroundStyle(Color.accentColor)
                     .frame(width: 32, height: 32)
             }
 
@@ -106,7 +106,7 @@ struct DetailView: View {
                 .frame(height: 24)
 
             Text("\(DiaryDateFormat.duration(player.currentTime)) / \(DiaryDateFormat.duration(entry.audioDuration ?? player.duration))")
-                .font(.aux13)
+                .scaledFont(13)
                 .monospacedDigit()
                 .foregroundStyle(.secondary)
         }
@@ -147,19 +147,19 @@ struct DetailView: View {
 
     private var metaHeader: some View {
         HStack(spacing: 10) {
-            if let mood = entry.mood { Text(mood).font(.system(size: 30)) }
+            if let mood = entry.mood { Text(mood).scaledFont(30) }
             if let weather = entry.weather {
                 HStack(spacing: 4) {
-                    Text(weather).font(.system(size: 26))
+                    Text(weather).scaledFont(26)
                     if let wt = entry.weatherText {
-                        Text(wt).font(.aux13).foregroundStyle(.secondary)
+                        Text(wt).scaledFont(13).foregroundStyle(.secondary)
                     }
                 }
             }
             if let loc = entry.locationName {
                 HStack(spacing: 3) {
-                    Image(systemName: "location.fill").font(.system(size: 11))
-                    Text(loc).font(.aux13)
+                    Image(systemName: "location.fill").scaledFont(11)
+                    Text(loc).scaledFont(13)
                 }
                 .foregroundStyle(.secondary)
             }
@@ -172,10 +172,10 @@ struct DetailView: View {
             HStack(spacing: 6) {
                 ForEach(entry.tags, id: \.self) { tag in
                     Text("#\(tag)")
-                        .font(.aux13)
+                        .scaledFont(13)
                         .padding(.horizontal, 9).padding(.vertical, 5)
-                        .background(Color.brand.opacity(0.12), in: Capsule())
-                        .foregroundStyle(Color.brand)
+                        .background(Color.accentColor.opacity(0.12), in: Capsule())
+                        .foregroundStyle(Color.accentColor)
                 }
             }
         }

@@ -45,18 +45,17 @@ struct CalendarView: View {
         HStack {
             Button { shiftMonth(-1) } label: { Image(systemName: "chevron.left") }
             Spacer()
-            Text(DiaryDateFormat.yearMonth(visibleMonth)).font(.system(size: 17, weight: .semibold))
+            Text(DiaryDateFormat.yearMonth(visibleMonth)).scaledFont(17, weight: .semibold)
             Spacer()
             Button { shiftMonth(1) } label: { Image(systemName: "chevron.right") }
         }
         .padding(.horizontal, Layout.pageMargin)
-        .tint(.brand)
     }
 
     private var weekdayHeader: some View {
         HStack(spacing: 0) {
             ForEach(["一", "二", "三", "四", "五", "六", "日"], id: \.self) { d in
-                Text(d).font(.aux13).foregroundStyle(.secondary)
+                Text(d).scaledFont(13).foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -89,17 +88,17 @@ struct CalendarView: View {
         } label: {
             VStack(spacing: 3) {
                 Text("\(calendar.component(.day, from: day))")
-                    .font(.system(size: 15, weight: isToday ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.white : (isToday ? Color.brand : Color.primary))
+                    .scaledFont(15, weight: isToday ? .semibold : .regular)
+                    .foregroundStyle(isSelected ? Color.white : (isToday ? Color.accentColor : Color.primary))
                 Circle()
-                    .fill(hasEntry ? Color.brand : Color.clear)
+                    .fill(hasEntry ? Color.accentColor : Color.clear)
                     .frame(width: 5, height: 5)
                     .opacity(isSelected ? 0 : 1)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .background(
-                isSelected ? Color.brand : Color.clear,
+                isSelected ? Color.accentColor : Color.clear,
                 in: RoundedRectangle(cornerRadius: 10, style: .continuous)
             )
         }
@@ -113,7 +112,7 @@ struct CalendarView: View {
         return ScrollView {
             if items.isEmpty {
                 Text("这天还没有日记")
-                    .font(.summary15).foregroundStyle(.secondary)
+                    .scaledFont(15).foregroundStyle(.secondary)
                     .padding(.top, 20)
             } else {
                 VStack(spacing: Layout.cardGap) {

@@ -11,11 +11,11 @@ struct RecordingBar: View {
             // Play affordance (playback itself happens on the detail page; here it
             // is a visual placeholder consistent with the mock).
             Circle()
-                .fill(Color.brand)
+                .fill(Color.accentColor)
                 .frame(width: 28, height: 28)
                 .overlay {
                     Image(systemName: "play.fill")
-                        .font(.system(size: 11))
+                        .scaledFont(11)
                         .foregroundStyle(.white)
                 }
 
@@ -23,13 +23,13 @@ struct RecordingBar: View {
                 .frame(height: 24)
 
             Text(DiaryDateFormat.duration(audio.duration, padMinutes: true))
-                .font(.aux13)
+                .scaledFont(13)
                 .monospacedDigit()
                 .foregroundStyle(.secondary)
 
             Button(action: onDelete) {
                 Image(systemName: "xmark")
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(11, weight: .semibold)
                     .foregroundStyle(.secondary)
                     .frame(width: 22, height: 22)
             }
@@ -59,7 +59,7 @@ struct RecordingCapsule: View {
                 .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: breathing)
 
             Text(DiaryDateFormat.duration(elapsed, padMinutes: true))
-                .font(.system(size: 15, weight: .semibold))
+                .scaledFont(15, weight: .semibold)
                 .monospacedDigit()
                 .foregroundStyle(.red)
 

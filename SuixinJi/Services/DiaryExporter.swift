@@ -89,30 +89,30 @@ private struct ExportDocument: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("随心记").font(.system(size: 15, weight: .semibold)).foregroundStyle(.secondary)
-            Text(DiaryDateFormat.longChinese(entry.diaryDate)).font(.system(size: 26, weight: .bold))
+            Text("随心记").scaledFont(15, weight: .semibold).foregroundStyle(.secondary)
+            Text(DiaryDateFormat.longChinese(entry.diaryDate)).scaledFont(26, weight: .bold)
 
             HStack(spacing: 10) {
-                if let mood = entry.mood { Text(mood).font(.system(size: 24)) }
-                if let weather = entry.weather { Text(weather).font(.system(size: 24)) }
-                if let wt = entry.weatherText { Text(wt).font(.system(size: 15)).foregroundStyle(.secondary) }
+                if let mood = entry.mood { Text(mood).scaledFont(24) }
+                if let weather = entry.weather { Text(weather).scaledFont(24) }
+                if let wt = entry.weatherText { Text(wt).scaledFont(15).foregroundStyle(.secondary) }
                 if let loc = entry.locationName {
-                    Text(loc).font(.system(size: 14)).foregroundStyle(.secondary)
+                    Text(loc).scaledFont(14).foregroundStyle(.secondary)
                 }
             }
 
             if entry.hasAudio, let d = entry.audioDuration {
                 Text("🎙️ 语音 \(DiaryDateFormat.duration(d))")
-                    .font(.system(size: 15)).foregroundStyle(.secondary)
+                    .scaledFont(15).foregroundStyle(.secondary)
             }
 
             if !entry.text.isEmpty {
-                Text(entry.text).font(.system(size: 17)).lineSpacing(6)
+                Text(entry.text).scaledFont(17).lineSpacing(6)
             }
 
             if !entry.tags.isEmpty {
                 Text(entry.tags.map { "#\($0)" }.joined(separator: "  "))
-                    .font(.system(size: 14)).foregroundStyle(Color.brand)
+                    .scaledFont(14).foregroundStyle(Color.accentColor)
             }
 
             ForEach(entry.imageFileNames, id: \.self) { name in

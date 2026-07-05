@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 /// 每日提醒 (F10) · 应用锁 (F12) · 数据备份 (evolution) · iCloud (F11) · 关于 · footer.
 struct SettingsView: View {
     @EnvironmentObject private var lock: AppLockManager
+    @EnvironmentObject private var theme: ThemeManager
     @Environment(\.modelContext) private var context
     @Query private var allEntries: [DiaryEntry]
 
@@ -26,10 +27,39 @@ struct SettingsView: View {
 
     var body: some View {
         List {
+            // MARK: 外观 (evolution — theme skin)
+            Section {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("强调色").scaledFont(13).foregroundStyle(.secondary)
+                    HStack(spacing: 16) {
+                        ForEach(ThemeManager.AccentOption.allCases) { opt in
+                            Button { theme.accent = opt } label: {
+                                Circle().fill(opt.color).frame(width: 28, height: 28)
+                                    .overlay(
+                                        Circle().strokeBorder(Color.primary, lineWidth: 2)
+                                            .padding(-3)
+                                            .opacity(theme.accent == opt ? 0.9 : 0)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("accent.\(opt.rawValue)")
+                        }
+                        Spacer()
+                    }
+                }
+                .padding(.vertical, 4)
+
+                Picker("字号", selection: $theme.fontScale) {
+                    ForEach(ThemeManager.FontScaleOption.allCases) { Text($0.name).tag($0) }
+                }
+                .pickerStyle(.segmented)
+            } header: {
+                Text("外观")
+            }
+
             // MARK: 每日提醒 (F10)
             Section {
                 Toggle("每日提醒", isOn: $reminderEnabled)
-                    .tint(.brand)
                     .onChange(of: reminderEnabled) { _, on in toggleReminder(on) }
                 if reminderEnabled {
                     DatePicker("提醒时间", selection: $reminderDate, displayedComponents: .hourAndMinute)
@@ -46,7 +76,6 @@ struct SettingsView: View {
                     get: { lock.enabled },
                     set: { lock.enabled = $0 }
                 ))
-                .tint(.brand)
                 .disabled(!lock.isAvailable)
             } footer: {
                 Text(lock.isAvailable
@@ -189,5 +218,6 @@ struct SettingsView: View {
     NavigationStack { SettingsView() }
         .modelContainer(for: DiaryEntry.self, inMemory: true)
         .environmentObject(AppLockManager())
+        .environmentObject(ThemeManager())
         .tint(.brand)
 }

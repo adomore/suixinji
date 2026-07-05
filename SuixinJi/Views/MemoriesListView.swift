@@ -16,7 +16,7 @@ struct MemoriesListView: View {
                     ForEach(entries) { entry in
                         VStack(alignment: .leading, spacing: 8) {
                             Text("\(Memories.yearsAgo(entry.diaryDate, from: today, calendar: calendar)) 年前 · \(DiaryDateFormat.yearMonth(entry.diaryDate))")
-                                .font(.groupHeader13)
+                                .scaledFont(13, weight: .medium)
                                 .foregroundStyle(.secondary)
                             NavigationLink(value: entry) { DiaryCardView(entry: entry) }
                                 .buttonStyle(.plain)

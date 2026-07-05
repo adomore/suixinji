@@ -97,6 +97,16 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"].waitForExistence(timeout: 5))
     }
 
+    // 外观: appearance controls (accent swatches + font-size picker) are present
+    // and a swatch is tappable (evolution).
+    func testAppearanceControls() {
+        app.buttons["nav.settings"].tap()
+        XCTAssertTrue(app.buttons["accent.orange"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["accent.indigo"].exists)
+        app.buttons["accent.indigo"].tap() // switch theme color
+        XCTAssertTrue(app.segmentedControls.firstMatch.exists, "字号 segmented picker present")
+    }
+
     // Backup: Settings surfaces the export/import entries (evolution).
     func testSettingsShowsBackupRows() {
         app.buttons["nav.settings"].tap()

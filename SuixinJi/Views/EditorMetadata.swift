@@ -66,11 +66,11 @@ struct EditorMetadataView: View {
                 if weatherProvider.isLoading {
                     ProgressView().controlSize(.mini)
                 } else if let weather {
-                    Text(weather).font(.system(size: 15))
+                    Text(weather).scaledFont(15)
                 } else {
-                    Image(systemName: "cloud.sun").font(.system(size: 14))
+                    Image(systemName: "cloud.sun").scaledFont(14)
                 }
-                Text(weatherText ?? (weather == nil ? "天气" : "")).font(.aux13).lineLimit(1)
+                Text(weatherText ?? (weather == nil ? "天气" : "")).scaledFont(13).lineLimit(1)
             }
             .padding(.horizontal, 11).padding(.vertical, 7)
             .background(Color.cardBackground, in: Capsule())
@@ -102,9 +102,9 @@ struct EditorMetadataView: View {
     private func chip(system: String, value: String?, placeholder: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 5) {
-                if let value { Text(value).font(.system(size: 15)) }
-                else { Image(systemName: system).font(.system(size: 14)) }
-                Text(value == nil ? placeholder : "").font(.aux13)
+                if let value { Text(value).scaledFont(15) }
+                else { Image(systemName: system).scaledFont(14) }
+                Text(value == nil ? placeholder : "").scaledFont(13)
             }
             .padding(.horizontal, 11).padding(.vertical, 7)
             .background(Color.cardBackground, in: Capsule())
@@ -122,9 +122,9 @@ struct EditorMetadataView: View {
                     ProgressView().controlSize(.mini)
                 } else {
                     Image(systemName: locationName == nil ? "location" : "location.fill")
-                        .font(.system(size: 14))
+                        .scaledFont(14)
                 }
-                Text(locationName ?? "位置").font(.aux13).lineLimit(1)
+                Text(locationName ?? "位置").scaledFont(13).lineLimit(1)
             }
             .padding(.horizontal, 11).padding(.vertical, 7)
             .background(Color.cardBackground, in: Capsule())
@@ -136,8 +136,8 @@ struct EditorMetadataView: View {
     private var tagChip: some View {
         Button { showTagInput = true } label: {
             HStack(spacing: 5) {
-                Image(systemName: "tag").font(.system(size: 14))
-                Text("标签").font(.aux13)
+                Image(systemName: "tag").scaledFont(14)
+                Text("标签").scaledFont(13)
             }
             .padding(.horizontal, 11).padding(.vertical, 7)
             .background(Color.cardBackground, in: Capsule())
@@ -151,14 +151,14 @@ struct EditorMetadataView: View {
             HStack(spacing: 6) {
                 ForEach(tags, id: \.self) { tag in
                     HStack(spacing: 4) {
-                        Text("#\(tag)").font(.aux13)
+                        Text("#\(tag)").scaledFont(13)
                         Button { tags.removeAll { $0 == tag } } label: {
-                            Image(systemName: "xmark").font(.system(size: 9, weight: .bold))
+                            Image(systemName: "xmark").scaledFont(9, weight: .bold)
                         }
                     }
                     .padding(.horizontal, 9).padding(.vertical, 5)
-                    .background(Color.brand.opacity(0.12), in: Capsule())
-                    .foregroundStyle(Color.brand)
+                    .background(Color.accentColor.opacity(0.12), in: Capsule())
+                    .foregroundStyle(Color.accentColor)
                 }
             }
         }
@@ -205,10 +205,10 @@ struct EmojiGridSheet: View {
                         dismiss()
                     } label: {
                         Text(emoji)
-                            .font(.system(size: 34))
+                            .scaledFont(34)
                             .frame(width: 60, height: 60)
                             .background(
-                                selection == emoji ? Color.brand.opacity(0.15) : Color.cardBackground,
+                                selection == emoji ? Color.accentColor.opacity(0.15) : Color.cardBackground,
                                 in: RoundedRectangle(cornerRadius: 14, style: .continuous)
                             )
                     }

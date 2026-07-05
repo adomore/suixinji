@@ -56,6 +56,7 @@ struct EditorView: View {
 
     // Text editing: caret (UTF-16) + focus, plus the anchor where the current
     // dictation session inserts (so recognized text lands at the cursor, F2).
+    @Environment(\.themeScale) private var themeScale
     @State private var editorFocused = false
     @State private var selectedRange = NSRange(location: 0, length: 0)
     @State private var dictationStart = 0
@@ -139,10 +140,10 @@ struct EditorView: View {
             } label: {
                 HStack(spacing: 5) {
                     Text(DiaryDateFormat.shortChinese(diaryDate))
-                        .font(.system(size: 15, weight: .semibold))
+                        .scaledFont(15, weight: .semibold)
                         .foregroundStyle(.primary)
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 10, weight: .semibold))
+                        .scaledFont(10, weight: .semibold)
                         .foregroundStyle(.secondary)
                 }
                 .padding(.horizontal, 13)
@@ -153,13 +154,13 @@ struct EditorView: View {
 
             HStack {
                 Button("取消") { cancelTapped() }
-                    .font(.body17)
-                    .foregroundStyle(Color.brand)
+                    .scaledFont(17)
+                    .foregroundStyle(Color.accentColor)
                     .accessibilityIdentifier("editor.cancel")
                 Spacer()
                 Button("保存") { save() }
-                    .font(.navTitle17)
-                    .foregroundStyle(canSave ? Color.brand : Color(uiColor: .tertiaryLabel))
+                    .scaledFont(17, weight: .semibold)
+                    .foregroundStyle(canSave ? Color.accentColor : Color(uiColor: .tertiaryLabel))
                     .disabled(!canSave)
                     .accessibilityIdentifier("editor.save")
             }
@@ -179,7 +180,8 @@ struct EditorView: View {
                     selectedRange: $selectedRange,
                     isFocused: $editorFocused,
                     placeholder: "今天想说点什么…",
-                    accessibilityID: "editor.text"
+                    accessibilityID: "editor.text",
+                    fontSize: 17 * themeScale
                 )
                 .frame(minHeight: 120)
                 .padding(.top, 4)
@@ -211,7 +213,7 @@ struct EditorView: View {
                     item.thumbnail(side: Layout.gridThumbnail)
                     Button { removeImage(item) } label: {
                         Image(systemName: "xmark")
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(9, weight: .bold)
                             .foregroundStyle(.white)
                             .frame(width: 20, height: 20)
                             .background(Color.black.opacity(0.5), in: Circle())
@@ -227,7 +229,7 @@ struct EditorView: View {
                         .frame(width: Layout.gridThumbnail, height: Layout.gridThumbnail)
                         .overlay {
                             Image(systemName: "plus")
-                                .font(.system(size: 20, weight: .regular))
+                                .scaledFont(20, weight: .regular)
                                 .foregroundStyle(Color(uiColor: .tertiaryLabel))
                         }
                 }
@@ -269,11 +271,11 @@ struct EditorView: View {
         Button(action: action) {
             VStack(spacing: 3) {
                 Image(systemName: system)
-                    .font(.system(size: 22))
-                    .foregroundStyle(active ? Color.brand : .primary)
+                    .scaledFont(22)
+                    .foregroundStyle(active ? Color.accentColor : .primary)
                 Text(title)
-                    .font(.label11)
-                    .foregroundStyle(active ? Color.brand : .secondary)
+                    .scaledFont(11)
+                    .foregroundStyle(active ? Color.accentColor : .secondary)
             }
             .frame(maxWidth: .infinity)
         }

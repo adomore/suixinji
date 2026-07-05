@@ -15,11 +15,13 @@ struct DiaryTextEditor: UIViewRepresentable {
     @Binding var isFocused: Bool
     var placeholder: String
     var accessibilityID: String?
+    /// Body font size — the theme font-scale is folded in by the caller.
+    var fontSize: CGFloat = 17
 
     func makeUIView(context: Context) -> UITextView {
         let tv = UITextView()
         tv.delegate = context.coordinator
-        tv.font = .systemFont(ofSize: 17)
+        tv.font = .systemFont(ofSize: fontSize)
         tv.backgroundColor = .clear
         tv.textContainerInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         tv.textContainer.lineFragmentPadding = 0
@@ -29,7 +31,7 @@ struct DiaryTextEditor: UIViewRepresentable {
         // Placeholder label overlaid at the text origin.
         let ph = UILabel()
         ph.text = placeholder
-        ph.font = .systemFont(ofSize: 17)
+        ph.font = .systemFont(ofSize: fontSize)
         ph.textColor = .tertiaryLabel
         ph.numberOfLines = 0
         ph.translatesAutoresizingMaskIntoConstraints = false
@@ -52,6 +54,10 @@ struct DiaryTextEditor: UIViewRepresentable {
         coordinator.updating = true
         defer { coordinator.updating = false }
 
+        if tv.font?.pointSize != fontSize {
+            tv.font = .systemFont(ofSize: fontSize)
+            coordinator.placeholder?.font = .systemFont(ofSize: fontSize)
+        }
         if tv.text != text { tv.text = text }
         coordinator.placeholder?.isHidden = !text.isEmpty
 

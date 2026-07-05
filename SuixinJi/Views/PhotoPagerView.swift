@@ -35,7 +35,7 @@ struct PhotoPagerView: View {
 
             Button { dismiss() } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 15, weight: .semibold))
+                    .scaledFont(15, weight: .semibold)
                     .foregroundStyle(.white)
                     .frame(width: 36, height: 36)
                     .background(.ultraThinMaterial, in: Circle())

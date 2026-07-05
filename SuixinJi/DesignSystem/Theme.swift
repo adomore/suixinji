@@ -35,19 +35,37 @@ enum Layout {
     static let maxRecordSeconds: TimeInterval = 600  // 10-minute cap (F3)
 }
 
-// MARK: - Type ramp (UI Brief §3.2)
+// MARK: - Type ramp (UI Brief §3.2) — scalable via the theme font-size setting
 //
-// System font only (SF Pro / PingFang). Sizes are fixed to match the mockups.
+// System font only (SF Pro / PingFang). Base sizes match the mockups; the theme
+// applies a global multiplier through `\.themeScale`, so all `.scaledFont(size)`
+// text grows/shrinks together. `ImageRenderer` exports don't inherit the root
+// environment, so shared cards/PDFs always render at the base (×1) size.
 
-extension Font {
-    static let largeTitle34 = Font.system(size: 34, weight: .bold)
-    static let cardDate22 = Font.system(size: 22, weight: .semibold)
-    static let body17 = Font.system(size: 17, weight: .regular)
-    static let navTitle17 = Font.system(size: 17, weight: .semibold)
-    static let summary15 = Font.system(size: 15, weight: .regular)
-    static let aux13 = Font.system(size: 13, weight: .regular)
-    static let groupHeader13 = Font.system(size: 13, weight: .medium)
-    static let label11 = Font.system(size: 11, weight: .regular)
+/// Global font-size multiplier injected by the theme at the app root.
+private struct ThemeScaleKey: EnvironmentKey { static let defaultValue: CGFloat = 1.0 }
+extension EnvironmentValues {
+    var themeScale: CGFloat {
+        get { self[ThemeScaleKey.self] }
+        set { self[ThemeScaleKey.self] = newValue }
+    }
+}
+
+private struct ScaledFontModifier: ViewModifier {
+    let size: CGFloat
+    let weight: Font.Weight
+    @Environment(\.themeScale) private var scale
+    func body(content: Content) -> some View {
+        content.scaledFont(size * scale, weight: weight)
+    }
+}
+
+extension View {
+    /// System font at `size` × the current theme scale. Replaces the old fixed
+    /// `.font(.system(size:))` / type-ramp constants.
+    func scaledFont(_ size: CGFloat, weight: Font.Weight = .regular) -> some View {
+        modifier(ScaledFontModifier(size: size, weight: weight))
+    }
 }
 
 // MARK: - Date formatting helpers (real Chinese copy — no placeholders)

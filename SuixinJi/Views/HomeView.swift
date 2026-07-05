@@ -36,7 +36,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     // Today's date, directly under the large title (matches mock 1a / 2c).
                     Text(DiaryDateFormat.longChinese(Date()))
-                        .font(.summary15)
+                        .scaledFont(15)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, Layout.pageMargin)
                         .padding(.top, 4)
@@ -63,7 +63,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button { showingCalendar = true } label: {
                         Image(systemName: "calendar")
-                            .font(.system(size: 17, weight: .regular))
+                            .scaledFont(17, weight: .regular)
                             .foregroundStyle(.secondary)
                     }
                     .accessibilityLabel("日历")
@@ -72,7 +72,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showingStats = true } label: {
                         Image(systemName: "chart.bar.xaxis")
-                            .font(.system(size: 17, weight: .regular))
+                            .scaledFont(17, weight: .regular)
                             .foregroundStyle(.secondary)
                     }
                     .accessibilityLabel("统计")
@@ -81,7 +81,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink { SettingsView() } label: {
                         Image(systemName: "gearshape")
-                            .font(.system(size: 18, weight: .regular))
+                            .scaledFont(18, weight: .regular)
                             .foregroundStyle(.secondary)
                     }
                     .accessibilityLabel("设置")
@@ -93,16 +93,16 @@ struct HomeView: View {
             }
         }
         .sheet(isPresented: $showingEditor) {
-            EditorView(mode: .create)
+            EditorView(mode: .create).themedRoot()
         }
         .sheet(isPresented: $showingCalendar) {
-            CalendarView()
+            CalendarView().themedRoot()
         }
         .sheet(isPresented: $showingStats) {
-            StatisticsView()
+            StatisticsView().themedRoot()
         }
         .sheet(isPresented: $showingMemories) {
-            MemoriesListView(entries: onThisDay, today: Date())
+            MemoriesListView(entries: onThisDay, today: Date()).themedRoot()
         }
     }
 
@@ -110,17 +110,17 @@ struct HomeView: View {
     private var onThisDayBanner: some View {
         Button { showingMemories = true } label: {
             HStack(spacing: 10) {
-                Image(systemName: "sparkles").font(.system(size: 15)).foregroundStyle(Color.brand)
+                Image(systemName: "sparkles").scaledFont(15).foregroundStyle(Color.accentColor)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("这一天").font(.system(size: 15, weight: .semibold)).foregroundStyle(.primary)
-                    Text(memoriesSubtitle).font(.aux13).foregroundStyle(.secondary)
+                    Text("这一天").scaledFont(15, weight: .semibold).foregroundStyle(.primary)
+                    Text(memoriesSubtitle).scaledFont(13).foregroundStyle(.secondary)
                 }
                 Spacer()
-                Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold))
+                Image(systemName: "chevron.right").scaledFont(12, weight: .semibold)
                     .foregroundStyle(.tertiary)
             }
             .padding(.horizontal, 14).padding(.vertical, 12)
-            .background(Color.brand.opacity(0.10), in: RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous))
+            .background(Color.accentColor.opacity(0.10), in: RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous))
         }
         .buttonStyle(.plain)
         .padding(.horizontal, Layout.pageMargin)
@@ -141,8 +141,8 @@ struct HomeView: View {
     private var noSearchResults: some View {
         VStack(spacing: 8) {
             Spacer()
-            Image(systemName: "magnifyingglass").font(.system(size: 28)).foregroundStyle(.tertiary)
-            Text("没有找到相关日记").font(.summary15).foregroundStyle(.secondary)
+            Image(systemName: "magnifyingglass").scaledFont(28).foregroundStyle(.tertiary)
+            Text("没有找到相关日记").scaledFont(15).foregroundStyle(.secondary)
             Spacer()
         }
         .frame(maxWidth: .infinity)
@@ -153,7 +153,7 @@ struct HomeView: View {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: []) {
                 ForEach(groupedSections) { section in
                     Text(section.key)
-                        .font(.groupHeader13)
+                        .scaledFont(13, weight: .medium)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, Layout.pageMargin)
                         .padding(.top, 26)
@@ -187,10 +187,10 @@ struct HomeView: View {
                     showingEditor = true
                 } label: {
                     Image(systemName: "plus")
-                        .font(.system(size: 24, weight: .semibold))
+                        .scaledFont(24, weight: .semibold)
                         .foregroundStyle(.white)
                         .frame(width: Layout.fabDiameter, height: Layout.fabDiameter)
-                        .background(Color.brand, in: Circle())
+                        .background(Color.accentColor, in: Circle())
                         // Brief §4①: light shadow, y=2 blur=8 opacity ≤15%.
                         .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 2)
                 }
@@ -220,7 +220,7 @@ private struct EmptyStateView: View {
                         bar(0.55, 10); bar(0.75, 18); bar(1, 13); bar(0.75, 22); bar(0.55, 9)
                     }
                     Text("记录今天的第一条心情吧")
-                        .font(.body17)
+                        .scaledFont(17)
                         .foregroundStyle(.secondary)
                 }
                 .position(x: geo.size.width / 2, y: geo.size.height * 0.44)
@@ -236,7 +236,7 @@ private struct EmptyStateView: View {
     }
 
     private func bar(_ opacity: Double, _ h: CGFloat) -> some View {
-        Capsule().fill(Color.brand.opacity(opacity)).frame(width: 3, height: h)
+        Capsule().fill(Color.accentColor.opacity(opacity)).frame(width: 3, height: h)
     }
 }
 
