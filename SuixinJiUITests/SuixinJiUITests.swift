@@ -94,7 +94,13 @@ final class SuixinJiUITests: XCTestCase {
     // ④ Settings: the mandatory data-storage footer must be present.
     func testSettingsShowsDataFooter() {
         app.buttons["nav.settings"].tap()
-        XCTAssertTrue(app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"].waitForExistence(timeout: 5))
+        let footer = app.staticTexts["日记仅保存在本机，删除 App 将丢失全部数据。"]
+        // The footer sits at the bottom of the (now longer) settings list; scroll
+        // to it if it isn't on the first screen.
+        if !footer.waitForExistence(timeout: 3) {
+            app.swipeUp()
+        }
+        XCTAssertTrue(footer.waitForExistence(timeout: 5))
     }
 
     // 外观: appearance controls (accent swatches + font-size picker) are present

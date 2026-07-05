@@ -1,9 +1,21 @@
 import SwiftUI
 import SwiftData
 import CoreSpotlight
+import UserNotifications
 
 @main
 struct SuixinJiApp: App {
+    init() {
+        // UI-test hygiene: clear any pending/delivered notifications (e.g. a daily
+        // reminder scheduled during manual testing) so their system banners can't
+        // interrupt automation. No effect on normal launches.
+        if ProcessInfo.processInfo.arguments.contains("-uitest") {
+            let center = UNUserNotificationCenter.current()
+            center.removeAllPendingNotificationRequests()
+            center.removeAllDeliveredNotifications()
+        }
+    }
+
     /// Single SwiftData container (PRD §5.1). iCloud sync (F11) is on by default
     /// with a graceful local fallback; UI tests use an in-memory store. See
     /// `Persistence`.
