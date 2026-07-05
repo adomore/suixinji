@@ -107,6 +107,16 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
     }
 
+    // Insights screen opens and shows the stat tiles after there's data.
+    func testStatisticsOpens() {
+        createEntry("统计用的一条日记")
+        app.buttons["nav.stats"].tap()
+        XCTAssertTrue(app.navigationBars["统计"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["累计日记"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["连续记录"].exists)
+        app.buttons["完成"].tap()
+    }
+
     // F9 calendar opens from the timeline.
     func testCalendarOpens() {
         app.buttons["nav.calendar"].tap()

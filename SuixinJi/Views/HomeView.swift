@@ -14,6 +14,7 @@ struct HomeView: View {
 
     @State private var showingEditor = false
     @State private var showingCalendar = false
+    @State private var showingStats = false
     @State private var searchText = ""
 
     /// Entries after applying keyword search (F8).
@@ -59,6 +60,15 @@ struct HomeView: View {
                     .accessibilityIdentifier("nav.calendar")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
+                    Button { showingStats = true } label: {
+                        Image(systemName: "chart.bar.xaxis")
+                            .font(.system(size: 17, weight: .regular))
+                            .foregroundStyle(.secondary)
+                    }
+                    .accessibilityLabel("统计")
+                    .accessibilityIdentifier("nav.stats")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink { SettingsView() } label: {
                         Image(systemName: "gearshape")
                             .font(.system(size: 18, weight: .regular))
@@ -77,6 +87,9 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showingCalendar) {
             CalendarView()
+        }
+        .sheet(isPresented: $showingStats) {
+            StatisticsView()
         }
     }
 

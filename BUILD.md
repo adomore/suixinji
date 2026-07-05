@@ -15,6 +15,12 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | F5 | Timeline home, grouped by year-month, empty state | `HomeView`, `DiaryCardView` |
 | F6 | Detail / edit / delete with confirmation | `DetailView` |
 
+### Beyond the PRD (evolution)
+
+| Feature | Where |
+|---------|-------|
+| 数据洞察 · 统计 (streaks, monthly activity, mood distribution, media counts) | `DiaryStatistics` (pure engine) + `StatisticsView`, opened from the home 统计 button |
+
 ### P1 / P2 features (added on top of the MVP)
 
 | PRD | Feature | Where |
