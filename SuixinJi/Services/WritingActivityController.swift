@@ -17,7 +17,8 @@ final class WritingActivityController: ObservableObject {
     func start(characters: Int) {
         guard isAvailable, activity == nil else { return }
         let attributes = WritingActivityAttributes(startDate: Date())
-        let content = ActivityContent(state: .init(characters: characters), staleDate: nil)
+        let content = ActivityContent(state: WritingActivityAttributes.ContentState(characters: characters),
+                                      staleDate: nil)
         do {
             activity = try Activity.request(attributes: attributes, content: content, pushType: nil)
             isActive = true
@@ -33,7 +34,9 @@ final class WritingActivityController: ObservableObject {
         let bucket = characters / 20
         guard bucket != lastBucket else { return } // throttle
         lastBucket = bucket
-        Task { await activity.update(ActivityContent(state: .init(characters: characters), staleDate: nil)) }
+        let content = ActivityContent(state: WritingActivityAttributes.ContentState(characters: characters),
+                                      staleDate: nil)
+        Task { await activity.update(content) }
     }
 
     /// End the session (called on any editor dismissal). Safe to call when inactive.
