@@ -1,8 +1,9 @@
 import SwiftUI
 import SwiftData
+import Charts
 
 /// Insights screen (evolution beyond the PRD). Streaks, monthly activity, mood
-/// distribution, media counts. Kept calm per the Brief — accent only for
+/// distribution + trend, media counts. Kept calm per the Brief — accent only for
 /// emphasis, semantic colors elsewhere, no gradients.
 struct StatisticsView: View {
     @Query private var entries: [DiaryEntry]
@@ -10,6 +11,9 @@ struct StatisticsView: View {
     @State private var exportItem: ShareItem?
 
     private var stats: DiaryStatistics { DiaryStatistics.compute(from: entries) }
+    private var moodTrend: [MoodTrends.MonthPoint] {
+        MoodTrends.monthlyValence(entries, calendar: Calendar(identifier: .gregorian))
+    }
 
     var body: some View {
         NavigationStack {
@@ -46,6 +50,7 @@ struct StatisticsView: View {
                 milestoneSection
                 recapSection
                 if !stats.moods.isEmpty { moodSection }
+                if moodTrend.count >= 2 { moodTrendSection }
                 if stats.months.count > 1 { monthSection }
                 mediaSection
             }
@@ -161,6 +166,52 @@ struct StatisticsView: View {
                 .foregroundStyle(Color.accentColor)
                 .accessibilityIdentifier("stats.exportRecap")
             }
+        }
+    }
+
+    // MARK: 情绪趋势 (Swift Charts — evolution)
+
+    private var moodTrendSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("情绪趋势")
+            VStack(alignment: .leading, spacing: 8) {
+                Chart(moodTrend) { p in
+                    AreaMark(x: .value("月份", p.month, unit: .month),
+                             y: .value("心情", p.average))
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(LinearGradient(
+                            colors: [Color.accentColor.opacity(0.30), Color.accentColor.opacity(0.02)],
+                            startPoint: .top, endPoint: .bottom))
+                    LineMark(x: .value("月份", p.month, unit: .month),
+                             y: .value("心情", p.average))
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(Color.accentColor)
+                    PointMark(x: .value("月份", p.month, unit: .month),
+                              y: .value("心情", p.average))
+                        .foregroundStyle(Color.accentColor)
+                }
+                .chartYScale(domain: MoodTrends.domain)
+                .chartYAxis {
+                    AxisMarks(values: [-2.0, -1, 0, 1, 2]) { value in
+                        AxisGridLine()
+                        AxisValueLabel {
+                            if let d = value.as(Double.self) {
+                                Text(MoodTrends.face(forValence: Int(d))).scaledFont(13)
+                            }
+                        }
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .month)) { _ in
+                        AxisGridLine()
+                        AxisValueLabel(format: .dateTime.month(.narrow))
+                    }
+                }
+                .frame(height: 170)
+                Text("按月平均心情（😊 明亮 → 😢 低落）")
+                    .scaledFont(12).foregroundStyle(.secondary)
+            }
+            .cardBackgroundStyle()
         }
     }
 
