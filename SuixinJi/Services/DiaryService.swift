@@ -84,6 +84,9 @@ enum DiaryService {
             MediaSyncService.syncUp(entry, context: context, fileStore: fileStore)
             MediaSyncService.removeBlobs(named: droppedNames, context: context)
             try? context.save()
+
+            // 5) Keep Spotlight in sync (evolution). Best-effort.
+            SpotlightIndexer.index(entry)
             return entry
         } catch {
             // Roll back everything this call created.
@@ -102,9 +105,11 @@ enum DiaryService {
         fileStore: FileStoreImpl = FileStore.shared
     ) throws {
         let mediaNames = MediaSyncService.referencedNames(of: entry)
+        let entryID = entry.id
         fileStore.deleteFiles(for: entry)
         MediaSyncService.removeBlobs(named: mediaNames, context: context) // F11: drop synced copies too
         context.delete(entry)
         try context.save()
+        SpotlightIndexer.remove(id: entryID) // evolution: drop from Spotlight too
     }
 }

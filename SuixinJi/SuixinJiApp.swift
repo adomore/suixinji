@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import CoreSpotlight
 
 @main
 struct SuixinJiApp: App {
@@ -23,6 +24,7 @@ struct SuixinJiApp: App {
 
     @StateObject private var lock = AppLockManager()
     @StateObject private var theme = ThemeManager()
+    @StateObject private var router = AppRouter()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
@@ -40,6 +42,8 @@ struct SuixinJiApp: App {
                     default: break
                     }
                 }
+                // Spotlight deep link: tapping a diary in system search opens it.
+                .onContinueUserActivity(CSSearchableItemActionType) { router.handle($0) }
                 // themedRoot applies tint + scale and READS ThemeManager from the
                 // environment, so the environmentObjects must wrap it (be applied
                 // outside/after) — otherwise ThemedRoot resolves against WindowGroup
@@ -49,6 +53,7 @@ struct SuixinJiApp: App {
                 .themedRoot()
                 .environmentObject(lock)
                 .environmentObject(theme)
+                .environmentObject(router)
         }
         .modelContainer(container)
     }

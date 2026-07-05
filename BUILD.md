@@ -25,6 +25,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | 主题皮肤 (5 accent colors + 4 font-size scales, live + persisted) | `ThemeManager` + `.themedRoot()`; accent via `.tint`/`Color.accentColor`, font size via `\.themeScale` + `.scaledFont`; Settings 外观 section. Shared exports keep the signature orange (ImageRenderer content renders at base scale + the AccentColor asset). |
 | 桌面小组件 + App Intents 快捷记录 | `SuixinJiWidgetExtension` target (WidgetKit): a small/medium widget showing streak + today + a compose button (`QuickAddIntent`, also a Siri/Shortcuts action). App writes a `WidgetSnapshot` to the App Group; widget reads it. See below. |
 | 地图足迹 (located entries plotted on a MapKit map, clustered by place → tap pin → that spot's entries → detail) | `MapFootprints` (pure clustering engine, grid-cell buckets + centroid) + `MapView`; home 地图 toolbar button. Reuses the F14 lat/long already captured; no new permission. |
+| Spotlight 搜索 + Siri 快捷指令 (find diaries from system search; tap a result opens the entry; spoken "记一笔") | `SpotlightIndexer` (CoreSpotlight, indexed on save/delete + full reindex on launch), `AppRouter` + `.onContinueUserActivity` deep link → `HomeView` path nav, `SuixinJiShortcuts` (`AppShortcutsProvider` over `QuickAddIntent`). No entitlement needed. |
 
 ### Widget target + App Group (requires provisioning)
 

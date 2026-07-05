@@ -12,6 +12,9 @@ struct HomeView: View {
     @Query(sort: [SortDescriptor(\DiaryEntry.createdAt, order: .reverse)])
     private var entries: [DiaryEntry]
 
+    @EnvironmentObject private var router: AppRouter
+    @State private var path: [DiaryEntry] = []
+
     @State private var showingEditor = false
     @State private var showingCalendar = false
     @State private var showingStats = false
@@ -30,7 +33,7 @@ struct HomeView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ZStack {
                 Color.pageBackground.ignoresSafeArea()
 
@@ -119,7 +122,24 @@ struct HomeView: View {
         }
         // Keep the home-screen widget's snapshot fresh after any change (evolution).
         .task { publishWidgetSnapshot(entries) }
-        .onChange(of: entries) { _, list in publishWidgetSnapshot(list) }
+        .onChange(of: entries) { _, list in
+            publishWidgetSnapshot(list)
+            openPendingEntry() // a deep-linked entry may have just loaded
+        }
+        // Spotlight: rebuild the index once on launch; deep-link taps navigate.
+        .task {
+            SpotlightIndexer.reindexAll(entries)
+            openPendingEntry()
+        }
+        .onChange(of: router.pendingEntryID) { _, _ in openPendingEntry() }
+    }
+
+    /// Navigate to the entry a Spotlight deep link requested, if it's present.
+    private func openPendingEntry() {
+        guard let id = router.pendingEntryID,
+              let entry = entries.first(where: { $0.id == id }) else { return }
+        path = [entry]
+        router.pendingEntryID = nil
     }
 
     private func publishWidgetSnapshot(_ list: [DiaryEntry]) {
@@ -287,5 +307,6 @@ private struct GuidingArrow: Shape {
 #Preview {
     HomeView()
         .modelContainer(for: DiaryEntry.self, inMemory: true)
+        .environmentObject(AppRouter())
         .tint(.brand)
 }
