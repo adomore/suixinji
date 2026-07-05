@@ -73,21 +73,31 @@ the manual picker** until the capability is provisioned. To get live weather:
 No `Info.plist` key is needed for WeatherKit itself; it reuses the location
 permission already declared for F14.
 
-### Enabling iCloud sync (F11) — opt-in
+### iCloud sync (F11) — on by default, graceful fallback
 
-Off by default so a **free** Apple ID build keeps working. To turn it on (needs a
-**paid** developer account):
+SwiftData + CloudKit sync is **on by default** (`Persistence.container`). It's
+safe: if the CloudKit container can't be created (no entitlement / free account
+/ not provisioned), the app **falls back to a local store at runtime** instead
+of crashing — only cross-device sync is off. Simulator builds/tests are
+unaffected. Settings → *iCloud 同步* shows the live account status.
 
-1. Target → *Signing & Capabilities* → **+ Capability → iCloud** → check
-   **CloudKit**; container `iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)`. (A ready
-   entitlements file is at `SuixinJi/SuixinJi.entitlements` — point
-   `CODE_SIGN_ENTITLEMENTS` at it or let Xcode generate one.)
-2. *Build Settings → Active Compilation Conditions* → add **`CLOUDKIT_ENABLED`**
-   (Debug + Release). `SuixinJiApp` then builds the container with
-   `ModelConfiguration(cloudKitDatabase: .automatic)`.
+To actually sync across devices (needs a **paid** developer account):
 
-The `DiaryEntry` schema is already CloudKit-compatible (all properties optional
-or defaulted, no unique constraints, no required relationships).
+1. Target *SuixinJi* → *Signing & Capabilities* → **+ Capability → iCloud** →
+   check **CloudKit**, container `iCloud.com.suixinji.app`. The entitlements are
+   already declared in `SuixinJi/SuixinJiApp.entitlements` (alongside the App
+   Group); Xcode's automatic signing provisions them.
+2. First run creates the CloudKit schema in the **Development** environment;
+   deploy it to **Production** (CloudKit Dashboard) before shipping to TestFlight.
+
+The `DiaryEntry` schema is CloudKit-compatible (all attributes optional or
+defaulted, no unique constraints, no required relationships).
+
+**Scope of this step:** CloudKit syncs the diary *records* (text + all metadata +
+file names). **Image/audio files are not synced yet** — on a second device
+entries appear with text/metadata but their media is missing until the file blobs
+are also synced (a natural follow-up, e.g. via CloudKit assets or the iCloud
+container). Use *导出备份* to move media in the meantime.
 
 ## Requirements
 

@@ -21,6 +21,9 @@ struct SettingsView: View {
     @State private var showImporter = false
     @State private var resultMessage: String?
 
+    // iCloud (F11)
+    @State private var iCloudStatus = "检查中…"
+
     private var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     }
@@ -102,10 +105,10 @@ struct SettingsView: View {
                 HStack {
                     Text("iCloud 同步")
                     Spacer()
-                    Text(cloudStatus).foregroundStyle(.secondary)
+                    Text(iCloudStatus).foregroundStyle(.secondary)
                 }
             } footer: {
-                Text(cloudFooter)
+                Text("登录 iCloud 后，日记文字与信息会在你的设备间自动同步。图片与录音暂不随 iCloud 同步（可用「导出备份」迁移）。")
             }
 
             // MARK: 关于 + data footer
@@ -125,6 +128,9 @@ struct SettingsView: View {
         .onAppear {
             let (h, m) = ReminderManager.parse(reminderTime)
             reminderDate = Calendar.current.date(bySettingHour: h, minute: m, second: 0, of: Date()) ?? Date()
+        }
+        .task {
+            iCloudStatus = CloudStatus.describe(await CloudStatus.current())
         }
         .alert("需要通知权限", isPresented: $notifyDenied) {
             Button("取消", role: .cancel) {}
@@ -170,24 +176,6 @@ struct SettingsView: View {
         case .failure(let error):
             resultMessage = "导入失败：\(error.localizedDescription)"
         }
-    }
-
-    // MARK: iCloud status text
-
-    private var cloudStatus: String {
-        #if CLOUDKIT_ENABLED
-        return "已开启"
-        #else
-        return "未配置"
-        #endif
-    }
-
-    private var cloudFooter: String {
-        #if CLOUDKIT_ENABLED
-        return "日记通过你的 iCloud 账号在设备间自动同步。"
-        #else
-        return "需在 Xcode 开启 iCloud/CloudKit 能力并使用付费开发者账号后启用（见 BUILD.md）。"
-        #endif
     }
 
     // MARK: Reminder actions

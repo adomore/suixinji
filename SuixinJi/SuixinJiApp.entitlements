@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  App-target entitlements. The App Group lets the widget read the app's snapshot.
-  (To also enable iCloud sync, add the CloudKit keys from SuixinJi.entitlements
-   here — a target can only reference one entitlements file.)
+  App-target entitlements.
+   • App Group  — lets the widget read the app's snapshot.
+   • iCloud/CloudKit — SwiftData syncs the diary records (F11). On a free account
+     that can't provision iCloud, the app falls back to a local store at runtime
+     (see Persistence.swift), so it still runs; only cross-device sync is off.
 -->
 <plist version="1.0">
 <dict>
@@ -11,5 +13,15 @@
 	<array>
 		<string>group.com.suixinji.app</string>
 	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.com.suixinji.app</string>
+	</array>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
+	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 </dict>
 </plist>
