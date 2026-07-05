@@ -12,36 +12,38 @@ final class MoodTrendsTests: XCTestCase {
         DiaryEntry(diaryDate: date, text: "x", mood: mood)
     }
 
-    func testAveragesValencePerMonth() {
+    func testAveragesValencePerMonth() throws {
         let today = date(2026, 7, 20)
         let e = [entry("😊", date(2026, 7, 3)),  // +2
                  entry("😐", date(2026, 7, 10))] // 0
         let pts = MoodTrends.monthlyValence(e, today: today, calendar: cal)
         XCTAssertEqual(pts.count, 1)
-        XCTAssertEqual(pts.first?.average, 1.0, accuracy: 1e-9) // (2+0)/2
-        XCTAssertEqual(pts.first?.count, 2)
-        XCTAssertEqual(pts.first?.id, "2026-07")
+        let p = try XCTUnwrap(pts.first)
+        XCTAssertEqual(p.average, 1.0, accuracy: 1e-9) // (2+0)/2
+        XCTAssertEqual(p.count, 2)
+        XCTAssertEqual(p.id, "2026-07")
     }
 
-    func testSeparatesMonthsOldestFirst() {
+    func testSeparatesMonthsOldestFirst() throws {
         let today = date(2026, 7, 20)
         let e = [entry("😢", date(2026, 6, 5)),   // -2, June
                  entry("😊", date(2026, 7, 5))]    // +2, July
         let pts = MoodTrends.monthlyValence(e, today: today, calendar: cal)
         XCTAssertEqual(pts.map(\.id), ["2026-06", "2026-07"])
-        XCTAssertEqual(pts.first?.average, -2.0, accuracy: 1e-9)
-        XCTAssertEqual(pts.last?.average, 2.0, accuracy: 1e-9)
+        XCTAssertEqual(try XCTUnwrap(pts.first).average, -2.0, accuracy: 1e-9)
+        XCTAssertEqual(try XCTUnwrap(pts.last).average, 2.0, accuracy: 1e-9)
     }
 
-    func testIgnoresNilAndUnknownMoods() {
+    func testIgnoresNilAndUnknownMoods() throws {
         let today = date(2026, 7, 20)
         let e = [entry(nil, date(2026, 7, 5)),
                  entry("🤯", date(2026, 7, 6)),  // not in catalog
                  entry("🙂", date(2026, 7, 7))]  // +1
         let pts = MoodTrends.monthlyValence(e, today: today, calendar: cal)
         XCTAssertEqual(pts.count, 1)
-        XCTAssertEqual(pts.first?.count, 1)
-        XCTAssertEqual(pts.first?.average, 1.0, accuracy: 1e-9)
+        let p = try XCTUnwrap(pts.first)
+        XCTAssertEqual(p.count, 1)
+        XCTAssertEqual(p.average, 1.0, accuracy: 1e-9)
     }
 
     func testWindowExcludesMonthsBeforeWindowStart() {
