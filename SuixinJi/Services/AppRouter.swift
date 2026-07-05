@@ -12,7 +12,7 @@ final class AppRouter: ObservableObject {
     /// Pull the diary id out of a Spotlight "open this item" activity.
     func handle(_ activity: NSUserActivity) {
         guard activity.activityType == CSSearchableItemActionType,
-              let id = activity.userInfo?[CSSearchableItemActivityIdentifierKey] as? String,
+              let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
               let uuid = UUID(uuidString: id) else { return }
         pendingEntryID = uuid
     }
