@@ -157,7 +157,9 @@ struct HomeView: View {
             openPendingEntry() // a deep-linked entry may have just loaded
         }
         // Spotlight: rebuild the index once on launch; deep-link taps navigate.
+        // Also drain anything shared into the app via the Share Extension.
         .task {
+            ShareImporter.importPending(into: context)
             SpotlightIndexer.reindexAll(entries)
             openPendingEntry()
         }

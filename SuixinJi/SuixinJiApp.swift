@@ -51,6 +51,8 @@ struct SuixinJiApp: App {
                     case .active:
                         if lock.isLocked { Task { await lock.authenticate() } }
                         reconcileMedia() // pick up media that synced while away
+                        ShareImporter.importPending(into: container.mainContext) // drain shared items
+
                     default: break
                     }
                 }
