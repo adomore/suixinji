@@ -96,18 +96,32 @@ defaulted, no unique constraints, no required relationships).
 **Scope:** CloudKit syncs the diary *records* (text + all metadata + file names)
 **and the media** (photos + voice memos). Media rides a sidecar `MediaBlob`
 `@Model` whose bytes are `@Attribute(.externalStorage)` — under CloudKit that
-syncs as a **CKAsset**. `MediaSyncService` reconciles blobs ⇄ local files both
-ways (materialize arrived blobs into the sandbox; upload local files that aren't
-synced yet), run on launch, on app-active, and right after each save/delete. The
-app's UI is unchanged — it still reads media by file name from `FileStore`
-(PRD §5.3); the blobs are just the transport.
+syncs as a **CKAsset**. The app's UI is unchanged — it still reads media by file
+name from `FileStore` (PRD §5.3); the blobs are just the transport.
 
-Media file names are per-entry UUIDs (never shared across entries), so a blob
-backs exactly one entry — that makes blob cleanup on delete race-free, and lets a
-device skip uploading a file it doesn't have yet (its blob arrives first). Local
-storage carries both the sandbox file and the blob copy (~2× for media) — an
-acceptable trade for a personal-diary media set; a future step could make the
-blob the single source and materialize on demand.
+`MediaSyncService` is designed to survive CloudKit's **unordered, per-record**
+sync (the entry record and its blob record delete independently):
+
+- **Uploads are never inferred by `reconcile`.** They happen only on authoritative
+  local actions — `DiaryService.save` uploads new media / drops removed media — plus
+  a **one-time migration** that seeds the cloud with media that predates this
+  feature (guarded by a `UserDefaults` flag so it can't re-fire). This is what
+  prevents a *resurrection* bug: if reconcile re-uploaded "any referenced file
+  without a blob," a second device that received the blob-deletion before the
+  entry-deletion would push the just-deleted photo back to every device.
+- **`reconcile` only downloads and cleans up.** It materializes arrived blobs into
+  the sandbox, and reclaims **orphan** local files — a file referenced by *no
+  entry AND no blob* can only mean both were deleted and have settled, so it's safe
+  to delete (during an in-flight delete the file is still entry- or blob-backed and
+  is kept). Runs on launch and on app-active.
+
+The invariant that makes blob cleanup precise: media file names are **per-entry
+UUIDs** (`FileStore.saveImage`/`adoptAudio`), so a blob backs exactly one entry.
+Local storage carries both the sandbox file and the blob copy (~2× for media) — an
+acceptable trade for a personal-diary media set. Known minor edge: if two devices
+run the one-time migration in the same sync window they can briefly create
+duplicate blobs for a name (no unique constraint is allowed under CloudKit);
+they're byte-identical and converge on delete.
 
 ## Requirements
 
