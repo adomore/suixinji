@@ -1920,6 +1920,46 @@
           }
         }
       }
+    },
+    "日程": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule"
+          }
+        }
+      }
+    },
+    "这一天的日历里没有日程。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No events on the calendar for this day."
+          }
+        }
+      }
+    },
+    "需要日历权限": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendar Access Needed"
+          }
+        }
+      }
+    },
+    "请在设置中允许随心记读取日历，才能把当天的日程带入日记。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow SuixinJi to read your calendar in Settings to bring the day’s events into your diary."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

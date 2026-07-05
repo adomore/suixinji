@@ -494,6 +494,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "随心记";
 				INFOPLIST_KEY_NSCameraUsageDescription = "随心记需要使用相机为日记拍摄照片。";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "随心记使用 Face ID 保护你的日记不被他人查看。";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "随心记需要读取你的日历，把当天的日程带入日记内容。";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "随心记会把你日记里的心情写入「健康」，作为一条情绪（State of Mind）记录。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "随心记需要你的位置，用于在日记中记录地点。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "随心记需要使用麦克风来录制语音日记和语音转文字。";
@@ -531,6 +532,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "随心记";
 				INFOPLIST_KEY_NSCameraUsageDescription = "随心记需要使用相机为日记拍摄照片。";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "随心记使用 Face ID 保护你的日记不被他人查看。";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "随心记需要读取你的日历，把当天的日程带入日记内容。";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "随心记会把你日记里的心情写入「健康」，作为一条情绪（State of Mind）记录。";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "随心记需要你的位置，用于在日记中记录地点。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "随心记需要使用麦克风来录制语音日记和语音转文字。";

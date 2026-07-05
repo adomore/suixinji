@@ -279,6 +279,8 @@ struct EditorView: View {
                 toolbarButton(title: "专注", system: writing.isActive ? "timer.circle.fill" : "timer",
                               active: writing.isActive, identifier: "editor.focus", action: toggleFocus)
                     .disabled(!writing.isAvailable)
+                toolbarButton(title: "日程", system: "calendar", identifier: "editor.calendar",
+                              action: importDaySchedule)
             }
             .padding(.vertical, 9)
             .padding(.horizontal, 6)
@@ -486,6 +488,34 @@ struct EditorView: View {
         selectedRange = NSRange(location: r.caret, length: 0)
     }
 
+    // MARK: 日历联动 (evolution)
+
+    /// Pull the diary day's calendar events and insert them at the caret as text.
+    private func importDaySchedule() {
+        editorFocused = false
+        Task {
+            guard await CalendarService.shared.requestAccess() else {
+                permissionAlert = .calendar; return
+            }
+            let day = diaryDate
+            let items = CalendarService.shared.events(on: day)
+            let block = CalendarService.summary(for: items)
+            guard !block.isEmpty else {
+                errorMessage = "这一天的日历里没有日程。"; return
+            }
+            // Add a trailing newline so the caret lands on a fresh line after the block.
+            insertAtCaret(block + "\n")
+        }
+    }
+
+    /// Insert `s` at the current caret (UTF-16 safe) and park the caret after it.
+    private func insertAtCaret(_ s: String) {
+        let ns = text as NSString
+        let loc = min(selectedRange.location, ns.length)
+        text = ns.replacingCharacters(in: NSRange(location: loc, length: 0), with: s)
+        selectedRange = NSRange(location: loc + (s as NSString).length, length: 0)
+    }
+
     private func openSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
@@ -505,12 +535,13 @@ struct EditorView: View {
 //  persistence logic in DiaryService can be unit-tested without the views.)
 
 enum PermissionKind: Identifiable {
-    case microphone, speech
+    case microphone, speech, calendar
     var id: Int { hashValue }
     var title: String {
         switch self {
         case .microphone: return "需要麦克风权限"
         case .speech: return "需要麦克风与语音识别权限"
+        case .calendar: return "需要日历权限"
         }
     }
     var message: String {
@@ -519,6 +550,8 @@ enum PermissionKind: Identifiable {
             return "请在设置中允许随心记使用麦克风，用于录制语音日记和语音转文字。"
         case .speech:
             return "请在设置中允许随心记使用麦克风和语音识别，把你说的话转换成日记文字。"
+        case .calendar:
+            return "请在设置中允许随心记读取日历，才能把当天的日程带入日记。"
         }
     }
 }
