@@ -62,6 +62,7 @@ struct StatisticsView: View {
             VStack(alignment: .leading, spacing: 22) {
                 tiles
                 weekSection
+                heatmapSection
                 milestoneSection
                 recapSection
                 if !stats.moods.isEmpty { moodSection }
@@ -117,6 +118,58 @@ struct StatisticsView: View {
                 }
             }
             .cardBackgroundStyle()
+        }
+    }
+
+    // MARK: 写作热力图 (evolution — GitHub-style contribution grid)
+
+    private var heatmapSection: some View {
+        let columns = WritingHeatmap.columns(from: entries, calendar: gregorian)
+        let written = WritingHeatmap.writtenDays(in: columns)
+        return VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("写作热力图")
+            VStack(alignment: .leading, spacing: 10) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 3) {
+                        ForEach(Array(columns.enumerated()), id: \.offset) { _, week in
+                            VStack(spacing: 3) {
+                                ForEach(week) { cell in
+                                    RoundedRectangle(cornerRadius: 2, style: .continuous)
+                                        .fill(heatColor(cell))
+                                        .frame(width: 11, height: 11)
+                                }
+                            }
+                        }
+                    }
+                }
+                .defaultScrollAnchor(.trailing) // newest weeks in view first
+                HStack(spacing: 6) {
+                    Text("过去一年记录了 \(written) 天").scaledFont(12).foregroundStyle(.secondary)
+                    Spacer()
+                    Text("少").scaledFont(11).foregroundStyle(.tertiary)
+                    ForEach(0..<5) { level in
+                        RoundedRectangle(cornerRadius: 2, style: .continuous)
+                            .fill(levelColor(level))
+                            .frame(width: 11, height: 11)
+                    }
+                    Text("多").scaledFont(11).foregroundStyle(.tertiary)
+                }
+            }
+            .cardBackgroundStyle()
+        }
+    }
+
+    private func heatColor(_ cell: WritingHeatmap.Cell) -> Color {
+        cell.isFuture ? Color.clear : levelColor(cell.level)
+    }
+
+    private func levelColor(_ level: Int) -> Color {
+        switch level {
+        case 0:  return Color(uiColor: .tertiarySystemFill)
+        case 1:  return Color.accentColor.opacity(0.30)
+        case 2:  return Color.accentColor.opacity(0.50)
+        case 3:  return Color.accentColor.opacity(0.75)
+        default: return Color.accentColor
         }
     }
 

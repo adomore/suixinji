@@ -111,6 +111,12 @@ final class EvolutionPerformanceTests: XCTestCase {
         measure { _ = data.map { SpotlightIndexer.makeItem(for: $0) } }
     }
 
+    func testWritingHeatmapPerformance() {
+        let data = makeDataset()
+        let cal = Calendar(identifier: .gregorian)
+        measure { _ = WritingHeatmap.columns(from: data, calendar: cal) }
+    }
+
     // MARK: Memories (scans all history for "on this day")
 
     func testMemoriesOnThisDayPerformance() {

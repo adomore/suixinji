@@ -2000,6 +2000,46 @@
           }
         }
       }
+    },
+    "写作热力图": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Writing heatmap"
+          }
+        }
+      }
+    },
+    "少": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Less"
+          }
+        }
+      }
+    },
+    "多": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More"
+          }
+        }
+      }
+    },
+    "过去一年记录了 %lld 天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wrote on %lld days in the past year"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
