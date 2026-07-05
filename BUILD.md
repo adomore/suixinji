@@ -27,6 +27,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | 地图足迹 (located entries plotted on a MapKit map, clustered by place → tap pin → that spot's entries → detail) | `MapFootprints` (pure clustering engine, grid-cell buckets + centroid) + `MapView`; home 地图 toolbar button. Reuses the F14 lat/long already captured; no new permission. |
 | Spotlight 搜索 + Siri 快捷指令 (find diaries from system search; tap a result opens the entry; spoken "记一笔") | `SpotlightIndexer` (CoreSpotlight, indexed on save/delete + full reindex on launch), `AppRouter` + `.onContinueUserActivity` deep link → `HomeView` path nav, `SuixinJiShortcuts` (`AppShortcutsProvider` over `QuickAddIntent`). No entitlement needed. |
 | 每日灵感 + 写作习惯 (a calm prompt-of-the-day nudge on Home until you've written today, seeded as the editor placeholder; a 本周写作 7-day strip in 统计) | `WritingPrompts.ofTheDay` (deterministic daily rotation) + `WritingHabit.recentDays` (pure); `HomeView` prompt banner + `EditorView(promptPlaceholder:)`; `StatisticsView` week strip. |
+| 手写涂鸦 (PencilKit) (draw/handwrite in an entry; finger or Apple Pencil) | `DrawingCanvasView` (PencilKit canvas + native tool picker) → flattens to a white-background `UIImage` the editor attaches as a normal **photo**, so it rides the existing image pipeline (display / iCloud sync / backup / export / delete) with no new model or storage. Editor 涂鸦 button. No permission/entitlement. |
 
 ### Widget target + App Group (requires provisioning)
 

@@ -49,6 +49,7 @@ struct EditorView: View {
     @State private var showPhotoLibrary = false
     @State private var photosPickerItem: PhotosPickerItem?
     @State private var showCamera = false
+    @State private var showDrawing = false
     @State private var showDiscardConfirm = false
     @State private var permissionAlert: PermissionKind?
     @State private var errorMessage: String?
@@ -102,6 +103,9 @@ struct EditorView: View {
         .fullScreenCover(isPresented: $showCamera) {
             CameraPicker { image in addImage(image) }
                 .ignoresSafeArea()
+        }
+        .fullScreenCover(isPresented: $showDrawing) {
+            DrawingCanvasView { image in if let image { addImage(image) } }
         }
         .onChange(of: photosPickerItem) { _, newItem in
             guard let newItem else { return }
@@ -261,6 +265,9 @@ struct EditorView: View {
                 )
                 toolbarButton(title: "录音", system: "waveform", identifier: "editor.record", action: startRecording)
                 toolbarButton(title: "图片", system: "photo", identifier: "editor.photo", action: { photoSourceDialog = true })
+                toolbarButton(title: "涂鸦", system: "scribble.variable", identifier: "editor.drawing",
+                              action: { showDrawing = true })
+                    .disabled(images.count >= Layout.maxImages) // no-op once at the photo cap
             }
             .padding(.vertical, 9)
             .padding(.horizontal, 6)
