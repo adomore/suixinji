@@ -169,6 +169,7 @@ struct HomeView: View {
         // Also drain anything shared into the app via the Share Extension.
         .task {
             ShareImporter.importPending(into: context)
+            MoodCheckInImporter.importPending(into: context) // widget mood check-ins
             SpotlightIndexer.reindexAll(entries)
             openPendingEntry()
         }

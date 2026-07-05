@@ -130,6 +130,46 @@
           }
         }
       }
+    },
+    "今天心情如何？": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How do you feel today?"
+          }
+        }
+      }
+    },
+    "已记录，点按可更改": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded — tap to change"
+          }
+        }
+      }
+    },
+    "心情打卡": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mood check-in"
+          }
+        }
+      }
+    },
+    "在主屏一键记录当下的心情。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log your mood from the Home Screen in one tap."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

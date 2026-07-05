@@ -60,6 +60,7 @@ struct SuixinJiApp: App {
                         if lock.isLocked { Task { await lock.authenticate() } }
                         reconcileMedia() // pick up media that synced while away
                         ShareImporter.importPending(into: container.mainContext) // drain shared items
+                        MoodCheckInImporter.importPending(into: container.mainContext) // drain widget mood check-ins
 
                     default: break
                     }

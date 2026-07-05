@@ -5,6 +5,7 @@ import SwiftUI
 struct SuixinJiWidgetBundle: WidgetBundle {
     var body: some Widget {
         TodayWidget()
+        MoodCheckInWidget()
         WritingLiveActivity()
     }
 }
