@@ -30,9 +30,9 @@ final class HealthService {
     #if canImport(HealthKit)
     private let store = HKHealthStore()
 
-    /// State of Mind is iOS 17+. Older systems: feature is simply off.
+    /// State of Mind (HKStateOfMind) is an iOS 18 API. Older systems: feature off.
     var isSupported: Bool {
-        if #available(iOS 17.0, *) { return HKHealthStore.isHealthDataAvailable() }
+        if #available(iOS 18.0, *) { return HKHealthStore.isHealthDataAvailable() }
         return false
     }
 
@@ -41,7 +41,7 @@ final class HealthService {
     /// whether write access was actually granted, by design).
     @discardableResult
     func requestAuthorization() async -> Bool {
-        guard isSupported, #available(iOS 17.0, *) else { return false }
+        guard isSupported, #available(iOS 18.0, *) else { return false }
         let type = HKObjectType.stateOfMindType()
         do {
             try await store.requestAuthorization(toShare: [type], read: [])
@@ -55,7 +55,7 @@ final class HealthService {
     /// returns if unsupported, unmapped, or the save fails (Health is a nice-to-have,
     /// never a reason to block or fail saving the diary itself).
     func logMood(_ mood: String, on date: Date) async {
-        guard isSupported, #available(iOS 17.0, *),
+        guard isSupported, #available(iOS 18.0, *),
               let label = Self.labelForMood[mood],
               let valence = Self.valence(for: mood) else { return }
 
@@ -81,7 +81,7 @@ private enum HealthMoodLabel {
     case happy, joyful, content, indifferent, drained, disappointed, sad, angry
 
     #if canImport(HealthKit)
-    @available(iOS 17.0, *)
+    @available(iOS 18.0, *)
     var hkLabel: HKStateOfMind.Label {
         switch self {
         case .happy: return .happy
