@@ -57,6 +57,7 @@ struct EditorView: View {
     // Services
     @StateObject private var recorder = AudioRecorder()
     @StateObject private var transcriber = SpeechTranscriber()
+    @StateObject private var writing = WritingActivityController()
 
     // Text editing: caret (UTF-16) + focus, plus the anchor where the current
     // dictation session inserts (so recognized text lands at the cursor, F2).
@@ -92,6 +93,10 @@ struct EditorView: View {
             // and the speech engine's tap leak.
             transcriber.stop()
             if recorder.isRecording { recorder.cancel() }
+            writing.end() // end the 写作计时 Live Activity on any dismissal
+        }
+        .onChange(of: text) { _, newText in
+            writing.update(characters: newText.count) // throttled char-count push
         }
         .sheet(isPresented: $showDatePicker) { datePickerSheet }
         .confirmationDialog("添加图片", isPresented: $photoSourceDialog, titleVisibility: .visible) {
@@ -268,6 +273,9 @@ struct EditorView: View {
                 toolbarButton(title: "涂鸦", system: "scribble.variable", identifier: "editor.drawing",
                               action: { showDrawing = true })
                     .disabled(images.count >= Layout.maxImages) // no-op once at the photo cap
+                toolbarButton(title: "专注", system: writing.isActive ? "timer.circle.fill" : "timer",
+                              active: writing.isActive, identifier: "editor.focus", action: toggleFocus)
+                    .disabled(!writing.isAvailable)
             }
             .padding(.vertical, 9)
             .padding(.horizontal, 6)
@@ -475,6 +483,13 @@ struct EditorView: View {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
+    }
+
+    /// Toggle the 写作计时 Live Activity — a focus session shown on the Lock Screen
+    /// and Dynamic Island. Ends automatically when the editor is dismissed.
+    private func toggleFocus() {
+        if writing.isActive { writing.end() }
+        else { writing.start(characters: text.count) }
     }
 }
 
