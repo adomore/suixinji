@@ -117,6 +117,11 @@ final class EvolutionPerformanceTests: XCTestCase {
         measure { _ = WritingHeatmap.columns(from: data, calendar: cal) }
     }
 
+    func testKeywordInsightsPerformance() {
+        let data = makeDataset()
+        measure { _ = KeywordInsights.topWords(from: data, limit: 10) }
+    }
+
     // MARK: Memories (scans all history for "on this day")
 
     func testMemoriesOnThisDayPerformance() {

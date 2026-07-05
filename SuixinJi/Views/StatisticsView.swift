@@ -66,6 +66,7 @@ struct StatisticsView: View {
                 milestoneSection
                 recapSection
                 if !stats.moods.isEmpty { moodSection }
+                if !keywords.isEmpty { keywordSection }
                 if moodTrend.count >= 2 { moodTrendSection }
                 if stats.months.count > 1 { monthSection }
                 mediaSection
@@ -285,6 +286,38 @@ struct StatisticsView: View {
     }
 
     // MARK: Mood distribution
+
+    // MARK: 关键词洞察 (evolution). Private entries excluded so a distinctive word
+    // never leaks out of a locked diary.
+    private var keywords: [KeywordInsights.WordCount] {
+        KeywordInsights.topWords(from: entries.filter { !$0.isPrivate }, limit: 10)
+    }
+
+    private var keywordSection: some View {
+        let maxCount = keywords.map(\.count).max() ?? 1
+        return VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("关键词")
+            VStack(spacing: 10) {
+                ForEach(keywords) { kw in
+                    HStack(spacing: 10) {
+                        Text(kw.word).scaledFont(14)
+                            .lineLimit(1).frame(width: 88, alignment: .leading)
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                Capsule().fill(Color(uiColor: .tertiarySystemFill))
+                                Capsule().fill(Color.accentColor)
+                                    .frame(width: max(6, geo.size.width * CGFloat(kw.count) / CGFloat(maxCount)))
+                            }
+                        }
+                        .frame(height: 10)
+                        Text("\(kw.count)").scaledFont(13).monospacedDigit()
+                            .foregroundStyle(.secondary).frame(width: 28, alignment: .trailing)
+                    }
+                }
+            }
+            .cardBackgroundStyle()
+        }
+    }
 
     private var moodSection: some View {
         let maxCount = stats.moods.map(\.count).max() ?? 1

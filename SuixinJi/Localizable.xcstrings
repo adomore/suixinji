@@ -2120,6 +2120,16 @@
           }
         }
       }
+    },
+    "关键词": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keywords"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
