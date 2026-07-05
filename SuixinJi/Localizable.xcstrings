@@ -1900,6 +1900,26 @@
           }
         }
       }
+    },
+    "同步心情到「健康」": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync mood to Health"
+          }
+        }
+      }
+    },
+    "开启后，保存带心情的日记时，会在「健康」App 记录一条对应的情绪（State of Mind）。仅写入，随心记不会读取你的健康数据。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When on, saving an entry with a mood also logs a matching State of Mind in the Health app. Write-only — SuixinJi never reads your health data."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -20,6 +20,9 @@ struct EditorView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
+    // Apple Health mood sync (evolution) — opt-in via Settings.
+    @AppStorage("healthSyncEnabled") private var healthSyncEnabled = false
+
     // Draft state
     @State private var text = ""
     @State private var diaryDate = Date()
@@ -361,6 +364,10 @@ struct EditorView: View {
         )
         do {
             try DiaryService.save(draft, existing: existing, into: context)
+            // Apple Health · 心情 → State of Mind (evolution). Opt-in, best-effort.
+            if healthSyncEnabled, let mood {
+                Task { await HealthService.shared.logMood(mood, on: diaryDate) }
+            }
             dismiss()
         } catch {
             errorMessage = (error as? LocalizedError)?.errorDescription ?? "存储空间可能不足，请重试。"

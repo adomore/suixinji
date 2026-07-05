@@ -12,6 +12,7 @@ struct SettingsView: View {
 
     @AppStorage("dailyReminderEnabled") private var reminderEnabled = false
     @AppStorage("dailyReminderTime") private var reminderTime = "21:00"
+    @AppStorage("healthSyncEnabled") private var healthSyncEnabled = false
 
     @State private var reminderDate = Date()
     @State private var notifyDenied = false
@@ -91,6 +92,17 @@ struct SettingsView: View {
                 Text(lock.isAvailable
                      ? "开启后，每次打开随心记需通过 Face ID、Touch ID 或设备密码。"
                      : "此设备未设置密码或生物识别，无法开启应用锁。")
+            }
+
+            // MARK: 健康联动 (evolution — Apple Health · State of Mind)
+            if HealthService.shared.isSupported {
+                Section {
+                    Toggle("同步心情到「健康」", isOn: $healthSyncEnabled)
+                        .onChange(of: healthSyncEnabled) { _, on in if on { enableHealthSync() } }
+                        .accessibilityIdentifier("settings.health")
+                } footer: {
+                    Text("开启后，保存带心情的日记时，会在「健康」App 记录一条对应的情绪（State of Mind）。仅写入，随心记不会读取你的健康数据。")
+                }
             }
 
             // MARK: 内容管理 (evolution)
@@ -236,6 +248,15 @@ struct SettingsView: View {
             resultMessage = "密码不正确，无法解密该备份。"
         } catch {
             resultMessage = "导入失败：文件可能不是有效的随心记备份。"
+        }
+    }
+
+    // MARK: Health actions
+
+    private func enableHealthSync() {
+        Task {
+            let ok = await HealthService.shared.requestAuthorization()
+            if !ok { healthSyncEnabled = false }
         }
     }
 
