@@ -40,10 +40,15 @@ struct SuixinJiApp: App {
                     default: break
                     }
                 }
-                // Objects propagate into sheets; themedRoot applies tint + scale.
+                // themedRoot applies tint + scale and READS ThemeManager from the
+                // environment, so the environmentObjects must wrap it (be applied
+                // outside/after) — otherwise ThemedRoot resolves against WindowGroup
+                // where nothing was injected and crashes. As the outermost modifiers
+                // the objects still propagate down into HomeView, its sheets, and the
+                // lock overlay.
+                .themedRoot()
                 .environmentObject(lock)
                 .environmentObject(theme)
-                .themedRoot()
         }
         .modelContainer(container)
     }
