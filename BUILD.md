@@ -29,7 +29,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 
 The widget is a second target (`SuixinJiWidgetExtension`) embedded in the app. It
 reads a tiny `WidgetSnapshot` the app writes to a shared **App Group container**
-(`group.com.suixinji.app`). `Shared/` (snapshot, `SharedStore`, `QuickAddIntent`)
+(`group.com.zengmingjiang.suixinji`). `Shared/` (snapshot, `SharedStore`, `QuickAddIntent`)
 is compiled into **both** targets.
 
 - **Simulator builds/tests are unaffected** — App Group entitlements aren't
@@ -84,7 +84,7 @@ unaffected. Settings → *iCloud 同步* shows the live account status.
 To actually sync across devices (needs a **paid** developer account):
 
 1. Target *SuixinJi* → *Signing & Capabilities* → **+ Capability → iCloud** →
-   check **CloudKit**, container `iCloud.com.suixinji.app`. The entitlements are
+   check **CloudKit**, container `iCloud.com.zengmingjiang.suixinji`. The entitlements are
    already declared in `SuixinJi/SuixinJiApp.entitlements` (alongside the App
    Group); Xcode's automatic signing provisions them.
 2. First run creates the CloudKit schema in the **Development** environment;

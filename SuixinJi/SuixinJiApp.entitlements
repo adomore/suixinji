@@ -11,11 +11,11 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.suixinji.app</string>
+		<string>group.com.zengmingjiang.suixinji</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.com.suixinji.app</string>
+		<string>iCloud.com.zengmingjiang.suixinji</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
