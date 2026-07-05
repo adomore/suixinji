@@ -104,6 +104,21 @@ struct HomeView: View {
         .sheet(isPresented: $showingMemories) {
             MemoriesListView(entries: onThisDay, today: Date()).themedRoot()
         }
+        // Keep the home-screen widget's snapshot fresh after any change (evolution).
+        .task { publishWidgetSnapshot(entries) }
+        .onChange(of: entries) { _, list in publishWidgetSnapshot(list) }
+    }
+
+    private func publishWidgetSnapshot(_ list: [DiaryEntry]) {
+        let stats = DiaryStatistics.compute(from: list)
+        let cal = Calendar.current
+        let wroteToday = list.contains { cal.isDateInToday($0.diaryDate) }
+        SharedStore.write(WidgetSnapshot(
+            currentStreak: stats.currentStreak,
+            totalEntries: stats.totalEntries,
+            wroteToday: wroteToday,
+            generatedAt: Date()
+        ))
     }
 
     // "N 年前的今天" banner leading the eye to past memories (回顾).

@@ -23,6 +23,25 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | 回顾 · 记忆 (这一天 / 去年今天, streak milestones, monthly recap → shareable long image) | `Memories` + `MonthlyRecap` engines; home "这一天" banner → `MemoriesListView`; milestone + recap sections in `StatisticsView`; `RecapCard` + `DiaryExporter.exportRecap` |
 | 全量备份 · 导出/导入 (single self-contained `.json` incl. media as base64; merge-by-id restore) | `DiaryBackup` format + `BackupService`; Settings 数据备份 section (share sheet export + `.fileImporter` import) |
 | 主题皮肤 (5 accent colors + 4 font-size scales, live + persisted) | `ThemeManager` + `.themedRoot()`; accent via `.tint`/`Color.accentColor`, font size via `\.themeScale` + `.scaledFont`; Settings 外观 section. Shared exports keep the signature orange (ImageRenderer content renders at base scale + the AccentColor asset). |
+| 桌面小组件 + App Intents 快捷记录 | `SuixinJiWidgetExtension` target (WidgetKit): a small/medium widget showing streak + today + a compose button (`QuickAddIntent`, also a Siri/Shortcuts action). App writes a `WidgetSnapshot` to the App Group; widget reads it. See below. |
+
+### Widget target + App Group (requires provisioning)
+
+The widget is a second target (`SuixinJiWidgetExtension`) embedded in the app. It
+reads a tiny `WidgetSnapshot` the app writes to a shared **App Group container**
+(`group.com.suixinji.app`). `Shared/` (snapshot, `SharedStore`, `QuickAddIntent`)
+is compiled into **both** targets.
+
+- **Simulator builds/tests are unaffected** — App Group entitlements aren't
+  enforced there, so `xcodebuild test` on a simulator runs the whole suite as before.
+- **On device**, both targets carry `com.apple.security.application-groups`
+  (`SuixinJi/SuixinJiApp.entitlements`, `SuixinJiWidget/SuixinJiWidget.entitlements`).
+  Xcode's automatic signing provisions the App Group; if your account can't, either
+  register the group in *Signing & Capabilities → App Groups* on both targets, or
+  remove the `SuixinJiWidgetExtension` target + the app's `CODE_SIGN_ENTITLEMENTS`
+  to revert to the app-only build.
+
+The widget's compose button and the `QuickAddIntent` open the app (`openAppWhenRun`).
 
 ### P1 / P2 features (added on top of the MVP)
 
