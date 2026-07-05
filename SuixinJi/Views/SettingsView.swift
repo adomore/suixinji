@@ -20,6 +20,13 @@ struct SettingsView: View {
     @State private var shareItem: ShareItem?
     @State private var showImporter = false
     @State private var resultMessage: String?
+    // 数据加密 (evolution): optional password on export, prompt on encrypted import.
+    @State private var showExportChoice = false
+    @State private var showExportPassword = false
+    @State private var exportPassword = ""
+    @State private var pendingImportData: Data?
+    @State private var showImportPassword = false
+    @State private var importPassword = ""
 
     // iCloud (F11)
     @State private var iCloudStatus = "检查中…"
@@ -100,7 +107,7 @@ struct SettingsView: View {
 
             // MARK: 数据备份 (evolution)
             Section {
-                Button { exportBackup() } label: {
+                Button { showExportChoice = true } label: {
                     Label("导出备份", systemImage: "square.and.arrow.up")
                 }
                 .accessibilityIdentifier("settings.export")
@@ -109,7 +116,7 @@ struct SettingsView: View {
                 }
                 .accessibilityIdentifier("settings.import")
             } footer: {
-                Text("导出为一个 .json 文件（含图片与录音），换机或重装后可导入恢复。导入按 id 合并，不会覆盖已有日记。")
+                Text("导出为一个含图片与录音的文件，换机或重装后可导入恢复。可选设置密码加密（AES-256），导入时需输入同一密码。导入按 id 合并，不会覆盖已有日记。")
             }
 
             // MARK: iCloud 同步 (F11)
@@ -153,8 +160,29 @@ struct SettingsView: View {
             Text("请在设置中允许随心记发送通知，用于每日提醒。")
         }
         .sheet(item: $shareItem) { ShareSheet(items: [$0.url]) }
-        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in
+        .fileImporter(isPresented: $showImporter,
+                      allowedContentTypes: [.json, UTType(filenameExtension: "suixinji") ?? .data]) { result in
             handleImport(result)
+        }
+        .confirmationDialog("导出备份", isPresented: $showExportChoice, titleVisibility: .visible) {
+            Button("直接导出") { exportBackup(password: nil) }
+            Button("加密导出（设密码）") { exportPassword = ""; showExportPassword = true }
+            Button("取消", role: .cancel) {}
+        }
+        .alert("设置备份密码", isPresented: $showExportPassword) {
+            SecureField("密码（至少 4 位）", text: $exportPassword)
+            Button("取消", role: .cancel) {}
+            Button("导出") { exportBackup(password: exportPassword) }
+                .disabled(exportPassword.count < 4)
+        } message: {
+            Text("导入时需要输入同一密码，忘记将无法恢复。")
+        }
+        .alert("输入备份密码", isPresented: $showImportPassword) {
+            SecureField("密码", text: $importPassword)
+            Button("取消", role: .cancel) { pendingImportData = nil }
+            Button("解密导入") { importEncrypted() }
+        } message: {
+            Text("这是一个加密备份，请输入导出时设置的密码。")
         }
         .alert("提示", isPresented: Binding(
             get: { resultMessage != nil }, set: { if !$0 { resultMessage = nil } }
@@ -165,9 +193,9 @@ struct SettingsView: View {
 
     // MARK: Backup actions
 
-    private func exportBackup() {
+    private func exportBackup(password: String?) {
         do {
-            shareItem = ShareItem(url: try BackupService.writeBackupFile(from: allEntries))
+            shareItem = ShareItem(url: try BackupService.writeBackupFile(from: allEntries, password: password))
         } catch {
             resultMessage = "导出失败：\(error.localizedDescription)"
         }
@@ -178,15 +206,36 @@ struct SettingsView: View {
         case .success(let url):
             let scoped = url.startAccessingSecurityScopedResource()
             defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-            do {
-                let data = try Data(contentsOf: url)
-                let r = try BackupService.importData(data, into: context)
-                resultMessage = "导入完成：新增 \(r.imported) 篇，跳过 \(r.skipped) 篇。"
-            } catch {
-                resultMessage = "导入失败：文件可能不是有效的随心记备份。"
+            guard let data = try? Data(contentsOf: url) else {
+                resultMessage = "导入失败：无法读取文件。"; return
+            }
+            if BackupCrypto.isEncrypted(data) {
+                // Stash it and ask for the password.
+                pendingImportData = data
+                importPassword = ""
+                showImportPassword = true
+            } else {
+                runImport(data, password: nil)
             }
         case .failure(let error):
             resultMessage = "导入失败：\(error.localizedDescription)"
+        }
+    }
+
+    private func importEncrypted() {
+        guard let data = pendingImportData else { return }
+        runImport(data, password: importPassword)
+        pendingImportData = nil
+    }
+
+    private func runImport(_ data: Data, password: String?) {
+        do {
+            let r = try BackupService.importData(data, into: context, password: password)
+            resultMessage = "导入完成：新增 \(r.imported) 篇，跳过 \(r.skipped) 篇。"
+        } catch BackupCrypto.CryptoError.wrongPassword {
+            resultMessage = "密码不正确，无法解密该备份。"
+        } catch {
+            resultMessage = "导入失败：文件可能不是有效的随心记备份。"
         }
     }
 
