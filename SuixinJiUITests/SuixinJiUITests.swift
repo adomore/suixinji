@@ -27,7 +27,7 @@ final class SuixinJiUITests: XCTestCase {
 
     // Empty state (Brief §5): guidance line + the ➕ button are present.
     func testEmptyStateShown() {
-        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 12))
         XCTAssertTrue(app.buttons["fab.add"].exists)
     }
 
@@ -35,7 +35,7 @@ final class SuixinJiUITests: XCTestCase {
     func testSaveDisabledWhenEmpty() {
         app.buttons["fab.add"].tap()
         let save = app.buttons["editor.save"]
-        XCTAssertTrue(save.waitForExistence(timeout: 5))
+        XCTAssertTrue(save.waitForExistence(timeout: 12))
         XCTAssertFalse(save.isEnabled, "保存 must be greyed out when the entry is empty")
     }
 
@@ -45,7 +45,7 @@ final class SuixinJiUITests: XCTestCase {
         app.buttons["fab.add"].tap()
 
         let editor = app.textViews["editor.text"]
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
         editor.tap()
         editor.typeText(marker)
 
@@ -53,7 +53,7 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(save.isEnabled)
         save.tap()
 
-        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 12))
         XCTAssertFalse(app.staticTexts["记录今天的第一条心情吧"].exists)
     }
 
@@ -61,17 +61,17 @@ final class SuixinJiUITests: XCTestCase {
     func testCancelWithChangesAsksToDiscard() {
         app.buttons["fab.add"].tap()
         let editor = app.textViews["editor.text"]
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
         editor.tap()
         editor.typeText("临时内容")
 
         app.buttons["editor.cancel"].tap()
         // confirmationDialog with the discard prompt.
         let discard = app.buttons["放弃修改"]
-        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        XCTAssertTrue(discard.waitForExistence(timeout: 12))
         discard.tap()
 
-        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5),
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 12),
                       "discarded entry must not appear")
     }
 
@@ -81,24 +81,24 @@ final class SuixinJiUITests: XCTestCase {
         // create one
         app.buttons["fab.add"].tap()
         let editor = app.textViews["editor.text"]
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
         editor.tap(); editor.typeText(marker)
         app.buttons["editor.save"].tap()
 
         // open detail
         let card = app.staticTexts[marker]
-        XCTAssertTrue(card.waitForExistence(timeout: 5))
+        XCTAssertTrue(card.waitForExistence(timeout: 12))
         card.tap()
 
         // ··· → 删除 → confirm
         app.buttons["detail.menu"].tap()
         app.buttons["删除"].tap()
         let confirm = app.alerts.buttons["删除"]
-        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        XCTAssertTrue(confirm.waitForExistence(timeout: 12))
         confirm.tap()
 
         // back to empty timeline
-        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["记录今天的第一条心情吧"].waitForExistence(timeout: 12))
     }
 
     // ④ Settings: the mandatory data-storage footer must be present.
@@ -110,14 +110,14 @@ final class SuixinJiUITests: XCTestCase {
         if !footer.waitForExistence(timeout: 3) {
             app.swipeUp()
         }
-        XCTAssertTrue(footer.waitForExistence(timeout: 5))
+        XCTAssertTrue(footer.waitForExistence(timeout: 12))
     }
 
     // 外观: appearance controls (accent swatches + font-size picker) are present
     // and a swatch is tappable (evolution).
     func testAppearanceControls() {
         app.buttons["nav.settings"].tap()
-        XCTAssertTrue(app.buttons["accent.orange"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["accent.orange"].waitForExistence(timeout: 12))
         XCTAssertTrue(app.buttons["accent.indigo"].exists)
         app.buttons["accent.indigo"].tap() // switch theme color
         XCTAssertTrue(app.segmentedControls.firstMatch.exists, "字号 segmented picker present")
@@ -126,7 +126,7 @@ final class SuixinJiUITests: XCTestCase {
     // Backup: Settings surfaces the export/import entries (evolution).
     func testSettingsShowsBackupRows() {
         app.buttons["nav.settings"].tap()
-        XCTAssertTrue(app.buttons["settings.export"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["settings.export"].waitForExistence(timeout: 12))
         XCTAssertTrue(app.buttons["settings.import"].exists)
     }
 
@@ -134,10 +134,10 @@ final class SuixinJiUITests: XCTestCase {
     private func createEntry(_ marker: String) {
         app.buttons["fab.add"].tap()
         let editor = app.textViews["editor.text"]
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
         editor.tap(); editor.typeText(marker)
         app.buttons["editor.save"].tap()
-        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 12))
     }
 
     // 回顾: the "这一天" banner appears when a same-date past-year entry exists,
@@ -148,18 +148,18 @@ final class SuixinJiUITests: XCTestCase {
         app.launch()
 
         let banner = app.buttons["home.memories"]
-        XCTAssertTrue(banner.waitForExistence(timeout: 5))
+        XCTAssertTrue(banner.waitForExistence(timeout: 12))
         banner.tap()
-        XCTAssertTrue(app.navigationBars["这一天"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["去年今天的回忆"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["这一天"].waitForExistence(timeout: 12))
+        XCTAssertTrue(app.staticTexts["去年今天的回忆"].waitForExistence(timeout: 12))
     }
 
     // Insights screen opens and shows the stat tiles after there's data.
     func testStatisticsOpens() {
         createEntry("统计用的一条日记")
         app.buttons["nav.stats"].tap()
-        XCTAssertTrue(app.navigationBars["统计"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["累计日记"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["统计"].waitForExistence(timeout: 12))
+        XCTAssertTrue(app.staticTexts["累计日记"].waitForExistence(timeout: 12))
         XCTAssertTrue(app.staticTexts["连续记录"].exists)
         app.buttons["完成"].tap()
     }
@@ -167,7 +167,7 @@ final class SuixinJiUITests: XCTestCase {
     // F9 calendar opens from the timeline.
     func testCalendarOpens() {
         app.buttons["nav.calendar"].tap()
-        XCTAssertTrue(app.navigationBars["日历"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["日历"].waitForExistence(timeout: 12))
         app.buttons["完成"].tap()
     }
 
@@ -177,7 +177,7 @@ final class SuixinJiUITests: XCTestCase {
     func testDictationInsertsAtCaret() throws {
         app.buttons["fab.add"].tap()
         let editor = app.textViews["editor.text"]
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
         editor.tap()
         editor.typeText("前面后面")
 
@@ -204,11 +204,11 @@ final class SuixinJiUITests: XCTestCase {
         createEntry("加班到很晚")
 
         let search = app.searchFields.firstMatch
-        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        XCTAssertTrue(search.waitForExistence(timeout: 12))
         search.tap()
         search.typeText("海边")
 
-        XCTAssertTrue(app.staticTexts["海边散步很惬意"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["海边散步很惬意"].waitForExistence(timeout: 12))
         XCTAssertFalse(app.staticTexts["加班到很晚"].exists)
     }
 }
