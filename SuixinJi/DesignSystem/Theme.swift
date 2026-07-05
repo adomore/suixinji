@@ -73,43 +73,48 @@ extension View {
 // MARK: - Date formatting helpers (real Chinese copy — no placeholders)
 
 enum DiaryDateFormat {
-    /// "7月4日 星期六"
-    static func longChinese(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "M月d日 EEEE"
+    /// Locale-aware (evolution · localization): Chinese keeps the exact original
+    /// patterns (so nothing changes for zh users / tests); other languages use
+    /// locale-appropriate templates, e.g. English "Sat, Jul 4".
+    private static func isChinese(_ locale: Locale) -> Bool {
+        locale.language.languageCode == .chinese
+    }
+
+    /// zh "7月4日 星期六" · en "Sat, Jul 4"
+    static func longChinese(_ date: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale
+        if isChinese(locale) { f.dateFormat = "M月d日 EEEE" }
+        else { f.setLocalizedDateFormatFromTemplate("EEEMMMd") }
         return f.string(from: date)
     }
 
-    /// "7月4日"
-    static func shortChinese(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "M月d日"
+    /// zh "7月4日" · en "Jul 4"
+    static func shortChinese(_ date: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale
+        if isChinese(locale) { f.dateFormat = "M月d日" }
+        else { f.setLocalizedDateFormatFromTemplate("MMMd") }
         return f.string(from: date)
     }
 
-    /// "4日"
-    static func dayNumber(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "d日"
+    /// zh "4日" · en "4"
+    static func dayNumber(_ date: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale
+        f.dateFormat = isChinese(locale) ? "d日" : "d"
         return f.string(from: date)
     }
 
-    /// "周六"
-    static func weekdayShort(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
+    /// zh "周六" · en "Sat" (locale localizes the weekday either way)
+    static func weekdayShort(_ date: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale
         f.dateFormat = "EEE"
         return f.string(from: date)
     }
 
-    /// "2026年7月" — used for the year-month section headers.
-    static func yearMonth(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "yyyy年M月"
+    /// zh "2026年7月" · en "Jul 2026" — year-month section headers.
+    static func yearMonth(_ date: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale
+        if isChinese(locale) { f.dateFormat = "yyyy年M月" }
+        else { f.setLocalizedDateFormatFromTemplate("yMMM") }
         return f.string(from: date)
     }
 

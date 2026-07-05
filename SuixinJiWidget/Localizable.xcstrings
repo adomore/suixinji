@@ -1,0 +1,136 @@
+{
+  "sourceLanguage": "zh-Hans",
+  "strings": {
+    "随心记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SuixinJi"
+          }
+        }
+      }
+    },
+    "今天的记录与连续天数。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today's entry and your streak."
+          }
+        }
+      }
+    },
+    "连续天数": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Day streak"
+          }
+        }
+      }
+    },
+    "累计日记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entries"
+          }
+        }
+      }
+    },
+    "记录今天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write today"
+          }
+        }
+      }
+    },
+    "今天已记录": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done today"
+          }
+        }
+      }
+    },
+    "今天已记录 ✓": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done today ✓"
+          }
+        }
+      }
+    },
+    "今天还没写": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not written yet"
+          }
+        }
+      }
+    },
+    "天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "d"
+          }
+        }
+      }
+    },
+    "连续 %lld 天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld-day streak"
+          }
+        }
+      }
+    },
+    "累计 %lld 篇": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld entries"
+          }
+        }
+      }
+    },
+    "连续 %lld 天 · 今天已记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld-day streak · done"
+          }
+        }
+      }
+    },
+    "连续 %lld 天 · 待记录": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld-day streak · to write"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

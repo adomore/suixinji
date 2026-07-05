@@ -12,24 +12,33 @@ final class DiaryDateFormatTests: XCTestCase {
         return Calendar(identifier: .gregorian).date(from: c)!
     }
 
+    private let zh = Locale(identifier: "zh_CN")
+
     func testLongChinese() {
-        XCTAssertEqual(DiaryDateFormat.longChinese(july4()), "7月4日 星期六")
+        XCTAssertEqual(DiaryDateFormat.longChinese(july4(), locale: zh), "7月4日 星期六")
     }
 
     func testShortChinese() {
-        XCTAssertEqual(DiaryDateFormat.shortChinese(july4()), "7月4日")
+        XCTAssertEqual(DiaryDateFormat.shortChinese(july4(), locale: zh), "7月4日")
     }
 
     func testDayNumber() {
-        XCTAssertEqual(DiaryDateFormat.dayNumber(july4()), "4日")
+        XCTAssertEqual(DiaryDateFormat.dayNumber(july4(), locale: zh), "4日")
     }
 
     func testWeekdayShort() {
-        XCTAssertEqual(DiaryDateFormat.weekdayShort(july4()), "周六")
+        XCTAssertEqual(DiaryDateFormat.weekdayShort(july4(), locale: zh), "周六")
     }
 
     func testYearMonth() {
-        XCTAssertEqual(DiaryDateFormat.yearMonth(july4()), "2026年7月")
+        XCTAssertEqual(DiaryDateFormat.yearMonth(july4(), locale: zh), "2026年7月")
+    }
+
+    /// English locale reformats without the 年/月/日 characters.
+    func testEnglishLocaleReformats() {
+        let en = Locale(identifier: "en_US")
+        XCTAssertFalse(DiaryDateFormat.shortChinese(july4(), locale: en).contains("月"))
+        XCTAssertFalse(DiaryDateFormat.yearMonth(july4(), locale: en).contains("年"))
     }
 
     func testDurationUnpadded() {

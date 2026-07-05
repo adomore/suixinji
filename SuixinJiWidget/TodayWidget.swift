@@ -56,8 +56,12 @@ struct TodayWidgetView: View {
 
     private var todayString: String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "M月d日 EEEE"
+        f.locale = .current
+        if f.locale.language.languageCode == .chinese {
+            f.dateFormat = "M月d日 EEEE"
+        } else {
+            f.setLocalizedDateFormatFromTemplate("EEEMMMd")
+        }
         return f.string(from: entry.date)
     }
 

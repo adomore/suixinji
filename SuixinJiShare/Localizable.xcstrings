@@ -1,0 +1,16 @@
+{
+  "sourceLanguage": "zh-Hans",
+  "strings": {
+    "写点什么，一并存进随心记…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a note to save with it…"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

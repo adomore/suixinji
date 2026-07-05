@@ -1760,6 +1760,146 @@
           }
         }
       }
+    },
+    " · 共 %lld 篇": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · %lld total"
+          }
+        }
+      }
+    },
+    "%@ 年": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        }
+      }
+    },
+    "%lld天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lldd"
+          }
+        }
+      }
+    },
+    "%lld 篇日记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld entries"
+          }
+        }
+      }
+    },
+    "%lld 篇有录音": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld with audio"
+          }
+        }
+      }
+    },
+    "%lld 篇有照片": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld with photos"
+          }
+        }
+      }
+    },
+    "%lld/%lld 天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/%lld days"
+          }
+        }
+      }
+    },
+    "去过 %lld 个地方": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld places visited"
+          }
+        }
+      }
+    },
+    "导入完成：新增 %lld 篇，跳过 %lld 篇。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imported %lld, skipped %lld."
+          }
+        }
+      }
+    },
+    "将从所有日记中移除「%@」标签，日记本身不受影响。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removes the “%@” tag from all entries; the entries are unaffected."
+          }
+        }
+      }
+    },
+    "最勤快的月份 · %@（%lld 篇）": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Busiest month · %@ (%lld entries)"
+          }
+        }
+      }
+    },
+    "最长 %lld 天": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longest %lld days"
+          }
+        }
+      }
+    },
+    "筛选中 · %lld 项": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld filters active"
+          }
+        }
+      }
+    },
+    "%lld 年前的今天%@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld years ago today%@"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
