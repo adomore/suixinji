@@ -3,7 +3,9 @@ import SwiftUI
 import AppIntents
 
 /// Signature warm-orange (#FF8A5C) — the widget is a separate target and doesn't
-/// share the app's Theme, so the accent is defined locally.
+/// share the app's Theme, so the accent is defined locally. (On the Lock Screen,
+/// accessory families render tinted/monochrome, so brand color only shows on the
+/// Home Screen families.)
 private extension Color {
     static let brand = Color(red: 255 / 255, green: 138 / 255, blue: 92 / 255)
 }
@@ -38,13 +40,19 @@ struct TodayWidget: Widget {
         }
         .configurationDisplayName("随心记")
         .description("今天的记录与连续天数。")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([
+            .systemSmall, .systemMedium,
+            .accessoryInline, .accessoryCircular, .accessoryRectangular
+        ])
     }
 }
 
 struct TodayWidgetView: View {
     let entry: SnapshotEntry
     @Environment(\.widgetFamily) private var family
+
+    private var streak: Int { entry.snapshot.currentStreak }
+    private var wroteToday: Bool { entry.snapshot.wroteToday }
 
     private var todayString: String {
         let f = DateFormatter()
@@ -54,6 +62,53 @@ struct TodayWidgetView: View {
     }
 
     var body: some View {
+        switch family {
+        case .accessoryInline:
+            // Lock Screen inline: a single line beside the clock.
+            Label(wroteToday ? "连续 \(streak) 天 · 今天已记" : "连续 \(streak) 天 · 待记录",
+                  systemImage: "flame.fill")
+        case .accessoryCircular:
+            circularView
+        case .accessoryRectangular:
+            rectangularView
+        default:
+            homeScreenView
+        }
+    }
+
+    // MARK: Lock Screen · circular
+
+    private var circularView: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            VStack(spacing: 0) {
+                Image(systemName: "flame.fill").font(.system(size: 11))
+                Text("\(streak)")
+                    .font(.system(size: 22, weight: .bold)).minimumScaleFactor(0.5)
+                Text("天").font(.system(size: 9)).foregroundStyle(.secondary)
+            }
+        }
+        .containerBackground(for: .widget) { Color.clear }
+    }
+
+    // MARK: Lock Screen · rectangular
+
+    private var rectangularView: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label("连续 \(streak) 天", systemImage: "flame.fill")
+                .font(.headline).widgetAccentable()
+            Text(wroteToday ? "今天已记录 ✓" : "今天还没写")
+                .font(.caption)
+            Text("累计 \(entry.snapshot.totalEntries) 篇")
+                .font(.caption2).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .containerBackground(for: .widget) { Color.clear }
+    }
+
+    // MARK: Home Screen · small / medium (unchanged design)
+
+    private var homeScreenView: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("随心记").font(.caption).fontWeight(.semibold)
@@ -79,7 +134,7 @@ struct TodayWidgetView: View {
 
     private var streakBlock: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("\(entry.snapshot.currentStreak)")
+            Text("\(streak)")
                 .font(.system(size: 34, weight: .bold)).foregroundStyle(Color.brand)
                 .monospacedDigit()
             Text("连续天数").font(.caption2).foregroundStyle(.secondary)
@@ -96,8 +151,8 @@ struct TodayWidgetView: View {
 
     private var composeButton: some View {
         Button(intent: QuickAddIntent()) {
-            Label(entry.snapshot.wroteToday ? "今天已记录" : "记录今天",
-                  systemImage: entry.snapshot.wroteToday ? "checkmark.circle" : "square.and.pencil")
+            Label(wroteToday ? "今天已记录" : "记录今天",
+                  systemImage: wroteToday ? "checkmark.circle" : "square.and.pencil")
                 .font(.caption).fontWeight(.medium)
         }
         .buttonStyle(.plain)
