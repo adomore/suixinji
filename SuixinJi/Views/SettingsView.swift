@@ -28,6 +28,7 @@ struct SettingsView: View {
     @State private var pendingImportData: Data?
     @State private var showImportPassword = false
     @State private var importPassword = ""
+    @State private var generatingBook = false
 
     // iCloud (F11)
     @State private var iCloudStatus = "检查中…"
@@ -127,6 +128,14 @@ struct SettingsView: View {
                     Label("导入备份", systemImage: "square.and.arrow.down")
                 }
                 .accessibilityIdentifier("settings.import")
+                Button { exportBook() } label: {
+                    HStack {
+                        Label("导出整本日记（PDF）", systemImage: "book.closed")
+                        if generatingBook { Spacer(); ProgressView() }
+                    }
+                }
+                .disabled(generatingBook || allEntries.isEmpty)
+                .accessibilityIdentifier("settings.exportBook")
             } footer: {
                 Text("导出为一个含图片与录音的文件，换机或重装后可导入恢复。可选设置密码加密（AES-256），导入时需输入同一密码。导入按 id 合并，不会覆盖已有日记。")
             }
@@ -210,6 +219,19 @@ struct SettingsView: View {
             shareItem = ShareItem(url: try BackupService.writeBackupFile(from: allEntries, password: password))
         } catch {
             resultMessage = "导出失败：\(error.localizedDescription)"
+        }
+    }
+
+    /// 整本导出 (evolution): render the whole diary to a paginated PDF, then share it.
+    private func exportBook() {
+        generatingBook = true
+        Task {
+            // Let the spinner appear before the synchronous ImageRenderer work.
+            try? await Task.sleep(nanoseconds: 50_000_000)
+            let url = DiaryExporter.exportBook(from: allEntries)
+            generatingBook = false
+            if let url { shareItem = ShareItem(url: url) }
+            else { resultMessage = "导出失败，请重试。" }
         }
     }
 

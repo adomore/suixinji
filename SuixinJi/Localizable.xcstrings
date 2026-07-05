@@ -2090,6 +2090,36 @@
           }
         }
       }
+    },
+    "导出整本日记（PDF）": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export whole diary (PDF)"
+          }
+        }
+      }
+    },
+    "我的日记 · 全集": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Diary · Complete"
+          }
+        }
+      }
+    },
+    "导出失败，请重试。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export failed, please try again."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
