@@ -21,7 +21,10 @@ final class SuixinJiUITests: XCTestCase {
         app = XCUIApplication()
         // -uitest → fresh in-memory store; -uitest-dictate → the 转文字 button
         // injects a canned phrase through the real caret/insert path (no recognizer).
-        app.launchArguments = ["-uitest", "-uitest-dictate"]
+        // Pin the language to Chinese so assertions on Chinese labels stay stable
+        // now that the app is localized (English on English devices).
+        app.launchArguments = ["-uitest", "-uitest-dictate",
+                               "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
         app.launch()
     }
 
@@ -144,7 +147,8 @@ final class SuixinJiUITests: XCTestCase {
     // and opens that memory. Relaunched with a seed since the store is in-memory.
     func testOnThisDayMemoriesBanner() {
         app.terminate()
-        app.launchArguments = ["-uitest", "-uitest-seed-memory"]
+        app.launchArguments = ["-uitest", "-uitest-seed-memory",
+                               "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
         app.launch()
 
         let banner = app.buttons["home.memories"]

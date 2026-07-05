@@ -53,7 +53,7 @@ struct SettingsView: View {
                 .padding(.vertical, 4)
 
                 Picker("字号", selection: $theme.fontScale) {
-                    ForEach(ThemeManager.FontScaleOption.allCases) { Text($0.name).tag($0) }
+                    ForEach(ThemeManager.FontScaleOption.allCases) { Text(LocalizedStringKey($0.name)).tag($0) }
                 }
                 .pickerStyle(.segmented)
             } header: {
@@ -117,7 +117,7 @@ struct SettingsView: View {
                 HStack {
                     Text("iCloud 同步")
                     Spacer()
-                    Text(iCloudStatus).foregroundStyle(.secondary)
+                    Text(LocalizedStringKey(iCloudStatus)).foregroundStyle(.secondary)
                 }
             } footer: {
                 Text("登录 iCloud 后，日记文字、图片与录音都会在你的设备间自动同步。")

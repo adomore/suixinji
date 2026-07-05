@@ -216,7 +216,7 @@ struct HomeView: View {
                 Image(systemName: "lightbulb").scaledFont(15).foregroundStyle(Color.accentColor)
                 VStack(alignment: .leading, spacing: 1) {
                     Text("今日灵感").scaledFont(13, weight: .semibold).foregroundStyle(.secondary)
-                    Text(todayPrompt).scaledFont(15).foregroundStyle(.primary)
+                    Text(LocalizedStringKey(todayPrompt)).scaledFont(15).foregroundStyle(.primary)
                         .multilineTextAlignment(.leading).lineLimit(2)
                 }
                 Spacer(minLength: 6)
