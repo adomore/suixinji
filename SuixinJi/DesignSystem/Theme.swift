@@ -56,7 +56,9 @@ private struct ScaledFontModifier: ViewModifier {
     let weight: Font.Weight
     @Environment(\.themeScale) private var scale
     func body(content: Content) -> some View {
-        content.scaledFont(size * scale, weight: weight)
+        // NB: must call the real SwiftUI font here — calling scaledFont would
+        // recurse forever (the migration script clobbered this once).
+        content.font(.system(size: size * scale, weight: weight))
     }
 }
 
