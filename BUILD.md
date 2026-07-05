@@ -29,6 +29,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | 每日灵感 + 写作习惯 (a calm prompt-of-the-day nudge on Home until you've written today, seeded as the editor placeholder; a 本周写作 7-day strip in 统计) | `WritingPrompts.ofTheDay` (deterministic daily rotation) + `WritingHabit.recentDays` (pure); `HomeView` prompt banner + `EditorView(promptPlaceholder:)`; `StatisticsView` week strip. |
 | 手写涂鸦 (PencilKit) (draw/handwrite in an entry; finger or Apple Pencil) | `DrawingCanvasView` (PencilKit canvas + native tool picker) → flattens to a white-background `UIImage` the editor attaches as a normal **photo**, so it rides the existing image pipeline (display / iCloud sync / backup / export / delete) with no new model or storage. Editor 涂鸦 button. No permission/entitlement. |
 | 情绪趋势图 (Swift Charts) (monthly average mood over the last 6 months, area+line+points, emoji y-axis) | `MoodTrends` (pure: catalog-mood→valence map, per-month averaging over a rolling window) + a Swift Charts `情绪趋势` section in `StatisticsView` (shown when ≥2 months have mood data). Reuses F7 mood data. |
+| 年度报告 · Year in Review (shareable annual summary: entries/days/longest streak, busiest month, top mood & tags, media & places) | `YearReview` (pure annual aggregation) + `YearReviewCard` + `DiaryExporter.exportYearReview` (long PNG); `StatisticsView` 年度报告 section with a year picker. Mirrors the monthly-recap pipeline. |
 
 ### Widget target + App Group (requires provisioning)
 

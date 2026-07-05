@@ -9,10 +9,25 @@ struct StatisticsView: View {
     @Query private var entries: [DiaryEntry]
     @Environment(\.dismiss) private var dismiss
     @State private var exportItem: ShareItem?
+    @State private var selectedYear: Int?
 
     private var stats: DiaryStatistics { DiaryStatistics.compute(from: entries) }
     private var moodTrend: [MoodTrends.MonthPoint] {
         MoodTrends.monthlyValence(entries, calendar: Calendar(identifier: .gregorian))
+    }
+
+    private let gregorian = Calendar(identifier: .gregorian)
+    private var availableYears: [Int] {
+        Set(entries.map { gregorian.component(.year, from: $0.diaryDate) }).sorted(by: >)
+    }
+    private var reviewYear: Int {
+        // Ignore a stale pick whose entries were all deleted, so the card/export
+        // never render an empty year while others still have data.
+        if let y = selectedYear, availableYears.contains(y) { return y }
+        return availableYears.first ?? gregorian.component(.year, from: Date())
+    }
+    private var yearReview: YearReview {
+        YearReview.build(from: entries, year: reviewYear, calendar: gregorian)
     }
 
     var body: some View {
@@ -53,6 +68,7 @@ struct StatisticsView: View {
                 if moodTrend.count >= 2 { moodTrendSection }
                 if stats.months.count > 1 { monthSection }
                 mediaSection
+                if !entries.isEmpty { yearReviewSection }
             }
             .padding(Layout.pageMargin)
             .padding(.bottom, 24)
@@ -291,6 +307,40 @@ struct StatisticsView: View {
 
     private func sectionHeader(_ text: String) -> some View {
         Text(text).scaledFont(13, weight: .medium).foregroundStyle(.secondary)
+    }
+
+    // MARK: 年度报告 · Year in Review (evolution)
+
+    private var yearReviewSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                sectionHeader("年度报告")
+                Spacer()
+                if availableYears.count > 1 {
+                    Menu {
+                        ForEach(availableYears, id: \.self) { y in
+                            Button("\(String(y)) 年") { selectedYear = y }
+                        }
+                    } label: {
+                        HStack(spacing: 3) {
+                            Text("\(String(reviewYear)) 年").scaledFont(14, weight: .medium)
+                            Image(systemName: "chevron.up.chevron.down").scaledFont(11)
+                        }
+                        .foregroundStyle(Color.accentColor)
+                    }
+                    .accessibilityIdentifier("stats.yearPicker")
+                }
+            }
+            YearReviewCard(review: yearReview)
+            Button {
+                if let url = DiaryExporter.exportYearReview(yearReview) { exportItem = ShareItem(url: url) }
+            } label: {
+                Label("导出年度报告长图", systemImage: "square.and.arrow.up").scaledFont(13)
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(Color.accentColor)
+            .accessibilityIdentifier("stats.exportYearReview")
+        }
     }
 }
 
