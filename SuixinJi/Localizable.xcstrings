@@ -2040,6 +2040,56 @@
           }
         }
       }
+    },
+    "从模板开始": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start from a template"
+          }
+        }
+      }
+    },
+    "每日三问": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily 3 questions"
+          }
+        }
+      }
+    },
+    "感恩日记": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratitude"
+          }
+        }
+      }
+    },
+    "晨间计划": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning plan"
+          }
+        }
+      }
+    },
+    "晚间复盘": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evening review"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

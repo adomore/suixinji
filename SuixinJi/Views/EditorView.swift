@@ -189,9 +189,17 @@ struct EditorView: View {
 
     // MARK: Content (text + photos + recording bar)
 
+    /// 引导式模板 (evolution): offered only on a fresh, empty new entry.
+    private var showTemplateBar: Bool {
+        if case .create = mode { return text.isEmpty }
+        return false
+    }
+
     private var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
+                if showTemplateBar { templateBar }
+
                 DiaryTextEditor(
                     text: $text,
                     selectedRange: $selectedRange,
@@ -253,6 +261,42 @@ struct EditorView: View {
                 }
             }
         }
+    }
+
+    // MARK: 引导式模板 (evolution)
+
+    private var templateBar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("从模板开始", systemImage: "text.book.closed")
+                .scaledFont(13).foregroundStyle(.secondary)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(JournalTemplate.all) { template in
+                        Button { applyTemplate(template) } label: {
+                            HStack(spacing: 5) {
+                                Image(systemName: template.symbol).scaledFont(13)
+                                Text(LocalizedStringKey(template.title)).scaledFont(13)
+                            }
+                            .padding(.horizontal, 11).padding(.vertical, 7)
+                            .background(Color.cardBackground, in: Capsule())
+                            .foregroundStyle(Color.accentColor)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("template.\(template.id)")
+                    }
+                }
+            }
+        }
+        .padding(.bottom, 6)
+    }
+
+    /// Fill the empty editor with a template skeleton and park the caret at its end
+    /// so the user starts typing into the first prompt.
+    private func applyTemplate(_ template: JournalTemplate) {
+        text = template.body
+        let end = (text as NSString).length
+        selectedRange = NSRange(location: end, length: 0)
+        editorFocused = true
     }
 
     // MARK: Bottom toolbar / recording state

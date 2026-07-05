@@ -170,6 +170,19 @@ final class SuixinJiUITests: XCTestCase {
                        "private entry text must never render while locked")
     }
 
+    // 引导式模板: picking a template on a new entry fills the editor with its skeleton.
+    func testTemplateFillsEditor() {
+        app.buttons["fab.add"].tap()
+        let chip = app.buttons["template.three-questions"]
+        XCTAssertTrue(chip.waitForExistence(timeout: 12))
+        chip.tap()
+        let editor = app.textViews["editor.text"]
+        XCTAssertTrue(editor.waitForExistence(timeout: 12))
+        let value = editor.value as? String ?? ""
+        XCTAssertTrue(value.contains("每日三问"),
+                      "template heading should be inserted; got: \(value)")
+    }
+
     // Insights screen opens and shows the stat tiles after there's data.
     func testStatisticsOpens() {
         createEntry("统计用的一条日记")
