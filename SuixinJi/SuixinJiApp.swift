@@ -30,6 +30,11 @@ struct SuixinJiApp: App {
             container.mainContext.insert(DiaryEntry(diaryDate: lastYear, text: "去年今天的回忆"))
             try? container.mainContext.save()
         }
+        // Seed one private entry so a UI test can assert it renders redacted (私密日记).
+        if ProcessInfo.processInfo.arguments.contains("-uitest-seed-private") {
+            container.mainContext.insert(DiaryEntry(text: "私密内容不该出现", isPrivate: true))
+            try? container.mainContext.save()
+        }
         #endif
         return container
     }()

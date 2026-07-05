@@ -158,6 +158,18 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["去年今天的回忆"].waitForExistence(timeout: 12))
     }
 
+    // 私密日记: a private entry shows the redacted lock card, never its text, when
+    // the session is locked (no biometric reveal needed to assert redaction).
+    func testPrivateEntryIsRedactedInTimeline() {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-uitest-seed-private",
+                               "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["私密日记"].waitForExistence(timeout: 12))
+        XCTAssertFalse(app.staticTexts["私密内容不该出现"].exists,
+                       "private entry text must never render while locked")
+    }
+
     // Insights screen opens and shows the stat tiles after there's data.
     func testStatisticsOpens() {
         createEntry("统计用的一条日记")

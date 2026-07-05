@@ -118,4 +118,29 @@ final class EvolutionPerformanceTests: XCTestCase {
         let cal = Calendar(identifier: .gregorian)
         measure { _ = Memories.onThisDay(data, today: Date(), calendar: cal) }
     }
+
+    // MARK: 数据加密 (PBKDF2 key derivation dominates; AES-GCM scales with size)
+
+    /// Guards the encrypted-backup cost. ~2 MB payload ≈ a small backup with a few
+    /// photos; the fixed 120k-iteration PBKDF2 is the floor, so this baseline flags
+    /// an accidental iteration-count or algorithm regression.
+    func testBackupEncryptRoundTripPerformance() {
+        let payload = Data((0..<2_000_000).map { UInt8($0 & 0xFF) })
+        let password = "correct horse battery staple"
+        measure {
+            guard let enc = try? BackupCrypto.encrypt(payload, password: password),
+                  let dec = try? BackupCrypto.decrypt(enc, password: password) else {
+                XCTFail("crypto round-trip failed"); return
+            }
+            XCTAssertEqual(dec.count, payload.count)
+        }
+    }
+
+    // MARK: 私密日记 (Spotlight exclusion scans the whole history)
+
+    func testSpotlightIndexableFilterPerformance() {
+        var data = makeDataset()
+        for i in stride(from: 0, to: data.count, by: 5) { data[i].isPrivate = true }
+        measure { _ = SpotlightIndexer.indexable(data) }
+    }
 }
