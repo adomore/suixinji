@@ -32,6 +32,12 @@ struct HomeView: View {
         Memories.onThisDay(entries, today: Date(), calendar: Calendar(identifier: .gregorian))
     }
 
+    /// 每日灵感: has the user written anything dated today yet?
+    private var writtenToday: Bool {
+        entries.contains { Calendar.current.isDateInToday($0.diaryDate) }
+    }
+    private var todayPrompt: String { WritingPrompts.ofTheDay() }
+
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
@@ -47,6 +53,10 @@ struct HomeView: View {
 
                     if !onThisDay.isEmpty && searchText.isEmpty {
                         onThisDayBanner
+                    }
+
+                    if !writtenToday && searchText.isEmpty {
+                        promptBanner
                     }
 
                     if entries.isEmpty {
@@ -106,7 +116,7 @@ struct HomeView: View {
             }
         }
         .sheet(isPresented: $showingEditor) {
-            EditorView(mode: .create).themedRoot()
+            EditorView(mode: .create, promptPlaceholder: todayPrompt).themedRoot()
         }
         .sheet(isPresented: $showingCalendar) {
             CalendarView().themedRoot()
@@ -174,6 +184,30 @@ struct HomeView: View {
         .padding(.horizontal, Layout.pageMargin)
         .padding(.top, 12)
         .accessibilityIdentifier("home.memories")
+    }
+
+    /// 每日灵感 nudge — the day's prompt; tapping opens the editor (prompt shown
+    /// as its placeholder). Only appears when nothing's been written today.
+    private var promptBanner: some View {
+        Button { showingEditor = true } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "lightbulb").scaledFont(15).foregroundStyle(Color.accentColor)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("今日灵感").scaledFont(13, weight: .semibold).foregroundStyle(.secondary)
+                    Text(todayPrompt).scaledFont(15).foregroundStyle(.primary)
+                        .multilineTextAlignment(.leading).lineLimit(2)
+                }
+                Spacer(minLength: 6)
+                Image(systemName: "square.and.pencil").scaledFont(14, weight: .semibold)
+                    .foregroundStyle(Color.accentColor)
+            }
+            .padding(.horizontal, 14).padding(.vertical, 12)
+            .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, Layout.pageMargin)
+        .padding(.top, 12)
+        .accessibilityIdentifier("home.prompt")
     }
 
     private var memoriesSubtitle: String {

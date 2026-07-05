@@ -13,6 +13,9 @@ struct EditorView: View {
     }
 
     let mode: Mode
+    /// 每日灵感 (evolution): when creating, show the day's prompt as the editor
+    /// placeholder instead of the generic one. nil = generic placeholder.
+    var promptPlaceholder: String? = nil
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -179,7 +182,7 @@ struct EditorView: View {
                     text: $text,
                     selectedRange: $selectedRange,
                     isFocused: $editorFocused,
-                    placeholder: "今天想说点什么…",
+                    placeholder: promptPlaceholder ?? "今天想说点什么…",
                     accessibilityID: "editor.text",
                     fontSize: 17 * themeScale
                 )

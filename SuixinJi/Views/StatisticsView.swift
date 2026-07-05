@@ -42,6 +42,7 @@ struct StatisticsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 tiles
+                weekSection
                 milestoneSection
                 recapSection
                 if !stats.moods.isEmpty { moodSection }
@@ -64,6 +65,37 @@ struct StatisticsView: View {
             StatTile(value: "\(stats.totalEntries)", unit: "篇", title: "累计日记")
             StatTile(value: "\(stats.entriesThisMonth)", unit: "篇", title: "本月")
             StatTile(value: "\(stats.daysWritten)", unit: "天", title: "记录天数")
+        }
+    }
+
+    // MARK: 本周写作 (writing habit — evolution)
+
+    private var weekSection: some View {
+        let days = WritingHabit.recentDays(entries, count: 7, calendar: Calendar(identifier: .gregorian))
+        return VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("本周写作")
+            HStack(spacing: 0) {
+                ForEach(days, id: \.date) { day in
+                    VStack(spacing: 8) {
+                        Text(DiaryDateFormat.weekdayShort(day.date))
+                            .scaledFont(12).foregroundStyle(.secondary)
+                        ZStack {
+                            Circle()
+                                .fill(day.written ? Color.accentColor : Color(uiColor: .tertiarySystemFill))
+                                .frame(width: 30, height: 30)
+                            if day.written {
+                                Image(systemName: "checkmark").scaledFont(12, weight: .bold)
+                                    .foregroundStyle(.white)
+                            } else {
+                                Text(DiaryDateFormat.dayNumber(day.date))
+                                    .scaledFont(12).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .cardBackgroundStyle()
         }
     }
 

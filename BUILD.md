@@ -26,6 +26,7 @@ This is the **P0 MVP** — everything the PRD marks P0 is functional:
 | 桌面小组件 + App Intents 快捷记录 | `SuixinJiWidgetExtension` target (WidgetKit): a small/medium widget showing streak + today + a compose button (`QuickAddIntent`, also a Siri/Shortcuts action). App writes a `WidgetSnapshot` to the App Group; widget reads it. See below. |
 | 地图足迹 (located entries plotted on a MapKit map, clustered by place → tap pin → that spot's entries → detail) | `MapFootprints` (pure clustering engine, grid-cell buckets + centroid) + `MapView`; home 地图 toolbar button. Reuses the F14 lat/long already captured; no new permission. |
 | Spotlight 搜索 + Siri 快捷指令 (find diaries from system search; tap a result opens the entry; spoken "记一笔") | `SpotlightIndexer` (CoreSpotlight, indexed on save/delete + full reindex on launch), `AppRouter` + `.onContinueUserActivity` deep link → `HomeView` path nav, `SuixinJiShortcuts` (`AppShortcutsProvider` over `QuickAddIntent`). No entitlement needed. |
+| 每日灵感 + 写作习惯 (a calm prompt-of-the-day nudge on Home until you've written today, seeded as the editor placeholder; a 本周写作 7-day strip in 统计) | `WritingPrompts.ofTheDay` (deterministic daily rotation) + `WritingHabit.recentDays` (pure); `HomeView` prompt banner + `EditorView(promptPlaceholder:)`; `StatisticsView` week strip. |
 
 ### Widget target + App Group (requires provisioning)
 
