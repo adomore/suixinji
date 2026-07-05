@@ -15,7 +15,7 @@ struct DetailView: View {
     @State private var showEditor = false
     @State private var showDeleteConfirm = false
     @State private var viewerIndex: Int?
-    @State private var exportItem: ExportItem?
+    @State private var exportItem: ShareItem?
 
     var body: some View {
         ScrollView {
@@ -195,7 +195,7 @@ struct DetailView: View {
         case .pdf: DiaryExporter.exportPDF(entry)
         case .longImage: DiaryExporter.exportLongImage(entry)
         }
-        if let url { exportItem = ExportItem(url: url) }
+        if let url { exportItem = ShareItem(url: url) }
     }
 
     private func deleteEntry() {
@@ -209,21 +209,6 @@ struct DetailView: View {
 private struct PagerIndex: Identifiable {
     let value: Int
     var id: Int { value }
-}
-
-/// Identifiable wrapper for the exported PDF URL (drives the share sheet).
-private struct ExportItem: Identifiable {
-    let url: URL
-    var id: String { url.absoluteString }
-}
-
-/// UIActivityViewController bridge for sharing the exported file.
-private struct ShareSheet: UIViewControllerRepresentable {
-    let items: [Any]
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
 
 #Preview {

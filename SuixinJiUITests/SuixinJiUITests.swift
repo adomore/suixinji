@@ -107,6 +107,20 @@ final class SuixinJiUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[marker].waitForExistence(timeout: 5))
     }
 
+    // 回顾: the "这一天" banner appears when a same-date past-year entry exists,
+    // and opens that memory. Relaunched with a seed since the store is in-memory.
+    func testOnThisDayMemoriesBanner() {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-uitest-seed-memory"]
+        app.launch()
+
+        let banner = app.buttons["home.memories"]
+        XCTAssertTrue(banner.waitForExistence(timeout: 5))
+        banner.tap()
+        XCTAssertTrue(app.navigationBars["这一天"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["去年今天的回忆"].waitForExistence(timeout: 5))
+    }
+
     // Insights screen opens and shows the stat tiles after there's data.
     func testStatisticsOpens() {
         createEntry("统计用的一条日记")

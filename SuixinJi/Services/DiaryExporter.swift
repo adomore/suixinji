@@ -23,6 +23,25 @@ enum DiaryExporter {
             .appendingPathComponent("随心记-\(DiaryDateFormat.shortChinese(entry.diaryDate)).\(ext)")
     }
 
+    // MARK: Monthly recap card (evolution) — a shareable long image
+
+    static func exportRecap(_ recap: MonthlyRecap) -> URL? {
+        let width: CGFloat = 640
+        let renderer = ImageRenderer(
+            content: RecapCard(recap: recap, forExport: true)
+                .frame(width: width)
+                .padding(20)
+                .background(Color.white)
+                .environment(\.colorScheme, .light)
+        )
+        renderer.proposedSize = ProposedViewSize(width: width + 40, height: nil)
+        renderer.scale = 2
+        guard let image = renderer.uiImage, let data = image.pngData() else { return nil }
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("随心记-回顾-\(recap.monthKey).png")
+        do { try data.write(to: url, options: .atomic); return url } catch { return nil }
+    }
+
     // MARK: Long image (F13)
 
     static func exportLongImage(_ entry: DiaryEntry) -> URL? {

@@ -7,6 +7,7 @@ import SwiftData
 struct StatisticsView: View {
     @Query private var entries: [DiaryEntry]
     @Environment(\.dismiss) private var dismiss
+    @State private var exportItem: ShareItem?
 
     private var stats: DiaryStatistics { DiaryStatistics.compute(from: entries) }
 
@@ -25,6 +26,7 @@ struct StatisticsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) { Button("完成") { dismiss() } }
             }
+            .sheet(item: $exportItem) { ShareSheet(items: [$0.url]) }
         }
     }
 
@@ -40,6 +42,8 @@ struct StatisticsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 tiles
+                milestoneSection
+                recapSection
                 if !stats.moods.isEmpty { moodSection }
                 if stats.months.count > 1 { monthSection }
                 mediaSection
@@ -60,6 +64,71 @@ struct StatisticsView: View {
             StatTile(value: "\(stats.totalEntries)", unit: "篇", title: "累计日记")
             StatTile(value: "\(stats.entriesThisMonth)", unit: "篇", title: "本月")
             StatTile(value: "\(stats.daysWritten)", unit: "天", title: "记录天数")
+        }
+    }
+
+    // MARK: Streak milestones (回顾)
+
+    private var milestoneSection: some View {
+        let next = Memories.nextMilestone(currentStreak: stats.currentStreak)
+        let achieved = Memories.achievedMilestones(longestStreak: stats.longestStreak)
+        return VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("连续打卡里程碑")
+            VStack(alignment: .leading, spacing: 12) {
+                if let next {
+                    let progress = min(1, Double(stats.currentStreak) / Double(next))
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text("距下一个里程碑").font(.aux13).foregroundStyle(.secondary)
+                            Spacer()
+                            Text("\(stats.currentStreak)/\(next) 天").font(.aux13)
+                                .monospacedDigit().foregroundStyle(.secondary)
+                        }
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                Capsule().fill(Color(uiColor: .tertiarySystemFill))
+                                Capsule().fill(Color.brand)
+                                    .frame(width: max(6, geo.size.width * progress))
+                            }
+                        }
+                        .frame(height: 10)
+                    }
+                } else {
+                    Text("已达成全部里程碑 🎉").font(.summary15).foregroundStyle(.secondary)
+                }
+                HStack(spacing: 8) {
+                    ForEach(Memories.milestones, id: \.self) { m in
+                        let got = achieved.contains(m)
+                        Text("\(m)天")
+                            .font(.system(size: 12, weight: .semibold))
+                            .padding(.horizontal, 10).padding(.vertical, 6)
+                            .background(got ? Color.brand.opacity(0.15) : Color(uiColor: .tertiarySystemFill), in: Capsule())
+                            .foregroundStyle(got ? Color.brand : Color.secondary)
+                    }
+                }
+            }
+            .cardBackgroundStyle()
+        }
+    }
+
+    // MARK: Monthly recap (回顾, exportable long image)
+
+    @ViewBuilder
+    private var recapSection: some View {
+        let recap = MonthlyRecap.build(from: entries, month: Date())
+        if !recap.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                sectionHeader("本月回顾")
+                RecapCard(recap: recap)
+                Button {
+                    if let url = DiaryExporter.exportRecap(recap) { exportItem = ShareItem(url: url) }
+                } label: {
+                    Label("导出长图", systemImage: "square.and.arrow.up").font(.aux13)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(Color.brand)
+                .accessibilityIdentifier("stats.exportRecap")
+            }
         }
     }
 

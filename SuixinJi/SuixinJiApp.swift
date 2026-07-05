@@ -21,7 +21,17 @@ struct SuixinJiApp: App {
             #endif
         }
         do {
-            return try ModelContainer(for: DiaryEntry.self, configurations: config)
+            let container = try ModelContainer(for: DiaryEntry.self, configurations: config)
+            #if DEBUG
+            // UI-test seam: seed one entry dated exactly a year ago (same month/day)
+            // so the "这一天" memories banner has something to show.
+            if ProcessInfo.processInfo.arguments.contains("-uitest-seed-memory"),
+               let lastYear = Calendar(identifier: .gregorian).date(byAdding: .year, value: -1, to: Date()) {
+                container.mainContext.insert(DiaryEntry(diaryDate: lastYear, text: "去年今天的回忆"))
+                try? container.mainContext.save()
+            }
+            #endif
+            return container
         } catch {
             fatalError("无法创建数据库容器: \(error)")
         }

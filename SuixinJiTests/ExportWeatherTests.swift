@@ -63,4 +63,14 @@ final class DiaryExporterTests: XCTestCase {
         XCTAssertEqual(data.prefix(4), Data("%PDF".utf8))
         try? FileManager.default.removeItem(at: url)
     }
+
+    func testExportRecapProducesPNG() throws {
+        let recap = MonthlyRecap(monthKey: "2026年7月", entryCount: 12, daysWritten: 8,
+                                 topMood: "😊", withPhotos: 3, withAudio: 2)
+        let url = try XCTUnwrap(DiaryExporter.exportRecap(recap))
+        XCTAssertEqual(url.pathExtension, "png")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+        XCTAssertGreaterThan(try Data(contentsOf: url).count, 0)
+        try? FileManager.default.removeItem(at: url)
+    }
 }

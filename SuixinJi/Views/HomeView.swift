@@ -15,11 +15,17 @@ struct HomeView: View {
     @State private var showingEditor = false
     @State private var showingCalendar = false
     @State private var showingStats = false
+    @State private var showingMemories = false
     @State private var searchText = ""
 
     /// Entries after applying keyword search (F8).
     private var filteredEntries: [DiaryEntry] {
         DiarySearch.filter(entries, query: searchText)
+    }
+
+    /// Earlier-year entries sharing today's date (回顾 · 这一天).
+    private var onThisDay: [DiaryEntry] {
+        Memories.onThisDay(entries, today: Date(), calendar: Calendar(identifier: .gregorian))
     }
 
     var body: some View {
@@ -34,6 +40,10 @@ struct HomeView: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, Layout.pageMargin)
                         .padding(.top, 4)
+
+                    if !onThisDay.isEmpty && searchText.isEmpty {
+                        onThisDayBanner
+                    }
 
                     if entries.isEmpty {
                         EmptyStateView()
@@ -91,6 +101,41 @@ struct HomeView: View {
         .sheet(isPresented: $showingStats) {
             StatisticsView()
         }
+        .sheet(isPresented: $showingMemories) {
+            MemoriesListView(entries: onThisDay, today: Date())
+        }
+    }
+
+    // "N 年前的今天" banner leading the eye to past memories (回顾).
+    private var onThisDayBanner: some View {
+        Button { showingMemories = true } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "sparkles").font(.system(size: 15)).foregroundStyle(Color.brand)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("这一天").font(.system(size: 15, weight: .semibold)).foregroundStyle(.primary)
+                    Text(memoriesSubtitle).font(.aux13).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.horizontal, 14).padding(.vertical, 12)
+            .background(Color.brand.opacity(0.10), in: RoundedRectangle(cornerRadius: Layout.cardRadius, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, Layout.pageMargin)
+        .padding(.top, 12)
+        .accessibilityIdentifier("home.memories")
+    }
+
+    private var memoriesSubtitle: String {
+        let cal = Calendar(identifier: .gregorian)
+        if let latest = onThisDay.first {
+            let years = Memories.yearsAgo(latest.diaryDate, from: Date(), calendar: cal)
+            let more = onThisDay.count > 1 ? " · 共 \(onThisDay.count) 篇" : ""
+            return "\(years) 年前的今天\(more)"
+        }
+        return "回顾过往"
     }
 
     private var noSearchResults: some View {
