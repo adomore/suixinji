@@ -6,7 +6,7 @@ import WidgetKit
 /// processes. Both targets compile this file.
 enum SharedStore {
     /// Must match the App Group id in both targets' entitlements.
-    static let appGroup = "group.com.zengmingjiang.suixinji"
+    static let appGroup = "group.app.suixinji.mj"
 
     private static var snapshotURL: URL? {
         FileManager.default
