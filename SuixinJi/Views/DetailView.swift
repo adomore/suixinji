@@ -27,9 +27,7 @@ struct DetailView: View {
                 }
 
                 if !entry.text.isEmpty {
-                    Text(entry.text)
-                        .scaledFont(17)
-                        .lineSpacing(4)
+                    MarkdownText(text: entry.text)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 

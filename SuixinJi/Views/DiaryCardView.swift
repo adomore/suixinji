@@ -49,7 +49,11 @@ struct DiaryCardView: View {
     }
 
     private var summaryText: String {
-        entry.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Strip Markdown markers so the card preview reads clean (evolution).
+        // Fall back to the raw text if stripping leaves nothing (e.g. a divider-
+        // only entry) so a non-empty entry never shows a blank card.
+        let preview = MarkdownParser.plainPreview(entry.text).trimmingCharacters(in: .whitespacesAndNewlines)
+        return preview.isEmpty ? entry.text.trimmingCharacters(in: .whitespacesAndNewlines) : preview
     }
 
     private var thumbnailRow: some View {
