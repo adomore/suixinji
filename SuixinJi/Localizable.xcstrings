@@ -2130,6 +2130,16 @@
           }
         }
       }
+    },
+    "显示农历日期": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show lunar date"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

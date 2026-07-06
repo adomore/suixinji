@@ -7,6 +7,8 @@ struct DiaryCardView: View {
     /// 私密日记 (evolution): when true, content is hidden behind a lock row and the
     /// mood/weather/audio badges (which would leak information) are suppressed.
     var redacted: Bool = false
+    /// 农历 (evolution): show the lunar date next to the weekday.
+    @AppStorage("showLunarDate") private var showLunar = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -18,6 +20,11 @@ struct DiaryCardView: View {
                 Text(DiaryDateFormat.weekdayShort(entry.diaryDate))
                     .scaledFont(13)
                     .foregroundStyle(.secondary)
+                if showLunar {
+                    Text(LunarDate.format(entry.diaryDate))
+                        .scaledFont(12)
+                        .foregroundStyle(.tertiary)
+                }
                 Spacer(minLength: 8)
                 if redacted {
                     Image(systemName: "lock.fill").scaledFont(14).foregroundStyle(.secondary)

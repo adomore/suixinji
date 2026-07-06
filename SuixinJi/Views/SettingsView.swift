@@ -13,6 +13,7 @@ struct SettingsView: View {
     @AppStorage("dailyReminderEnabled") private var reminderEnabled = false
     @AppStorage("dailyReminderTime") private var reminderTime = "21:00"
     @AppStorage("healthSyncEnabled") private var healthSyncEnabled = false
+    @AppStorage("showLunarDate") private var showLunar = true
 
     @State private var reminderDate = Date()
     @State private var notifyDenied = false
@@ -65,6 +66,8 @@ struct SettingsView: View {
                     ForEach(ThemeManager.FontScaleOption.allCases) { Text(LocalizedStringKey($0.name)).tag($0) }
                 }
                 .pickerStyle(.segmented)
+
+                Toggle("显示农历日期", isOn: $showLunar)
             } header: {
                 Text("外观")
             }

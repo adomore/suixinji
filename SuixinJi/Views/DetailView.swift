@@ -11,6 +11,7 @@ struct DetailView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var privacy: PrivacyManager
+    @AppStorage("showLunarDate") private var showLunar = true
 
     @StateObject private var player = AudioPlaybackManager()
     @State private var showEditor = false
@@ -47,6 +48,11 @@ struct DetailView: View {
     private var unlockedBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                if showLunar {
+                    Text(LunarDate.format(entry.diaryDate))
+                        .scaledFont(13).foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 if hasMeta { metaHeader }
 
                 if entry.hasAudio {
