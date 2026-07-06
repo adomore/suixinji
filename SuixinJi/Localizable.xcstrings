@@ -2140,6 +2140,136 @@
           }
         }
       }
+    },
+    "春节": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spring Festival"
+          }
+        }
+      }
+    },
+    "元宵": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lantern Festival"
+          }
+        }
+      }
+    },
+    "端午": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dragon Boat"
+          }
+        }
+      }
+    },
+    "七夕": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qixi"
+          }
+        }
+      }
+    },
+    "中秋": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mid-Autumn"
+          }
+        }
+      }
+    },
+    "重阳": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double Ninth"
+          }
+        }
+      }
+    },
+    "腊八": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laba"
+          }
+        }
+      }
+    },
+    "除夕": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Year’s Eve"
+          }
+        }
+      }
+    },
+    "元旦": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Year"
+          }
+        }
+      }
+    },
+    "劳动节": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Labor Day"
+          }
+        }
+      }
+    },
+    "儿童节": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Children’s Day"
+          }
+        }
+      }
+    },
+    "国庆": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "National Day"
+          }
+        }
+      }
+    },
+    "圣诞": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Christmas"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

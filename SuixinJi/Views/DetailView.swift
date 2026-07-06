@@ -48,10 +48,18 @@ struct DetailView: View {
     private var unlockedBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if showLunar {
-                    Text(LunarDate.format(entry.diaryDate))
-                        .scaledFont(13).foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                if showLunar || Festival.name(for: entry.diaryDate) != nil {
+                    HStack(spacing: 8) {
+                        if showLunar {
+                            Text(LunarDate.format(entry.diaryDate)).foregroundStyle(.secondary)
+                        }
+                        if let festival = Festival.name(for: entry.diaryDate) {
+                            Text(LocalizedStringKey(festival))
+                                .fontWeight(.medium).foregroundStyle(Color.accentColor)
+                        }
+                    }
+                    .scaledFont(13)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 if hasMeta { metaHeader }
 

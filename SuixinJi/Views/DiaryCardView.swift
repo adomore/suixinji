@@ -25,6 +25,11 @@ struct DiaryCardView: View {
                         .scaledFont(12)
                         .foregroundStyle(.tertiary)
                 }
+                if let festival = Festival.name(for: entry.diaryDate) {
+                    Text(LocalizedStringKey(festival))
+                        .scaledFont(12, weight: .medium)
+                        .foregroundStyle(Color.accentColor)
+                }
                 Spacer(minLength: 8)
                 if redacted {
                     Image(systemName: "lock.fill").scaledFont(14).foregroundStyle(.secondary)
